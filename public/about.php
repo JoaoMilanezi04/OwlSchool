@@ -1,0 +1,1 @@
+<?php // Sobre a escola

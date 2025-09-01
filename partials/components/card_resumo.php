@@ -1,0 +1,1 @@
+<?php // card genérico (dashboard)

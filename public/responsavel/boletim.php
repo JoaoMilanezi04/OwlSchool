@@ -1,0 +1,1 @@
+<?php // Boletim do responsável

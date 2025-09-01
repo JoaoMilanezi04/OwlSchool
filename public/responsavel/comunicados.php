@@ -1,0 +1,1 @@
+<?php // Comunicados do responsável
