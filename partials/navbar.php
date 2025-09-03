@@ -1,5 +1,5 @@
-<?php // menu superior/lateral (dinâmico por papel)
-?>
+<?php /* partials/navbar.php */ ?>
+
 
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
