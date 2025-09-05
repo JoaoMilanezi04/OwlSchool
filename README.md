@@ -5,22 +5,17 @@ Sistema escolar moderno, multiusuário e responsivo, feito em PHP + SQLite. Idea
 ## Estrutura de Pastas
 
 ```
-olwschool/
-├─ public/
-│  ├─ index.php
-│  ├─ assets/
-│  │  ├─ css/
-│  │  ├─ js/
-│  │  └─ img/
-│  ├─ aluno/
-│  ├─ responsavel/
-│  ├─ professor/
-│  └─ admin/
-├─ api/
-├─ partials/
-│  └─ components/
-├─ db/
-└─ README.md
+owl-school/
+├─ public/         # arquivos públicos, páginas e assets (css, js, imagens)
+│  ├─ aluno/       # área do aluno
+│  ├─ responsavel/ # área do responsável
+│  ├─ professor/   # área do professor
+│  ├─ admin/       # área administrativa
+│  └─ assets/      # arquivos estáticos (css, js, imagens)
+├─ api/            # endpoints da API
+├─ partials/       # componentes e partes reutilizáveis (navbar, footer, etc)
+├─ db/             # banco de dados e scripts SQL
+├─ README.md
 ```
 
 ## Funcionalidades
