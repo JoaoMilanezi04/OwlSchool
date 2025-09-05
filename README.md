@@ -8,8 +8,6 @@ Sistema escolar moderno, multiusuário e responsivo, feito em PHP + SQLite. Idea
 olwschool/
 ├─ public/
 │  ├─ index.php
-│  ├─ about.php
-│  ├─ help.php
 │  ├─ assets/
 │  │  ├─ css/
 │  │  ├─ js/
@@ -21,12 +19,7 @@ olwschool/
 ├─ api/
 ├─ partials/
 │  └─ components/
-├─ config/
 ├─ db/
-│  └─ migrations/
-├─ docs/
-│  └─ wireframes/
-├─ .htaccess
 └─ README.md
 ```
 
