@@ -90,6 +90,8 @@ function msgErro($e) {
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>
 
+
+
 <!-- CSS do cursor -->
 <link rel="stylesheet" href="assets/css/cursor.css">
 
@@ -97,8 +99,14 @@ function msgErro($e) {
 <script src="assets/js/cursor.js" defer></script>
 
 
+
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
 
 <!-- Remove parâmetro de erro da URL ao carregar -->
 <script>
@@ -109,6 +117,10 @@ function msgErro($e) {
     window.history.replaceState({}, '', url);
   }
 </script>
+
+
+
+
 
 </body>
 </html>

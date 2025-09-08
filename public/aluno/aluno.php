@@ -1,9 +1,30 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../db/conexao.php';
+require_once __DIR__ . '/../../api/alunos.php';
+
+require_login();
+require_role('aluno');
+
+$alunoId  = session_entity_id('aluno_id');
+$userName = $_SESSION['user_name'] ?? 'Aluno';
+if ($alunoId === null) { http_response_code(500); exit('aluno_id ausente.'); }
+
+
+$responsavel = getNomeResponsavel($alunoId);
+
+
+?>
+
+
 <!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OlwSchool — Dashboard do Aluno</title>
+  <title>OlwSchool — Aluno</title>
 
   <!-- Bootstrap 5 (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,7 +68,8 @@
             <img class="avatar" src="../assets/img/aluno1.png" alt="Foto do aluno">
           </div>
           <div class="col-8 col-sm-9 col-md-10">
-            <h1 class="h4 mb-1">Bem-vindo, <span class="text-primary">João F. M.</span></h1>
+            <p>Aluno: <strong><?= htmlspecialchars($userName) ?></strong></p>
+            <p>Responsável: <strong><?= htmlspecialchars($responsavel ?? 'Não cadastrado') ?></strong></p>
             <p class="text-muted mb-2">3º Ano do Fundamental</p>
             <ul class="mb-0">
               <li>Você precisa melhorar em <strong>Matemática</strong>.</li>
