@@ -23,6 +23,9 @@ function msgErro($e) {
   <!-- Bootstrap via CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+
+
   <style>
     body {
       background: #f8f9fa; /* cinza claro */
@@ -34,10 +37,14 @@ function msgErro($e) {
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
   </style>
+
+
+
 </head>
 <body>
 
-<?php include __DIR__ . '/../partials/navbar.php'; ?>
+
+
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
   <div class="login-card card">
@@ -77,6 +84,9 @@ function msgErro($e) {
     </div>
   </div>
 </div>
+
+
+
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>
 

@@ -13,7 +13,7 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 
-    if ($senha === $user['senha_hash']) {
+    if ($senha === $user['senha']) {
         switch ($user['tipo_usuario']) {
             case 'aluno':       header("Location: ../public/aluno/aluno.php"); break;
             case 'professor':   header("Location: ../public/professor/professor.php"); break;
