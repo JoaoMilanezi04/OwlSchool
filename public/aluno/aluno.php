@@ -1,24 +1,22 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../includes/auth.php';
-require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/alunos.php';
+require_once __DIR__ . '/../../includes/auth.php';   // funções de auth (require_login/require_role/session_entity_id)
+require_once __DIR__ . '/../../db/conexao.php';      // conexão com o banco ($conn)
+require_once __DIR__ . '/../../api/alunos.php';      // helpers de aluno (getNomeResponsavel etc.)
 
-require_login();
-require_role('aluno');
+require_login();                  // bloqueia não logados
+require_role('aluno');            // garante papel "aluno"
 
-$alunoId  = session_entity_id('aluno_id');
-$userName = $_SESSION['user_name'] ?? 'Aluno';
-if ($alunoId === null) { http_response_code(500); exit('aluno_id ausente.'); }
+$alunoId  = session_entity_id('aluno_id');           // id do aluno na sessão
+$userName = $_SESSION['user_name'] ?? 'Aluno';       // nome do usuário logado
+if ($alunoId === null) {                             // sanity check da sessão
+    http_response_code(500);                         // erro interno controlado
+    exit('aluno_id ausente.');                       // evita render quebrado
+}
 
-
-$responsavel = getNomeResponsavel($alunoId);
-
-
+$responsavel = getNomeResponsavel($alunoId);         // pega nome do responsável (ou null)
 ?>
-
-
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -30,8 +28,6 @@ $responsavel = getNomeResponsavel($alunoId);
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- (Opcional) Bootstrap Icons para ícones simples -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-
 
   <style>
     body { background-color:#f8f9fa; }
@@ -49,14 +45,11 @@ $responsavel = getNomeResponsavel($alunoId);
     /* compensa navbar fixed-top */
     main { padding-top: 84px; padding-bottom: 40px; }
   </style>
-
-
-
 </head>
 <body>
 
   <!-- NAVBAR -->
-<?php include __DIR__ . '/../aluno/navbar.php'; ?>
+  <?php include __DIR__ . '/../aluno/navbar.php'; ?> <!-- barra do aluno -->
 
   <main id="inicio">
     <div class="container">
@@ -148,7 +141,7 @@ $responsavel = getNomeResponsavel($alunoId);
   </main>
 
   <!-- FOOTER -->
-<?php include __DIR__ . '/../../partials/footer.php'; ?>
+  <?php include __DIR__ . '/../../partials/footer.php'; ?> <!-- rodapé padrão -->
 
   <!-- Bootstrap JS (Bundle) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
