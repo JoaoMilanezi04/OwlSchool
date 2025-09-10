@@ -1,5 +1,7 @@
--- Criar banco de dados
-CREATE DATABASE IF NOT EXISTS olwschool;
+-- === Novo Schema OlwSchool ===
+
+DROP DATABASE IF EXISTS olwschool;
+CREATE DATABASE olwschool;
 USE olwschool;
 
 -- ===== Usuários e papéis =====
@@ -47,14 +49,27 @@ CREATE TABLE disciplina (
   nome VARCHAR(100) NOT NULL
 );
 
+-- Agora cada turma tem 1 professor responsável
 CREATE TABLE turma (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nome VARCHAR(50) NOT NULL,
   turno VARCHAR(20),
-  serie VARCHAR(20)
+  serie VARCHAR(20),
+  professor_id INT NOT NULL,
+  CONSTRAINT fk_turma_professor FOREIGN KEY (professor_id) REFERENCES professor(id)
 );
 
--- Relação N x M aluno <-> turma
+-- Associação N x M: turma <-> disciplina
+CREATE TABLE turma_disciplina (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  turma_id INT NOT NULL,
+  disciplina_id INT NOT NULL,
+  UNIQUE (turma_id, disciplina_id),
+  CONSTRAINT fk_td_turma      FOREIGN KEY (turma_id) REFERENCES turma(id),
+  CONSTRAINT fk_td_disciplina FOREIGN KEY (disciplina_id) REFERENCES disciplina(id)
+);
+
+-- Relação N x M aluno <-> turma (matrícula)
 CREATE TABLE matricula (
   id INT PRIMARY KEY AUTO_INCREMENT,
   aluno_id INT NOT NULL,
@@ -67,12 +82,10 @@ CREATE TABLE matricula (
 -- Avaliações e notas
 CREATE TABLE avaliacao (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  turma_id INT NOT NULL,
-  disciplina_id INT NOT NULL,
+  turma_disciplina_id INT NOT NULL,
   titulo VARCHAR(100) NOT NULL,
   bimestre ENUM('1','2','3','4') NOT NULL,
-  CONSTRAINT fk_av_turma FOREIGN KEY (turma_id) REFERENCES turma(id),
-  CONSTRAINT fk_av_disc  FOREIGN KEY (disciplina_id) REFERENCES disciplina(id)
+  CONSTRAINT fk_av_td FOREIGN KEY (turma_disciplina_id) REFERENCES turma_disciplina(id)
 );
 
 CREATE TABLE nota (
@@ -87,12 +100,10 @@ CREATE TABLE nota (
 -- Tarefas e entregas
 CREATE TABLE tarefa (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  turma_id INT NOT NULL,
-  disciplina_id INT NOT NULL,
+  turma_disciplina_id INT NOT NULL,
   titulo VARCHAR(120) NOT NULL,
   data_entrega DATE,
-  CONSTRAINT fk_tarefa_turma FOREIGN KEY (turma_id) REFERENCES turma(id),
-  CONSTRAINT fk_tarefa_disc  FOREIGN KEY (disciplina_id) REFERENCES disciplina(id)
+  CONSTRAINT fk_tarefa_td FOREIGN KEY (turma_disciplina_id) REFERENCES turma_disciplina(id)
 );
 
 CREATE TABLE entrega_tarefa (
@@ -125,20 +136,18 @@ CREATE TABLE advertencia (
 -- ===== Chamada (presenças) =====
 CREATE TABLE chamada (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  turma_id INT NOT NULL,
-  disciplina_id INT NOT NULL,
+  turma_disciplina_id INT NOT NULL,
   data DATE NOT NULL,
-  UNIQUE (turma_id, disciplina_id, data),
-  FOREIGN KEY (turma_id) REFERENCES turma(id),
-  FOREIGN KEY (disciplina_id) REFERENCES disciplina(id)
+  UNIQUE (turma_disciplina_id, data),
+  CONSTRAINT fk_chamada_td FOREIGN KEY (turma_disciplina_id) REFERENCES turma_disciplina(id)
 );
 
+-- >>> mudança: PK composta, sem id
 CREATE TABLE chamada_item (
-  id INT PRIMARY KEY AUTO_INCREMENT,
   chamada_id INT NOT NULL,
   aluno_id INT NOT NULL,
   status ENUM('presente','falta','atraso','justificada') NOT NULL,
-  UNIQUE (chamada_id, aluno_id),
-  FOREIGN KEY (chamada_id) REFERENCES chamada(id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id)
+  PRIMARY KEY (chamada_id, aluno_id),
+  CONSTRAINT fk_chamada_item_chamada FOREIGN KEY (chamada_id) REFERENCES chamada(id) ON DELETE CASCADE,
+  CONSTRAINT fk_chamada_item_aluno   FOREIGN KEY (aluno_id)   REFERENCES aluno(id)   ON DELETE CASCADE
 );
