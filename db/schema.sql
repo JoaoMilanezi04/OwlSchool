@@ -1,4 +1,4 @@
--- === Novo Schema OlwSchool ===
+-- === Novo Schema OlwSchool (com ajustes) ===
 
 DROP DATABASE IF EXISTS olwschool;
 CREATE DATABASE olwschool;
@@ -16,23 +16,24 @@ CREATE TABLE usuario (
 CREATE TABLE aluno (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT NOT NULL,
-  ra VARCHAR(30),
+  ra VARCHAR(30) NOT NULL UNIQUE,
   CONSTRAINT fk_aluno_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
 CREATE TABLE professor (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT NOT NULL,
-  titulacao VARCHAR(80),
+  telefone VARCHAR(30) NOT NULL UNIQUE,
   CONSTRAINT fk_prof_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
 CREATE TABLE responsavel (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT NOT NULL,
-  telefone VARCHAR(30),
+  telefone VARCHAR(30) NOT NULL UNIQUE,
   CONSTRAINT fk_resp_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
+
 
 -- Relação N x M aluno <-> responsavel
 CREATE TABLE aluno_responsavel (
@@ -49,12 +50,11 @@ CREATE TABLE disciplina (
   nome VARCHAR(100) NOT NULL
 );
 
--- Agora cada turma tem 1 professor responsável
 CREATE TABLE turma (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nome VARCHAR(50) NOT NULL,
-  turno VARCHAR(20),
-  serie VARCHAR(20),
+  turno VARCHAR(20) NOT NULL,
+  serie VARCHAR(20) NOT NULL,
   professor_id INT NOT NULL,
   CONSTRAINT fk_turma_professor FOREIGN KEY (professor_id) REFERENCES professor(id)
 );
@@ -102,7 +102,7 @@ CREATE TABLE tarefa (
   id INT PRIMARY KEY AUTO_INCREMENT,
   turma_disciplina_id INT NOT NULL,
   titulo VARCHAR(120) NOT NULL,
-  data_entrega DATE,
+  data_entrega DATE NOT NULL,
   CONSTRAINT fk_tarefa_td FOREIGN KEY (turma_disciplina_id) REFERENCES turma_disciplina(id)
 );
 
@@ -119,7 +119,7 @@ CREATE TABLE entrega_tarefa (
 CREATE TABLE comunicado (
   id INT PRIMARY KEY AUTO_INCREMENT,
   titulo VARCHAR(150) NOT NULL,
-  corpo TEXT,
+  corpo TEXT NOT NULL,
   turma_id INT NULL,
   FOREIGN KEY (turma_id) REFERENCES turma(id)
 );
@@ -128,7 +128,7 @@ CREATE TABLE comunicado (
 CREATE TABLE advertencia (
   id INT PRIMARY KEY AUTO_INCREMENT,
   aluno_id INT NOT NULL,
-  motivo TEXT,
+  motivo TEXT NOT NULL,
   data DATE NOT NULL,
   CONSTRAINT fk_adv_al FOREIGN KEY (aluno_id) REFERENCES aluno(id)
 );
