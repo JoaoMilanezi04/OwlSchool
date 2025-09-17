@@ -1,31 +1,24 @@
 <?php
-declare(strict_types=1);
+// public/responsavel/responsavel.php — DEMO simples
 
-require_once __DIR__ . '/../../includes/auth.php';       // helpers de autenticação
-require_once __DIR__ . '/../../db/conexao.php';          // conexão com o banco ($conn)
-require_once __DIR__ . '/../../api/responsaveis.php';    // se houver helpers específicos
+require_once __DIR__ . '/../../includes/auth.php';
 
-require_login();                         // bloqueia não logados
-require_role('responsavel');             // exige papel "responsavel"
+require_login();
+require_role('responsavel');
 
-$respId   = session_entity_id('responsavel_id');         // id do responsável na sessão
-$userName = $_SESSION['user_name'] ?? 'Responsável';     // nome do usuário (fallback)
-if ($respId === null) {                                   // sem vínculo de responsável?
-    header('Location: ../../public/index.php?erro=usuario'); // volta ao login com erro
-    exit;                                                 // encerra execução
-}
+$userId   = $_SESSION['user_id'];
+$userName = $_SESSION['user_name'];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">                                    <!-- charset -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsivo -->
+  <meta charset="UTF-8">
   <title>OlwSchool - Responsável</title>
 </head>
 <body>
 
-  <h1>Bem-vindo, <strong><?= htmlspecialchars($userName) ?></strong>!</h1> <!-- exibe nome com escape -->
-  <p>Aqui estão suas informações:</p>
+  <h1>Bem-vindo, <strong><?= $userName ?></strong>!</h1>
+  <p>Aqui estão suas informações.</p>
 
 </body>
 </html>

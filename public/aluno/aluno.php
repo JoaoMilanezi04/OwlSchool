@@ -1,21 +1,17 @@
 <?php
-declare(strict_types=1);
+// public/aluno/aluno.php — DEMO simples
 
-require_once __DIR__ . '/../../includes/auth.php';   // funções de auth (require_login/require_role/session_entity_id)
-require_once __DIR__ . '/../../db/conexao.php';      // conexão com o banco ($conn)
-require_once __DIR__ . '/../../api/alunos.php';      // helpers de aluno (getNomeResponsavel etc.)
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../db/conexao.php';
+require_once __DIR__ . '/../../api/alunos.php';
 
-require_login();                  // bloqueia não logados
-require_role('aluno');            // garante papel "aluno"
+require_login();
+require_role('aluno');
 
-$alunoId  = session_entity_id('aluno_id');           // id do aluno na sessão
-$userName = $_SESSION['user_name'] ?? 'Aluno';       // nome do usuário logado
-if ($alunoId === null) {                             // sanity check da sessão
-    http_response_code(500);                         // erro interno controlado
-    exit('aluno_id ausente.');                       // evita render quebrado
-}
+$userId   = $_SESSION['user_id'];
+$userName = $_SESSION['user_name'];
 
-$responsavel = getNomeResponsavel($alunoId);         // pega nome do responsável (ou null)
+$responsavel = getNomeResponsavel($userId);
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -24,45 +20,31 @@ $responsavel = getNomeResponsavel($alunoId);         // pega nome do responsáve
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OlwSchool — Aluno</title>
 
-  <!-- Bootstrap 5 (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- (Opcional) Bootstrap Icons para ícones simples -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
   <style>
     body { background-color:#f8f9fa; }
-    .avatar {
-      width: 100%; max-width: 120px; aspect-ratio: 1/1;
-      border-radius: 12px; object-fit: cover;
-      border: 2px solid #e9ecef;
-    }
-    .section-title { font-weight: 700; letter-spacing: .3px; }
-    .card { border-radius: 14px; }
-    .checklist input[type="checkbox"] { transform: scale(1.1); margin-right:.5rem; }
-    .footer-link { text-decoration:none; }
-    .brand-owl { font-weight:700; }
-    .brand-owl i { margin-right:.25rem; }
-    /* compensa navbar fixed-top */
-    main { padding-top: 84px; padding-bottom: 40px; }
+    .avatar { width:100%; max-width:120px; aspect-ratio:1/1; border-radius:12px; object-fit:cover; border:2px solid #e9ecef; }
+    .section-title { font-weight:700; letter-spacing:.3px; }
+    .card { border-radius:14px; }
+    main { padding-top:84px; padding-bottom:40px; }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <?php include __DIR__ . '/../aluno/navbar.php'; ?> <!-- barra do aluno -->
+  <?php include __DIR__ . '/navbar.php'; ?>
 
   <main id="inicio">
     <div class="container">
 
-      <!-- Boas-vindas -->
       <section class="mb-4">
         <div class="row g-3 align-items-center">
           <div class="col-4 col-sm-3 col-md-2">
             <img class="avatar" src="../assets/img/aluno1.png" alt="Foto do aluno">
           </div>
           <div class="col-8 col-sm-9 col-md-10">
-            <p>Aluno: <strong><?= htmlspecialchars($userName) ?></strong></p>
-            <p>Responsável: <strong><?= htmlspecialchars($responsavel ?? 'Não cadastrado') ?></strong></p>
+            <p>Aluno: <strong><?= $userName ?></strong></p>
+            <p>Responsável: <strong><?= $responsavel ?: 'Não cadastrado' ?></strong></p>
             <p class="text-muted mb-2">3º Ano do Fundamental</p>
             <ul class="mb-0">
               <li>Você precisa melhorar em <strong>Matemática</strong>.</li>
@@ -73,12 +55,11 @@ $responsavel = getNomeResponsavel($alunoId);         // pega nome do responsáve
         </div>
       </section>
 
-      <!-- Missões do dia -->
       <section class="mb-4">
         <div class="card shadow-sm">
           <div class="card-body">
             <h2 class="h5 section-title mb-3">Missões do Dia</h2>
-            <div class="checklist">
+            <div>
               <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" id="m1">
                 <label class="form-check-label" for="m1">Entregar tarefa</label>
@@ -96,10 +77,8 @@ $responsavel = getNomeResponsavel($alunoId);         // pega nome do responsáve
         </div>
       </section>
 
-      <!-- Três cards -->
       <section class="mb-4">
         <div class="row g-3">
-          <!-- Tarefa -->
           <div class="col-12 col-md-4">
             <div class="card shadow-sm h-100">
               <div class="card-body">
@@ -108,7 +87,6 @@ $responsavel = getNomeResponsavel($alunoId);         // pega nome do responsáve
               </div>
             </div>
           </div>
-          <!-- Aulas de amanhã -->
           <div class="col-12 col-md-4">
             <div class="card shadow-sm h-100">
               <div class="card-body">
@@ -121,7 +99,6 @@ $responsavel = getNomeResponsavel($alunoId);         // pega nome do responsáve
               </div>
             </div>
           </div>
-          <!-- Conquistas -->
           <div class="col-12 col-md-4">
             <div class="card shadow-sm h-100">
               <div class="card-body">
@@ -140,10 +117,8 @@ $responsavel = getNomeResponsavel($alunoId);         // pega nome do responsáve
     </div>
   </main>
 
-  <!-- FOOTER -->
-  <?php include __DIR__ . '/../../partials/footer.php'; ?> <!-- rodapé padrão -->
+  <?php include __DIR__ . '/../../partials/footer.php'; ?>
 
-  <!-- Bootstrap JS (Bundle) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
