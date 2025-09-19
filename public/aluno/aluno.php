@@ -1,5 +1,4 @@
 <?php
-// public/aluno/aluno.php — DEMO simples
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
@@ -12,7 +11,9 @@ $userId   = $_SESSION['user_id'];
 $userName = $_SESSION['user_name'];
 
 $responsavel = getNomeResponsavel($userId);
+
 ?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -40,7 +41,7 @@ $responsavel = getNomeResponsavel($userId);
       <section class="mb-4">
         <div class="row g-3 align-items-center">
           <div class="col-4 col-sm-3 col-md-2">
-            <img class="avatar" src="../assets/img/aluno1.png" alt="Foto do aluno">
+            <img class="avatar" src="../assets/media/aluno1.png" alt="Foto do aluno">
           </div>
           <div class="col-8 col-sm-9 col-md-10">
             <p>Aluno: <strong><?= $userName ?></strong></p>

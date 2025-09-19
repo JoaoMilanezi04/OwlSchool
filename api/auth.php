@@ -1,5 +1,4 @@
 <?php
-// api/auth.php — DEMO ultra simples
 
 require_once __DIR__ . '/../db/conexao.php';
 session_start();

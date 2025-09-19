@@ -1,5 +1,4 @@
 <?php
-// public/professor/professor.php — DEMO simples
 
 require_once __DIR__ . '/../../includes/auth.php';
 
@@ -8,6 +7,7 @@ require_role('professor');
 
 $userId   = $_SESSION['user_id'];
 $userName = $_SESSION['user_name'];
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

@@ -1,5 +1,4 @@
 <?php
-// public/responsavel/responsavel.php — DEMO simples
 
 require_once __DIR__ . '/../../includes/auth.php';
 
@@ -8,7 +7,9 @@ require_role('responsavel');
 
 $userId   = $_SESSION['user_id'];
 $userName = $_SESSION['user_name'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

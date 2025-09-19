@@ -1,8 +1,12 @@
 <?php
+
+
 $erro = $_GET['erro'] ?? null;
 $msg = ($erro === 'usuario') ? 'Usuário não encontrado.' :
        (($erro === 'senha') ? 'Senha incorreta.' :
        (($erro === 'tipo') ? 'Tipo de usuário inválido.' : null));
+
+       
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

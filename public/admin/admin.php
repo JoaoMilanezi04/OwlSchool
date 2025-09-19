@@ -1,5 +1,4 @@
 <?php
-// public/admin/admin.php — DEMO simples
 
 require_once __DIR__ . '/../../includes/auth.php';
 

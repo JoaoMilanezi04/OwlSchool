@@ -1,10 +1,7 @@
--- === Novo Schema OlwSchool (com ajustes) ===
-
 DROP DATABASE IF EXISTS olwschool;
 CREATE DATABASE olwschool;
 USE olwschool;
 
--- ===== Usuários e papéis =====
 CREATE TABLE usuario (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nome VARCHAR(100) NOT NULL,
@@ -34,8 +31,6 @@ CREATE TABLE responsavel (
   CONSTRAINT fk_resp_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
-
--- Relação N x M aluno <-> responsavel
 CREATE TABLE aluno_responsavel (
   aluno_id INT NOT NULL,
   responsavel_id INT NOT NULL,
@@ -44,7 +39,6 @@ CREATE TABLE aluno_responsavel (
   CONSTRAINT fk_ar_resp  FOREIGN KEY (responsavel_id) REFERENCES responsavel(id)
 );
 
--- ===== Estrutura escolar =====
 CREATE TABLE disciplina (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nome VARCHAR(100) NOT NULL
@@ -59,7 +53,6 @@ CREATE TABLE turma (
   CONSTRAINT fk_turma_professor FOREIGN KEY (professor_id) REFERENCES professor(id)
 );
 
--- Associação N x M: turma <-> disciplina
 CREATE TABLE turma_disciplina (
   id INT PRIMARY KEY AUTO_INCREMENT,
   turma_id INT NOT NULL,
@@ -69,7 +62,6 @@ CREATE TABLE turma_disciplina (
   CONSTRAINT fk_td_disciplina FOREIGN KEY (disciplina_id) REFERENCES disciplina(id)
 );
 
--- Relação N x M aluno <-> turma (matrícula)
 CREATE TABLE matricula (
   id INT PRIMARY KEY AUTO_INCREMENT,
   aluno_id INT NOT NULL,
@@ -79,7 +71,6 @@ CREATE TABLE matricula (
   CONSTRAINT fk_mat_turma FOREIGN KEY (turma_id) REFERENCES turma(id)
 );
 
--- Avaliações e notas
 CREATE TABLE avaliacao (
   id INT PRIMARY KEY AUTO_INCREMENT,
   turma_disciplina_id INT NOT NULL,
@@ -97,7 +88,6 @@ CREATE TABLE nota (
   CONSTRAINT fk_nota_al FOREIGN KEY (aluno_id) REFERENCES aluno(id)
 );
 
--- Tarefas e entregas
 CREATE TABLE tarefa (
   id INT PRIMARY KEY AUTO_INCREMENT,
   turma_disciplina_id INT NOT NULL,
@@ -115,7 +105,6 @@ CREATE TABLE entrega_tarefa (
   CONSTRAINT fk_et_tarefa FOREIGN KEY (tarefa_id) REFERENCES tarefa(id)
 );
 
--- Comunicados
 CREATE TABLE comunicado (
   id INT PRIMARY KEY AUTO_INCREMENT,
   titulo VARCHAR(150) NOT NULL,
@@ -124,7 +113,6 @@ CREATE TABLE comunicado (
   FOREIGN KEY (turma_id) REFERENCES turma(id)
 );
 
--- Advertências
 CREATE TABLE advertencia (
   id INT PRIMARY KEY AUTO_INCREMENT,
   aluno_id INT NOT NULL,
@@ -133,7 +121,6 @@ CREATE TABLE advertencia (
   CONSTRAINT fk_adv_al FOREIGN KEY (aluno_id) REFERENCES aluno(id)
 );
 
--- ===== Chamada (presenças) =====
 CREATE TABLE chamada (
   id INT PRIMARY KEY AUTO_INCREMENT,
   turma_disciplina_id INT NOT NULL,
@@ -142,7 +129,6 @@ CREATE TABLE chamada (
   CONSTRAINT fk_chamada_td FOREIGN KEY (turma_disciplina_id) REFERENCES turma_disciplina(id)
 );
 
--- >>> mudança: PK composta, sem id
 CREATE TABLE chamada_item (
   chamada_id INT NOT NULL,
   aluno_id INT NOT NULL,

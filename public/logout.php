@@ -1,9 +1,8 @@
 <?php
-// public/logout.php — versão simples demo
 
-session_start();      // inicia sessão (mesmo se já estiver ativa)
-session_unset();      // limpa variáveis
-session_destroy();    // encerra a sessão
+session_start();
+session_unset();
+session_destroy();
 
-header("Location: index.php"); // volta pro login
+header("Location: index.php"); 
 exit;
