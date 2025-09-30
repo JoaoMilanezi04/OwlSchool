@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";   // ou 127.0.0.1
-$username   = "root";        // usuário do MySQL Workbench
-$password   = "AfonsoPTZ#6113";   // senha que você definiu no MySQL
-$dbname     = "olwschool";
+$servername = "localhost";
+$username   = "root";
+$password   = "AfonsoPTZ#6113";
+$dbname     = "owl_school";
 
 
 $conn = new mysqli($servername, $username, $password, $dbname);
