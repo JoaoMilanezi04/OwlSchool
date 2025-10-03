@@ -1,7 +1,8 @@
-CREATE DATABASE IF NOT EXISTS owl_school;
+DROP DATABASE IF EXISTS owl_school;
+CREATE DATABASE owl_school;
 USE owl_school;
 
-CREATE TABLE IF NOT EXISTS usuario (
+CREATE TABLE usuario (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   email VARCHAR(120) NOT NULL UNIQUE,
@@ -9,150 +10,64 @@ CREATE TABLE IF NOT EXISTS usuario (
   tipo_usuario ENUM('aluno','professor','responsavel','admin') NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS aluno (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT NOT NULL,
-  ra VARCHAR(40) NOT NULL UNIQUE,
-  FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+CREATE TABLE aluno (
+  usuario_id INT PRIMARY KEY,
+  faltas INT NOT NULL DEFAULT 0,
+  advertencia TEXT NULL,
+  CONSTRAINT fk_aluno_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS professor (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT NOT NULL,
+CREATE TABLE professor (
+  usuario_id INT PRIMARY KEY,
   telefone VARCHAR(30) NOT NULL UNIQUE,
-  FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+  CONSTRAINT fk_professor_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS responsavel (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT NOT NULL,
+CREATE TABLE responsavel (
+  usuario_id INT PRIMARY KEY,
   telefone VARCHAR(30) NOT NULL UNIQUE,
-  FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+  CONSTRAINT fk_responsavel_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS aluno_responsavel (
+CREATE TABLE aluno_responsavel (
   aluno_id INT NOT NULL,
   responsavel_id INT NOT NULL,
   PRIMARY KEY (aluno_id, responsavel_id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id),
-  FOREIGN KEY (responsavel_id) REFERENCES responsavel(id)
+  CONSTRAINT fk_ar_aluno       FOREIGN KEY (aluno_id)       REFERENCES aluno(usuario_id),
+  CONSTRAINT fk_ar_responsavel FOREIGN KEY (responsavel_id) REFERENCES responsavel(usuario_id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS turma (
+CREATE TABLE tarefa (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(60) NOT NULL,
-  turno VARCHAR(20) NOT NULL,
-  serie VARCHAR(20) NOT NULL,
-  professor_id_responsavel INT NULL,
-  FOREIGN KEY (professor_id_responsavel) REFERENCES professor(id)
+  titulo VARCHAR(150) NOT NULL,
+  descricao TEXT NOT NULL,
+  data_entrega DATE NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS disciplina (
+CREATE TABLE comunicado (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(80) NOT NULL
+  titulo VARCHAR(150) NOT NULL,
+  corpo TEXT NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS turma_disciplina (
-  turma_id INT NOT NULL,
-  disciplina_id INT NOT NULL,
-  PRIMARY KEY (turma_id, disciplina_id),
-  FOREIGN KEY (turma_id) REFERENCES turma(id),
-  FOREIGN KEY (disciplina_id) REFERENCES disciplina(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS professor_turma (
-  professor_id INT NOT NULL,
-  turma_id INT NOT NULL,
-  PRIMARY KEY (professor_id, turma_id),
-  FOREIGN KEY (professor_id) REFERENCES professor(id),
-  FOREIGN KEY (turma_id) REFERENCES turma(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS matricula (
+CREATE TABLE prova (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  aluno_id INT NOT NULL,
-  turma_id INT NOT NULL,
-  data_matricula DATE NOT NULL,
-  UNIQUE KEY uq_matricula (aluno_id, turma_id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id),
-  FOREIGN KEY (turma_id) REFERENCES turma(id)
-) ENGINE=InnoDB;
-
--- =========================
--- FUNÇÃO 1 — CHAMADA
--- =========================
-CREATE TABLE IF NOT EXISTS chamada (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  turma_id INT NOT NULL,
-  data DATE NOT NULL,
-  observacao VARCHAR(255) NULL,
-  UNIQUE KEY uq_chamada_dia (turma_id, data),
-  FOREIGN KEY (turma_id) REFERENCES turma(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS chamada_item (
-  chamada_id INT NOT NULL,
-  aluno_id INT NOT NULL,
-  status ENUM('presente','falta','atraso','justificada') NOT NULL,
-  PRIMARY KEY (chamada_id, aluno_id),
-  FOREIGN KEY (chamada_id) REFERENCES chamada(id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id)
-) ENGINE=InnoDB;
-
--- =========================
--- FUNÇÃO 2 — PROVA E NOTAS
--- =========================
-CREATE TABLE IF NOT EXISTS prova (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  turma_id INT NOT NULL,
   titulo VARCHAR(120) NOT NULL,
-  data DATE NOT NULL,
-  observacao VARCHAR(255) NULL,
-  FOREIGN KEY (turma_id) REFERENCES turma(id)
+  data DATE NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS prova_nota (
+CREATE TABLE prova_nota (
   prova_id INT NOT NULL,
   aluno_id INT NOT NULL,
   nota DECIMAL(5,2) NOT NULL,
   PRIMARY KEY (prova_id, aluno_id),
-  FOREIGN KEY (prova_id) REFERENCES prova(id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id)
+  CONSTRAINT fk_pn_prova FOREIGN KEY (prova_id) REFERENCES prova(id),
+  CONSTRAINT fk_pn_aluno FOREIGN KEY (aluno_id) REFERENCES aluno(usuario_id)
 ) ENGINE=InnoDB;
 
--- =========================
--- FUNÇÃO 3 — TAREFAS E ENTREGAS
--- =========================
-CREATE TABLE IF NOT EXISTS tarefa (
+CREATE TABLE horarios_aula (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  turma_id INT NOT NULL,
-  titulo VARCHAR(150) NOT NULL,
-  descricao TEXT NOT NULL,
-  data_publicacao DATE NOT NULL,
-  data_entrega DATE NOT NULL,
-  FOREIGN KEY (turma_id) REFERENCES turma(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS tarefa_entrega (
-  tarefa_id INT NOT NULL,
-  aluno_id INT NOT NULL,
-  status ENUM('entregue','nao_entregue','atrasada') NOT NULL,
-  data_entrega_efetiva DATE NULL,
-  observacao VARCHAR(255) NULL,
-  PRIMARY KEY (tarefa_id, aluno_id),
-  FOREIGN KEY (tarefa_id) REFERENCES tarefa(id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id)
-) ENGINE=InnoDB;
-
--- =========================
--- FUNÇÃO 4 — COMUNICADOS
--- =========================
-CREATE TABLE IF NOT EXISTS comunicado (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  turma_id INT NULL,
-  titulo VARCHAR(150) NOT NULL,
-  corpo TEXT NOT NULL,
-  data_publicacao DATE NOT NULL,
-  publico_alvo ENUM('todos','responsaveis','professores','alunos','turma') NOT NULL,
-  FOREIGN KEY (turma_id) REFERENCES turma(id)
+  inicio TIME NOT NULL,
+  fim TIME NOT NULL,
+  disciplina TEXT NOT NULL
 ) ENGINE=InnoDB;

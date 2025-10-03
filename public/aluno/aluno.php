@@ -1,8 +1,13 @@
 <?php
 
-require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
+
+require_once __DIR__ . '/../../api/aluno/agenda.php';
+require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../api/aluno/aluno.php';
+require_once __DIR__ . '/../../api/aluno/tarefa.php';
+
+$tarefas = listTarefas();
 
 require_login();
 require_role('aluno');
@@ -11,7 +16,7 @@ $userId   = $_SESSION['user_id'];
 $userName = $_SESSION['user_name'];
 
 $responsavel = getNomeResponsavel($userId);
-
+$horarios = listHorariosAula();
 ?>
 
 <!doctype html>
@@ -78,28 +83,58 @@ $responsavel = getNomeResponsavel($userId);
         </div>
       </section>
 
-      <section class="mb-4">
-        <div class="row g-3">
+
+
+
+<section class="mb-4">
+  <div class="row g-3">
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h3 class="h6 section-title mb-2">Tarefas</h3>
+          <ul class="mb-0">
+            <?php if (empty($tarefas)): ?>
+              <li>Nenhuma tarefa cadastrada.</li>
+            <?php else: ?>
+              <?php foreach ($tarefas as $t): ?>
+                <li>
+                  <strong><?= htmlspecialchars($t['titulo']) ?></strong> — 
+                  Entregar até <?= htmlspecialchars($t['data_entrega']) ?>
+                </li>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
           <div class="col-12 col-md-4">
-            <div class="card shadow-sm h-100">
-              <div class="card-body">
-                <h3 class="h6 section-title mb-2">Tarefa</h3>
-                <p class="mb-0">Redação: “Meio ambiente na minha escola”. Entregar até amanhã.</p>
-              </div>
+             <div class="card shadow-sm h-100">
+                <div class="card-body">
+                 <h3 class="h6 section-title mb-2">Aulas de Amanhã</h3>
+                   <ul class="mb-0">
+                      <?php if (empty($horarios)): ?>
+                           <li>Sem horários cadastrados.</li>
+                            <?php else: ?>
+                             <?php foreach ($horarios as $h): ?>
+                            <li><?= htmlspecialchars(formatHorarioLinha($h['inicio'], $h['fim'], $h['disciplina'])) ?></li>
+                             <?php endforeach; ?>
+                        <?php endif; ?>
+                    </ul>
+                  </div>
+                  </div>
+                </div>
             </div>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="card shadow-sm h-100">
-              <div class="card-body">
-                <h3 class="h6 section-title mb-2">Aulas de Amanhã</h3>
-                <ul class="mb-0">
-                  <li>07:50 – 08:50 • Matemática</li>
-                  <li>08:50 – 09:30 • História</li>
-                  <li>09:45 – 10:30 • Inglês</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+
+
+
+
+
+
           <div class="col-12 col-md-4">
             <div class="card shadow-sm h-100">
               <div class="card-body">

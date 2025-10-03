@@ -1,1 +1,0 @@
-<?php // Cursos e disciplinas

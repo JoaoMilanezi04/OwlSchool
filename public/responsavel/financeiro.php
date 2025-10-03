@@ -1,1 +1,0 @@
-<?php // Financeiro do responsável
