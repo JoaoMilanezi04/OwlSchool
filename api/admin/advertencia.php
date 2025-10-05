@@ -1,0 +1,129 @@
+<?php
+
+require __DIR__ . '/../../db/conexao.php';
+
+
+
+
+function createAdvertencia($titulo, $descricao) {
+    global $conn;
+    $sql = "INSERT INTO advertencia (titulo, descricao) VALUES ('$titulo', '$descricao')";
+    $conn->query($sql);
+    return $conn->insert_id;
+}
+
+
+
+
+function deleteAdvertenciaById($id) {
+    global $conn;
+
+    $sql = "DELETE FROM aluno_advertencia WHERE advertencia_id = $id";
+    $conn->query($sql);
+
+    $sql = "DELETE FROM advertencia WHERE id = $id";
+    $conn->query($sql);
+}
+
+
+
+
+
+function updateAdvertencia($id, $titulo, $descricao) {
+    global $conn;
+    $sql = "
+        UPDATE advertencia
+           SET titulo = '$titulo',
+               descricao = '$descricao'
+         WHERE id = $id
+    ";
+    $conn->query($sql);
+}
+
+
+
+
+
+function listAlunosComAdvertencia() {
+    global $conn;
+    $sql = "
+        SELECT
+            advertencia.id,
+            advertencia.titulo,
+            advertencia.descricao,
+            COALESCE(
+              GROUP_CONCAT(DISTINCT usuario.nome ORDER BY usuario.nome SEPARATOR ', '),
+              '—'
+            ) AS alunos
+        FROM advertencia
+        LEFT JOIN aluno_advertencia
+               ON aluno_advertencia.advertencia_id = advertencia.id
+        LEFT JOIN usuario
+               ON usuario.id = aluno_advertencia.aluno_usuario_id
+        GROUP BY advertencia.id, advertencia.titulo, advertencia.descricao
+        ORDER BY advertencia.id DESC
+    ";
+    $resultado = $conn->query($sql);
+
+    $lista = [];
+    while ($linha = $resultado->fetch_assoc()) {
+        $lista[] = $linha;
+    }
+    return $lista;
+}
+
+
+
+
+
+function vincularAlunoAdvertencia($advertenciaId, $alunoUsuarioId) {
+    global $conn;
+    $sql = "
+        INSERT INTO aluno_advertencia (aluno_usuario_id, advertencia_id)
+        VALUES ($alunoUsuarioId, $advertenciaId)
+        ON DUPLICATE KEY UPDATE aluno_usuario_id = aluno_usuario_id
+    ";
+    $conn->query($sql);
+}
+
+
+
+
+
+function listAlunosParaSelect() {
+    global $conn;
+    $sql = "
+        SELECT
+            aluno.usuario_id AS aluno_id,
+            usuario.nome
+        FROM aluno
+        INNER JOIN usuario ON usuario.id = aluno.usuario_id
+        ORDER BY usuario.nome ASC, aluno.usuario_id ASC
+    ";
+    $resultado = $conn->query($sql);
+
+    $alunos = [];
+    while ($linha = $resultado->fetch_assoc()) {
+        $alunos[] = $linha;
+    }
+    return $alunos;
+}
+
+
+
+
+
+
+
+function saveVinculosEmMassa($advertenciaId, $mapVinculos) {
+    foreach ($mapVinculos as $alunoUsuarioId => $vincular) {
+        if ($vincular) {
+            vincularAlunoAdvertencia($advertenciaId, (int)$alunoUsuarioId);
+        }
+    }
+}
+
+
+
+
+

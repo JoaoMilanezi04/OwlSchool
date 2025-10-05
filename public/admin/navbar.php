@@ -22,6 +22,9 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
         <a class="nav-link text-white" href="comunicado.php">📢 Comunicados</a>
       </li>
       <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="advertencia.php">📩 Advertências</a>
+      </li>
+      <li class="nav-item mb-2">
         <a class="nav-link text-white" href="usuario.php">👤 Usuários</a>
       </li>
       <li class="nav-item mt-3">

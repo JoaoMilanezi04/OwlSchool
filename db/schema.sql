@@ -13,7 +13,6 @@ CREATE TABLE usuario (
 CREATE TABLE aluno (
   usuario_id INT PRIMARY KEY,
   faltas INT NOT NULL DEFAULT 0,
-  advertencia TEXT NULL,
   CONSTRAINT fk_aluno_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
 
@@ -71,4 +70,18 @@ CREATE TABLE horarios_aula (
   inicio TIME NOT NULL,
   fim TIME NOT NULL,
   disciplina TEXT NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS advertencia (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  titulo VARCHAR(120) NOT NULL,
+  descricao TEXT NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS aluno_advertencia (
+  aluno_id INT NOT NULL,
+  advertencia_id INT NOT NULL,
+  PRIMARY KEY (aluno_id, advertencia_id),
+  FOREIGN KEY (aluno_id) REFERENCES aluno(id),
+  FOREIGN KEY (advertencia_id) REFERENCES advertencia(id)
 ) ENGINE=InnoDB;
