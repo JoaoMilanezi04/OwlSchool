@@ -1,32 +1,35 @@
 <?php
-// professor/navbar.php
+
+if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
+  header('Location: /public/index.php?erro=acesso_negado');
+  exit;
+}
+
 ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="professor.php">OlwSchool</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#profNav" aria-controls="profNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="profNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="professor.php">Início</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="chamada.php">Chamadas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="tarefas.php">Tarefas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="comunicados.php">Comunicados</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="provas.php">Provas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../logout.php">Sair</a>
-      </ul>
-    </div>
-  </div>
-</nav>
+  
+  
+  
+  
+  <nav class="bg-dark text-white p-3 vh-100" style="width: 220px; position: fixed;">
+    <h4 class="fw-bold mb-4">OlwSchool</h4>
+    <ul class="nav flex-column">
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="professor.php">🏠 Início</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="chamada.php">📋 Chamadas</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="tarefas.php">📝 Tarefas</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="comunicados.php">📢 Comunicados</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="provas.php">🧮 Provas</a>
+      </li>
+      <li class="nav-item mt-3">
+        <a class="nav-link text-danger fw-bold" href="../logout.php">🚪 Sair</a>
+      </li>
+    </ul>
+  </nav>

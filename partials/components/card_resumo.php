@@ -1,1 +1,3 @@
-<?php // card genérico (dashboard)
+<?php
+require_once __DIR__ . '/../../includes/auth.php';
+?>

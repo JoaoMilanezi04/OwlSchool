@@ -5,24 +5,27 @@ require_once __DIR__ . '/../../db/conexao.php';
 
 
 
-function listComunicadosAluno() {
+
+
+function listTarefas() {
     global $conn;
 
     $sql = "
         SELECT 
             id,
             titulo,
-            corpo
-        FROM comunicado
-        ORDER BY id DESC
+            descricao,
+            data_entrega
+        FROM tarefa
+        ORDER BY data_entrega ASC, id ASC
     ";
 
     $resultado = $conn->query($sql);
-    $comunicados = [];
+    $tarefas = [];
 
     while ($linha = $resultado->fetch_assoc()) {
-        $comunicados[] = $linha;
+        $tarefas[] = $linha;
     }
 
-    return $comunicados;
+    return $tarefas;
 }

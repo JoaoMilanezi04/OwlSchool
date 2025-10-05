@@ -1,8 +1,12 @@
 <?php
 
+
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+
+
 
 
 function require_login() {
@@ -13,9 +17,15 @@ function require_login() {
 }
 
 
+
+
 function require_role($role) {
     if ($_SESSION['tipo_usuario'] !== $role) {
         header('Location: /public/index.php?erro=permissao');
         exit;
     }
 }
+
+
+
+?>

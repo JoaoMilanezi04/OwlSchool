@@ -67,6 +67,7 @@ CREATE TABLE prova_nota (
 
 CREATE TABLE horarios_aula (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  dia_semana ENUM('segunda','terca','quarta','quinta','sexta') NOT NULL,
   inicio TIME NOT NULL,
   fim TIME NOT NULL,
   disciplina TEXT NOT NULL

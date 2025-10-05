@@ -1,1 +1,3 @@
-<?php // tabela genérica
+<?php
+require_once __DIR__ . '/../../includes/auth.php';
+?>

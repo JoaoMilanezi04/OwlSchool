@@ -32,13 +32,3 @@ INSERT INTO aluno_responsavel (aluno_id, responsavel_id) VALUES
 (1, 4),
 (2, 5),
 (3, 6);
-
--- HORÁRIOS DE AULA (6 aulas de 45min + 15min de intervalo)
-INSERT INTO horarios_aula (inicio, fim, disciplina) VALUES
-('07:00:00','07:45:00','Matemática'),
-('07:45:00','08:30:00','Português'),
-('08:30:00','09:15:00','Ciências'),
-('09:15:00','09:30:00','Intervalo'),
-('09:30:00','10:15:00','História'),
-('10:15:00','11:00:00','Geografia'),
-('11:00:00','11:45:00','Inglês');
