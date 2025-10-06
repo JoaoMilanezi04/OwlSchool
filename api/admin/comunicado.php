@@ -35,6 +35,20 @@ function listComunicadosProfessor() {
 
 
 
+function updateComunicado($id, $titulo, $corpo) {
+    global $conn;
+    $sql = "
+        UPDATE comunicado
+           SET titulo = '$titulo',
+               corpo  = '$corpo'
+         WHERE id = $id
+    ";
+    $conn->query($sql);
+}
+
+
+
+
 
 function deleteComunicadoById($id) {
     global $conn;

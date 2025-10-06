@@ -20,10 +20,10 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
         <a class="nav-link text-white" href="agenda.php">📅 Agenda</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="tarefas.php">📝 Tarefas</a>
-      </li>
-      <li class="nav-item mb-2">
         <a class="nav-link text-white" href="comunicados.php">📢 Comunicados</a>
+      </li>
+            <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="frequencia.php">🕒 Frequência</a>
       </li>
       <li class="nav-item mb-2">
         <a class="nav-link text-white" href="boletim.php">📊 Boletim</a>

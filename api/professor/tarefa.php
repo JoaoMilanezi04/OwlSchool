@@ -1,9 +1,7 @@
 <?php
 
+
 require __DIR__ . '/../../db/conexao.php';
-
-
-
 
 
 
@@ -18,20 +16,23 @@ function createTarefa($titulo, $descricao, $dataEntrega) {
 
 
 
+function updateTarefa($id, $titulo, $descricao, $dataEntrega) {
+    global $conn;
+    $sql = "UPDATE tarefa SET titulo = '$titulo', descricao = '$descricao', data_entrega = '$dataEntrega' WHERE id = $id";
+    $conn->query($sql);
+}
+
 
 
 
 function listTarefasProfessor() {
     global $conn;
-    $sql = "SELECT id, titulo, descricao, data_entrega FROM tarefa ORDER BY data_entrega ASC, id ASC";
+    $sql = "SELECT id, titulo, descricao, data_entrega FROM tarefa";
     $resultado = $conn->query($sql);
     $tarefas = [];
     while ($linha = $resultado->fetch_assoc()) $tarefas[] = $linha;
     return $tarefas;
 }
-
-
-
 
 
 

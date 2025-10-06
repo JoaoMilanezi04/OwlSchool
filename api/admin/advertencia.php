@@ -5,12 +5,14 @@ require __DIR__ . '/../../db/conexao.php';
 
 
 
+
 function createAdvertencia($titulo, $descricao) {
     global $conn;
     $sql = "INSERT INTO advertencia (titulo, descricao) VALUES ('$titulo', '$descricao')";
     $conn->query($sql);
     return $conn->insert_id;
 }
+
 
 
 
@@ -24,7 +26,6 @@ function deleteAdvertenciaById($id) {
     $sql = "DELETE FROM advertencia WHERE id = $id";
     $conn->query($sql);
 }
-
 
 
 
@@ -59,7 +60,7 @@ function listAlunosComAdvertencia() {
         LEFT JOIN aluno_advertencia
                ON aluno_advertencia.advertencia_id = advertencia.id
         LEFT JOIN usuario
-               ON usuario.id = aluno_advertencia.aluno_usuario_id
+               ON usuario.id = aluno_advertencia.aluno_id
         GROUP BY advertencia.id, advertencia.titulo, advertencia.descricao
         ORDER BY advertencia.id DESC
     ";
@@ -76,12 +77,13 @@ function listAlunosComAdvertencia() {
 
 
 
+
 function vincularAlunoAdvertencia($advertenciaId, $alunoUsuarioId) {
     global $conn;
     $sql = "
-        INSERT INTO aluno_advertencia (aluno_usuario_id, advertencia_id)
-        VALUES ($alunoUsuarioId, $advertenciaId)
-        ON DUPLICATE KEY UPDATE aluno_usuario_id = aluno_usuario_id
+        INSERT INTO aluno_advertencia (advertencia_id, aluno_id)
+        VALUES ($advertenciaId, $alunoUsuarioId)
+        ON DUPLICATE KEY UPDATE aluno_id = aluno_id
     ";
     $conn->query($sql);
 }
@@ -108,22 +110,6 @@ function listAlunosParaSelect() {
     }
     return $alunos;
 }
-
-
-
-
-
-
-
-function saveVinculosEmMassa($advertenciaId, $mapVinculos) {
-    foreach ($mapVinculos as $alunoUsuarioId => $vincular) {
-        if ($vincular) {
-            vincularAlunoAdvertencia($advertenciaId, (int)$alunoUsuarioId);
-        }
-    }
-}
-
-
 
 
 

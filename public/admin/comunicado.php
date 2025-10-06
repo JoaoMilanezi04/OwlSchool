@@ -1,37 +1,30 @@
 <?php
-
-
-
-
 require_once __DIR__ . '/../../db/conexao.php';
 require_once __DIR__ . '/../../api/professor/comunicado.php';
 require_once __DIR__ . '/../../includes/auth.php';
 
-
-
-
-
 require_login();
 require_role('admin');
 
-
-
-
+// Criar novo comunicado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['__act']) && $_POST['__act'] === 'create') {
   createComunicado($_POST['titulo'] ?? '', $_POST['corpo'] ?? '');
 }
 
+// Excluir comunicado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
   deleteComunicadoById($_POST['delete_id']);
 }
 
-
+// Editar comunicado
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_comunicado_id'])) {
+  $id     = $_POST['edit_comunicado_id'];
+  $titulo = $_POST['titulo'];
+  $corpo  = $_POST['corpo'];
+  updateComunicado($id, $titulo, $corpo);
+}
 
 $comunicados = listComunicadosProfessor();
-
-
-
-
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -42,8 +35,6 @@ $comunicados = listComunicadosProfessor();
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-
-
 <body class="bg-light">
 
   <?php include __DIR__ . '/navbar.php'; ?>
@@ -52,12 +43,9 @@ $comunicados = listComunicadosProfessor();
 
     <main class="container py-4">
 
-      <h1 class="h5 mb-4">OlwSchool — Comunicados</h1>
-
       <div class="row g-4">
 
-
-
+        <!-- Criar novo comunicado -->
         <div class="col-12 col-lg-4">
           <div class="card h-100">
             <div class="card-body">
@@ -68,12 +56,12 @@ $comunicados = listComunicadosProfessor();
 
                 <div class="mb-3">
                   <label class="form-label">Título</label>
-                  <input name="titulo" class="form-control">
+                  <input name="titulo" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                   <label class="form-label">Corpo</label>
-                  <textarea name="corpo" class="form-control" rows="5"></textarea>
+                  <textarea name="corpo" class="form-control" rows="5" required></textarea>
                 </div>
 
                 <button class="btn btn-primary w-100">Salvar</button>
@@ -82,8 +70,7 @@ $comunicados = listComunicadosProfessor();
           </div>
         </div>
 
-
-
+        <!-- Lista de comunicados -->
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-body">
@@ -107,6 +94,12 @@ $comunicados = listComunicadosProfessor();
                           <td><?= htmlspecialchars($comunicado['titulo']) ?></td>
                           <td class="small"><?= nl2br(htmlspecialchars($comunicado['corpo'])) ?></td>
                           <td class="text-end">
+                            <button class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEditar<?= $comunicado['id'] ?>">
+                              Editar
+                            </button>
+
                             <form method="post" class="d-inline">
                               <input type="hidden" name="delete_id" value="<?= (int)$comunicado['id'] ?>">
                               <button class="btn btn-sm btn-outline-danger">Excluir</button>
@@ -117,16 +110,49 @@ $comunicados = listComunicadosProfessor();
                     </tbody>
                   </table>
                 </div>
-              <?php endif; ?>
 
+                <!-- Modais de edição -->
+                <?php foreach ($comunicados as $comunicado): ?>
+                  <div class="modal fade" id="modalEditar<?= $comunicado['id'] ?>" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <form method="post">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Editar comunicado</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+
+                          <div class="modal-body">
+                            <input type="hidden" name="edit_comunicado_id" value="<?= $comunicado['id'] ?>">
+
+                            <div class="mb-3">
+                              <label class="form-label">Título</label>
+                              <input type="text" name="titulo" class="form-control"
+                                     value="<?= htmlspecialchars($comunicado['titulo']) ?>" required>
+                            </div>
+
+                            <div class="mb-3">
+                              <label class="form-label">Corpo</label>
+                              <textarea name="corpo" class="form-control" rows="4" required><?= htmlspecialchars($comunicado['corpo']) ?></textarea>
+                            </div>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+
+              <?php endif; ?>
             </div>
           </div>
         </div>
 
-
-
       </div>
-
     </main>
 
   </div>

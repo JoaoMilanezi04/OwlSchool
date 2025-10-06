@@ -84,7 +84,7 @@ $lista = listUsuarios();
         <div class="col-12">
           <div class="card shadow-sm">
             <div class="card-body">
-              <h1 class="h5 mb-3">OlwSchool — Usuários</h1>
+
 
               <form method="post" class="row g-3" autocomplete="off">
                 <input type="hidden" name="__act" value="create">

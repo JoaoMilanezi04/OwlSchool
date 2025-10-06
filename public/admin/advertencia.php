@@ -35,9 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_advertencia_id
 }
 
 /* Vinculações em massa */
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && (($_POST['__act'] ?? '') === 'save_vinculos')) {
-  saveVinculosEmMassa($_POST['advertencia_id'], $_POST['vinculos'] ?? []);
-}
+
 
 /* Dados para render */
 $advertencias = listAlunosComAdvertencia();   // <<< usa a nova função

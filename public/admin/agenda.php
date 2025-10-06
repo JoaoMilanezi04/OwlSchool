@@ -67,7 +67,7 @@ foreach ($DAYS as $d) $grade[$d] = listarHorarios($d);
       <div class="alert alert-info"><?= htmlspecialchars($msg) ?></div>
     <?php endif; ?>
 
-    <h1 class="h5 mb-3">OlwSchool — Horários</h1>
+
 
     <div class="row g-4">
       <?php foreach ($DAYS as $dia): ?>

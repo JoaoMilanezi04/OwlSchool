@@ -48,7 +48,7 @@ function situacao(?float $nota): array {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OlwSchool — Minhas Notas</title>
+  <title>OlwSchool — Notas do Denpendente</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -62,7 +62,7 @@ function situacao(?float $nota): array {
 
       <div class="row g-3">
         <div class="col-12 d-flex align-items-center justify-content-between">
-          <h1 class="h4 mb-0">Minhas Notas</h1>
+          <h1 class="h4 mb-0">Notas do Dependente</h1>
           <span class="text-muted small">
             Logado como: <?= htmlspecialchars($alunoNome) ?> (#<?= $alunoId ?>)
           </span>

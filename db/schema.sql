@@ -2,6 +2,12 @@ DROP DATABASE IF EXISTS owl_school;
 CREATE DATABASE owl_school;
 USE owl_school;
 
+
+
+/* ==============================
+   USUÁRIOS
+   ============================== */
+
 CREATE TABLE usuario (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
@@ -10,31 +16,49 @@ CREATE TABLE usuario (
   tipo_usuario ENUM('aluno','professor','responsavel','admin') NOT NULL
 ) ENGINE=InnoDB;
 
+
+
 CREATE TABLE aluno (
   usuario_id INT PRIMARY KEY,
-  faltas INT NOT NULL DEFAULT 0,
-  CONSTRAINT fk_aluno_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+  CONSTRAINT fk_aluno_usuario 
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
+
+
 
 CREATE TABLE professor (
   usuario_id INT PRIMARY KEY,
   telefone VARCHAR(30) NOT NULL UNIQUE,
-  CONSTRAINT fk_professor_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+  CONSTRAINT fk_professor_usuario 
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
+
+
 
 CREATE TABLE responsavel (
   usuario_id INT PRIMARY KEY,
   telefone VARCHAR(30) NOT NULL UNIQUE,
-  CONSTRAINT fk_responsavel_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+  CONSTRAINT fk_responsavel_usuario 
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB;
+
+
 
 CREATE TABLE aluno_responsavel (
   aluno_id INT NOT NULL,
   responsavel_id INT NOT NULL,
   PRIMARY KEY (aluno_id, responsavel_id),
-  CONSTRAINT fk_ar_aluno       FOREIGN KEY (aluno_id)       REFERENCES aluno(usuario_id),
-  CONSTRAINT fk_ar_responsavel FOREIGN KEY (responsavel_id) REFERENCES responsavel(usuario_id)
+  CONSTRAINT fk_ar_aluno       
+    FOREIGN KEY (aluno_id)       REFERENCES aluno(usuario_id),
+  CONSTRAINT fk_ar_responsavel 
+    FOREIGN KEY (responsavel_id) REFERENCES responsavel(usuario_id)
 ) ENGINE=InnoDB;
+
+
+
+/* ==============================
+   TAREFAS / PROVAS / NOTAS
+   ============================== */
 
 CREATE TABLE tarefa (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,17 +67,15 @@ CREATE TABLE tarefa (
   data_entrega DATE NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE comunicado (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  titulo VARCHAR(150) NOT NULL,
-  corpo TEXT NOT NULL
-) ENGINE=InnoDB;
+
 
 CREATE TABLE prova (
   id INT AUTO_INCREMENT PRIMARY KEY,
   titulo VARCHAR(120) NOT NULL,
   data DATE NOT NULL
 ) ENGINE=InnoDB;
+
+
 
 CREATE TABLE prova_nota (
   prova_id INT NOT NULL,
@@ -64,6 +86,42 @@ CREATE TABLE prova_nota (
   CONSTRAINT fk_pn_aluno FOREIGN KEY (aluno_id) REFERENCES aluno(usuario_id)
 ) ENGINE=InnoDB;
 
+
+
+/* ==============================
+   COMUNICADOS / ADVERTÊNCIAS
+   ============================== */
+
+CREATE TABLE comunicado (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  titulo VARCHAR(150) NOT NULL,
+  corpo TEXT NOT NULL
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE advertencia (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  titulo VARCHAR(120) NOT NULL,
+  descricao TEXT NOT NULL
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE aluno_advertencia (
+  advertencia_id INT NOT NULL,
+  aluno_id INT NOT NULL,
+  PRIMARY KEY (advertencia_id, aluno_id),
+  CONSTRAINT fk_aa_advertencia FOREIGN KEY (advertencia_id) REFERENCES advertencia(id),
+  CONSTRAINT fk_aa_aluno       FOREIGN KEY (aluno_id)       REFERENCES aluno(usuario_id)
+) ENGINE=InnoDB;
+
+
+
+/* ==============================
+   HORÁRIOS / CHAMADAS
+   ============================== */
+
 CREATE TABLE horarios_aula (
   id INT AUTO_INCREMENT PRIMARY KEY,
   dia_semana ENUM('segunda','terca','quarta','quinta','sexta') NOT NULL,
@@ -72,16 +130,20 @@ CREATE TABLE horarios_aula (
   disciplina TEXT NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS advertencia (
+
+
+CREATE TABLE chamada (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  titulo VARCHAR(120) NOT NULL,
-  descricao TEXT NOT NULL
+  data DATE NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS aluno_advertencia (
-  aluno_id INT NOT NULL,
-  advertencia_id INT NOT NULL,
-  PRIMARY KEY (aluno_id, advertencia_id),
-  FOREIGN KEY (aluno_id) REFERENCES aluno(id),
-  FOREIGN KEY (advertencia_id) REFERENCES advertencia(id)
+
+
+CREATE TABLE chamada_item (
+  chamada_id INT NOT NULL,
+  aluno_id   INT NOT NULL,
+  status     ENUM('presente','falta') NOT NULL,
+  PRIMARY KEY (chamada_id, aluno_id),
+  CONSTRAINT fk_ci_chamada FOREIGN KEY (chamada_id) REFERENCES chamada(id),
+  CONSTRAINT fk_ci_aluno   FOREIGN KEY (aluno_id)   REFERENCES aluno(usuario_id)
 ) ENGINE=InnoDB;
