@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
 require_once __DIR__ . '/../../api/responsavel/comunicado.php';
 require_once __DIR__ . '/../../api/responsavel/responsavel.php';
-require_once __DIR__ . '/../../api/professor/tarefa.php'; // ajusta se o caminho for outro
+
 
 require_login();
 require_role('responsavel');
@@ -14,7 +14,8 @@ $responsavelId = $_SESSION['user_id'];
 
 $filhoNome    = getNomeFilho($responsavelId);
 $advertencias = listAdvertenciasDoFilhoDoResponsavel($responsavelId);
-$tarefas      = listTarefas(); // já existente na tua API
+$tarefas      = listTarefas();
+
 ?>
 
 <!doctype html>

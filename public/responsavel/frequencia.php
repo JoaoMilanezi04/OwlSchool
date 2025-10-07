@@ -12,7 +12,7 @@ require_role('responsavel');
  * Ajuste a linha abaixo conforme sua auth (ex.: $_SESSION['user']['id']).
  */
 $alunoUsuarioId = (int)($_SESSION['user']['id'] ?? $_SESSION['usuario']['id'] ?? 0);
-
+$userId   = $_SESSION['user_id'];
 /* ================================
    FILTRO DE PERÍODO (opcional)
    ================================ */

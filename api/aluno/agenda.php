@@ -40,25 +40,3 @@ function listHorariosSemana() {
 
 
 
-function listHorariosPorDia($diaSemana) {
-    global $conn;
-
-    $sql = "
-        SELECT 
-            TIME_FORMAT(inicio, '%H:%i') AS inicio,
-            TIME_FORMAT(fim, '%H:%i') AS fim,
-            disciplina
-        FROM horarios_aula
-        WHERE dia_semana = '$diaSemana'
-        ORDER BY inicio
-    ";
-
-    $resultado = $conn->query($sql);
-    $horarios = [];
-
-    while ($linha = $resultado->fetch_assoc()) {
-        $horarios[] = $linha;
-    }
-
-    return $horarios;
-}

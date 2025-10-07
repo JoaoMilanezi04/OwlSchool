@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
 require_once __DIR__ . '/../../api/admin/advertencia.php';
+require_once __DIR__ . '/../../api/admin/admin.php';
 
 require_login();
 require_role('admin');

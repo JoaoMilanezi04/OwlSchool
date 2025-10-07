@@ -30,6 +30,7 @@ function deleteAdvertenciaById($id) {
 
 
 
+
 function updateAdvertencia($id, $titulo, $descricao) {
     global $conn;
     $sql = "
@@ -52,16 +53,12 @@ function listAlunosComAdvertencia() {
             advertencia.id,
             advertencia.titulo,
             advertencia.descricao,
-            COALESCE(
-              GROUP_CONCAT(DISTINCT usuario.nome ORDER BY usuario.nome SEPARATOR ', '),
-              '—'
-            ) AS alunos
+            usuario.nome AS aluno_nome
         FROM advertencia
         LEFT JOIN aluno_advertencia
-               ON aluno_advertencia.advertencia_id = advertencia.id
+            ON aluno_advertencia.advertencia_id = advertencia.id
         LEFT JOIN usuario
-               ON usuario.id = aluno_advertencia.aluno_id
-        GROUP BY advertencia.id, advertencia.titulo, advertencia.descricao
+            ON usuario.id = aluno_advertencia.aluno_id
         ORDER BY advertencia.id DESC
     ";
     $resultado = $conn->query($sql);
@@ -91,25 +88,6 @@ function vincularAlunoAdvertencia($advertenciaId, $alunoUsuarioId) {
 
 
 
-
-function listAlunosParaSelect() {
-    global $conn;
-    $sql = "
-        SELECT
-            aluno.usuario_id AS aluno_id,
-            usuario.nome
-        FROM aluno
-        INNER JOIN usuario ON usuario.id = aluno.usuario_id
-        ORDER BY usuario.nome ASC, aluno.usuario_id ASC
-    ";
-    $resultado = $conn->query($sql);
-
-    $alunos = [];
-    while ($linha = $resultado->fetch_assoc()) {
-        $alunos[] = $linha;
-    }
-    return $alunos;
-}
 
 
 
