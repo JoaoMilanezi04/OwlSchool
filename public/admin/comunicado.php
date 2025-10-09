@@ -1,7 +1,13 @@
 <?php
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/professor/comunicado.php';
 require_once __DIR__ . '/../../includes/auth.php';
+
+
+require_once __DIR__ . '/../../api/comunicado/create.php';
+require_once __DIR__ . '/../../api/comunicado/read.php';
+require_once __DIR__ . '/../../api/comunicado/update.php';
+require_once __DIR__ . '/../../api/comunicado/delete.php';
+
 
 require_login();
 require_role('admin');
@@ -13,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['__act']) && $_POST['_
 
 // Excluir comunicado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
-  deleteComunicadoById($_POST['delete_id']);
+  deleteComunicado($_POST['delete_id']);
 }
 
 // Editar comunicado
@@ -24,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_comunicado_id'])
   updateComunicado($id, $titulo, $corpo);
 }
 
-$comunicados = listComunicadosProfessor();
+$comunicados = readComunicado();
 ?>
 <!doctype html>
 <html lang="pt-br">

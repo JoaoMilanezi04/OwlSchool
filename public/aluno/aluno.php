@@ -3,11 +3,12 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
+
 require_once __DIR__ . '/../../api/aluno/aluno.php';
-require_once __DIR__ . '/../../api/aluno/comunicado.php';
+
 require_once __DIR__ . '/../../includes/date.php';
 
-
+require_once __DIR__ . '/../../api/tarefa/read.php';
 
 require_login();
 require_role('aluno');
@@ -20,7 +21,7 @@ $usuarioNome = $_SESSION['user_name'];
 
 
 $responsavel = getNomeResponsavel($usuarioId);
-$tarefas     = listTarefas();
+$tarefas     = readTarefa();
 
 $amanha   = proximoDiaDeAula();
 $horarios = listHorariosPorDia($amanha['key']);

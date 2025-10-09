@@ -1,20 +1,25 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/responsavel/comunicado.php';
+
 require_once __DIR__ . '/../../api/responsavel/responsavel.php';
+
+
+require_once __DIR__ . '/../../api/tarefa/read.php';
+require_once __DIR__ . '/../../api/advertencia/read.php';
+require_once __DIR__ . '/../../api/comunicado/read.php';
 
 
 require_login();
 require_role('responsavel');
 
-$comunicados = listComunicadosResponsavel();
+$comunicados = readComunicado();
 
 $responsavelId = $_SESSION['user_id'];
 
 $filhoNome    = getNomeFilho($responsavelId);
-$advertencias = listAdvertenciasDoFilhoDoResponsavel($responsavelId);
-$tarefas      = listTarefas();
+$advertencias = readAdvertenciasFilho($responsavelId);
+$tarefas      = readTarefa();
 
 ?>
 

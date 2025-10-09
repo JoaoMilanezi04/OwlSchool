@@ -3,7 +3,10 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/responsavel/agenda.php';
+
+
+
+require_once __DIR__ . '/../../api/agenda/read.php';
 
 
 
@@ -12,7 +15,7 @@ require_role('responsavel');
 
 
 
-$semana = listHorariosSemana();
+$semana = readAgenda();
 
 $labels = [
   'segunda' => 'Segunda-feira',

@@ -4,8 +4,7 @@ require_once __DIR__ . '/../../db/conexao.php';
 
 
 
-
-function listHorariosSemana() {
+function readAgenda() {
     global $conn;
 
     $sql = "
@@ -39,9 +38,7 @@ function listHorariosSemana() {
 
 
 
-
-
-function listHorariosPorDia($diaSemana) {
+function readAgendaDay($diaSemana) {
     global $conn;
 
     $sql = "

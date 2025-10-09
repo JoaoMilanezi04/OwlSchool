@@ -2,8 +2,16 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/admin/advertencia.php';
+
 require_once __DIR__ . '/../../api/admin/admin.php';
+
+
+
+require_once __DIR__ . '/../../api/advertencia/create.php';
+require_once __DIR__ . '/../../api/advertencia/read.php';
+require_once __DIR__ . '/../../api/advertencia/update.php';
+require_once __DIR__ . '/../../api/advertencia/delete.php';
+
 
 require_login();
 require_role('admin');
@@ -32,14 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (($_POST['__act'] ?? '') === 'updat
 
 /* Exclusão */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_advertencia_id'])) {
-  deleteAdvertenciaById($_POST['delete_advertencia_id']);
+  deleteAdvertencia($_POST['delete_advertencia_id']);
 }
 
 /* Vinculações em massa */
 
 
 /* Dados para render */
-$advertencias = listAlunosComAdvertencia();   // <<< usa a nova função
+$advertencias = readAdvertencias();
+
+
 $alunosParaSelect = listAlunosParaSelect();
 
 ?>
@@ -146,7 +156,7 @@ $alunosParaSelect = listAlunosParaSelect();
                             <div class="collapse" id="collapseVinculos<?= $advertencia['id'] ?>">
                               <div class="p-3 border-top">
                                 <?php
-                                  $alunos = listAlunosComAdvertencia();
+                                  $alunos = readAdvertencias();
                                   if (empty($alunos)) {
                                     echo '<div class="alert alert-warning mb-0">Nenhum aluno encontrado.</div>';
                                   } else {

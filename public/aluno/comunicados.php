@@ -1,7 +1,12 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/aluno/comunicado.php';
+
+
+require_once __DIR__ . '/../../api/comunicado/read.php';
+require_once __DIR__ . '/../../api/tarefa/read.php';
+require_once __DIR__ . '/../../api/advertencia_aluno/read.php';
+
 
 
 
@@ -10,10 +15,10 @@ require_role('aluno');
 
 $alunoId = $_SESSION['user_id'];
 
-// dados
-$comunicados  = listComunicadosAluno();
-$tarefas      = listTarefas();
-$advertencias = listAdvertenciasAluno($alunoId);
+
+$comunicados  = readComunicado();
+$tarefas      = readTarefa();
+$advertencias = readAdvertenciasAluno($alunoId);
 ?>
 <!doctype html>
 <html lang="pt-br">

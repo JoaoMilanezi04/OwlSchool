@@ -1,7 +1,13 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/professor/tarefa.php';
+
+
+require_once __DIR__ . '/../../api/tarefa/create.php';
+require_once __DIR__ . '/../../api/tarefa/read.php';
+require_once __DIR__ . '/../../api/tarefa/update.php';
+require_once __DIR__ . '/../../api/tarefa/delete.php';
+
 
 require_login();
 require_role('professor');
@@ -13,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['__act']) && $_POST['_
 
 // Excluir tarefa
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
-  deleteTarefaById($_POST['delete_id']);
+  deleteTarefa($_POST['delete_id']);
 }
 
 // Editar tarefa
@@ -25,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_tarefa_id'])) {
   updateTarefa($id, $titulo, $descricao, $dataEntrega);
 }
 
-$tarefas = listTarefasProfessor();
+$tarefas = readTarefa();
 ?>
 
 <!doctype html>
