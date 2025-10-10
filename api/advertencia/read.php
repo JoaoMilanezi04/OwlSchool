@@ -50,3 +50,20 @@ function readAdvertenciasFilho($responsavelId) {
 
 
 
+function readAdvertenciasAluno($alunoId) {
+    global $conn;
+
+    $sql = "SELECT advertencia.titulo, advertencia.descricao
+            FROM aluno_advertencia
+            INNER JOIN advertencia ON aluno_advertencia.advertencia_id = advertencia.id
+            WHERE aluno_advertencia.aluno_id = $alunoId";
+
+    $resultado = $conn->query($sql);
+
+    $lista = [];
+    while ($linha = $resultado->fetch_assoc()) {
+        $lista[] = $linha;
+    }
+
+    return $lista;
+}

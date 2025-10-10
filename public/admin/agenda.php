@@ -4,8 +4,13 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/admin/agenda.php';
 
+
+
+require_once __DIR__ . '/../../api/agenda/create.php';
+require_once __DIR__ . '/../../api/agenda/read.php';
+require_once __DIR__ . '/../../api/agenda/update.php';
+require_once __DIR__ . '/../../api/agenda/delete.php';
 
 
 

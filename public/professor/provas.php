@@ -7,10 +7,10 @@ require_once __DIR__ . '/../../api/prova/read.php';
 require_once __DIR__ . '/../../api/prova/update.php';
 require_once __DIR__ . '/../../api/prova/delete.php';
 
-require_once __DIR__ . '/../../api/nota_prova/create.php';
-require_once __DIR__ . '/../../api/nota_prova/read.php';
-require_once __DIR__ . '/../../api/nota_prova/update.php';
-require_once __DIR__ . '/../../api/nota_prova/delete.php';
+require_once __DIR__ . '/../../api/prova_nota/create.php';
+require_once __DIR__ . '/../../api/prova_nota/read.php';
+require_once __DIR__ . '/../../api/prova_nota/update.php';
+require_once __DIR__ . '/../../api/prova_nota/delete.php';
 
 require_login();
 require_role('professor');

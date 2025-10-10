@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../db/conexao.php';
 
 require_once __DIR__ . '/../../api/comunicado/read.php';
 require_once __DIR__ . '/../../api/tarefa/read.php';
-require_once __DIR__ . '/../../api/advertencia_aluno/read.php';
+require_once __DIR__ . '/../../api/advertencia/read.php';
 
 
 

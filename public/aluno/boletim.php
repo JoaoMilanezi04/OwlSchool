@@ -3,7 +3,7 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/nota_prova/read.php';
+require_once __DIR__ . '/../../api/prova_nota/read.php';
 
 
 

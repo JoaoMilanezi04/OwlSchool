@@ -1,52 +1,54 @@
 <?php
 require __DIR__ . '/../../db/conexao.php';
 
-/**
- * Lista todos os alunos com o status daquela chamada.
- * Retorna: aluno_id, nome, status ('presente'|'falta'|NULL), lancada (0|1)
- */
-function readStatusByChamada($chamadaId) {
-  global $conn;
-  $chamadaId = (int)$chamadaId;
-  $sql = "
-    SELECT
-      a.usuario_id AS aluno_id,
-      COALESCE(u.nome, CONCAT('Aluno #', a.usuario_id)) AS nome,
-      ci.status,
-      IF(ci.status IS NULL, 0, 1) AS lancada
-    FROM aluno a
-    LEFT JOIN usuario u ON u.id = a.usuario_id
-    LEFT JOIN chamada_item ci
-           ON ci.aluno_id   = a.usuario_id
-          AND ci.chamada_id = $chamadaId
-    ORDER BY nome ASC, aluno_id ASC
-  ";
-  $res = $conn->query($sql);
-  $rows = [];
-  if ($res) while ($r = $res->fetch_assoc()) $rows[] = $r;
-  return $rows;
+
+
+
+
+
+function listChamadasDoAluno($alunoUsuarioId) {
+    global $conn;
+    $sql = "
+        SELECT
+            chamada.id AS chamada_id,
+            chamada.data AS data,
+            chamada_item.status AS status
+        FROM chamada
+        LEFT JOIN chamada_item
+               ON chamada_item.chamada_id = chamada.id
+              AND chamada_item.aluno_id = $alunoUsuarioId
+    ";
+    $resultado = $conn->query($sql);
+    $linhas = [];
+    while ($linha = $resultado->fetch_assoc()) $linhas[] = $linha;
+    return $linhas;
 }
 
-/**
- * Lista o histórico de presença de um aluno em todas as chamadas.
- * Retorna: chamada_id, data, status ('presente'|'falta'|NULL)
- */
-function readStatusByAluno($alunoId) {
-  global $conn;
-  $alunoId = (int)$alunoId;
-  $sql = "
-    SELECT
-      c.id   AS chamada_id,
-      c.data AS data,
-      ci.status
-    FROM chamada c
-    LEFT JOIN chamada_item ci
-           ON ci.chamada_id = c.id
-          AND ci.aluno_id   = $alunoId
-    ORDER BY c.data DESC, c.id DESC
-  ";
-  $res = $conn->query($sql);
-  $rows = [];
-  if ($res) while ($r = $res->fetch_assoc()) $rows[] = $r;
-  return $rows;
+
+
+
+function getResumoFrequencia($alunoUsuarioId) {
+    global $conn;
+    $sql = "
+        SELECT
+            COUNT(chamada.id) AS total_dias,
+            SUM(CASE WHEN chamada_item.status = 'presente' THEN 1 ELSE 0 END) AS presentes
+        FROM chamada
+        LEFT JOIN chamada_item
+               ON chamada_item.chamada_id = chamada.id
+              AND chamada_item.aluno_id = $alunoUsuarioId
+    ";
+    $resultado = $conn->query($sql);
+    $dados = $resultado->fetch_assoc();
+    $totalDias = $dados['total_dias'] + 0;
+    $presentes = $dados['presentes'] + 0;
+    $faltas = $totalDias - $presentes;
+    $percentual = $totalDias > 0 ? ($presentes / $totalDias) * 100 : 0;
+    return [
+        'total_dias' => $totalDias,
+        'presentes' => $presentes,
+        'faltas' => $faltas,
+        'percentual_presenca' => $percentual
+    ];
 }
+

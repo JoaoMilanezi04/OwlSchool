@@ -1,17 +1,15 @@
 <?php
+require_once __DIR__ . '/../../db/conexao.php';
+header('Content-Type: application/json');
 
+// pode ser acessado via GET (ou POST se preferir)
+$sql = "SELECT id, titulo, descricao, data_entrega FROM tarefa ORDER BY id DESC";
+$res = $conn->query($sql);
 
-require __DIR__ . '/../../db/conexao.php';
-
-
-
-
-
-function readTarefa() {
-    global $conn;
-    $sql = "SELECT id, titulo, descricao, data_entrega FROM tarefa";
-    $resultado = $conn->query($sql);
-    $tarefas = [];
-    while ($linha = $resultado->fetch_assoc()) $tarefas[] = $linha;
-    return $tarefas;
+$tarefas = [];
+if ($res) {
+  while ($row = $res->fetch_assoc()) $tarefas[] = $row;
+  echo json_encode(['success' => true, 'tarefas' => $tarefas]);
+} else {
+  echo json_encode(['success' => false, 'message' => 'Erro ao listar: ' . $conn->error]);
 }

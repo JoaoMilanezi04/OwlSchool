@@ -4,7 +4,7 @@
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
 
-require_once __DIR__ . '/../../api/aluno/aluno.php';
+require_once __DIR__ . '/../../api/utils/aluno.php';
 
 require_once __DIR__ . '/../../includes/date.php';
 

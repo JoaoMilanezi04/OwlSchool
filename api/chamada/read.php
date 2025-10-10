@@ -7,8 +7,3 @@ function readChamadas() {
     return $conn->query($sql);
 }
 
-function readChamadaById($id) {
-    global $conn;
-    $sql = "SELECT id, data FROM chamada WHERE id = $id";
-    return $conn->query($sql);
-}

@@ -2,32 +2,38 @@
 // public/aluno/frequencia.php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/responsavel/frequencia.php';
+
+
+require_once __DIR__ . '/../../api/chamada_item/read.php';
+require_once __DIR__ . '/../../api/utils/responsavel.php';
 
 require_login();
 require_role('responsavel');
 
-/**
- * Pegando o ID do usuário logado.
- * Ajuste a linha abaixo conforme sua auth (ex.: $_SESSION['user']['id']).
- */
-$alunoUsuarioId = (int)($_SESSION['user']['id'] ?? $_SESSION['usuario']['id'] ?? 0);
-$userId   = $_SESSION['user_id'];
-/* ================================
-   FILTRO DE PERÍODO (opcional)
-   ================================ */
-$dataInicio = $_GET['data_inicio'] ?? null;
-$dataFim    = $_GET['data_fim']    ?? null;
 
-/* ================================
-   CONSULTAS
-   ================================ */
+$userId   = $_SESSION['user_id'];
+
+
+$alunoUsuarioId = getIdFilho($userId);
+
+
+
+
+
+
+
+
 $resumo = getResumoFrequencia($alunoUsuarioId);
 $linhas = listChamadasDoAluno($alunoUsuarioId);
 
 
-// Cálculo para a barra de progresso
+
+
 $percentual = (float)$resumo['percentual_presenca'];
+
+
+
+
 ?>
 
 <!doctype html>

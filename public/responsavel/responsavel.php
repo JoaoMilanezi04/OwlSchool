@@ -3,7 +3,8 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/responsavel/responsavel.php';
+
+require_once __DIR__ . '/../../api/utils/responsavel.php';
 
 
 

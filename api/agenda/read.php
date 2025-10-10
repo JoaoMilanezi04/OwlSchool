@@ -1,0 +1,68 @@
+<?php
+
+require_once __DIR__ . '/../../db/conexao.php';
+
+
+
+function readAgenda() {
+    global $conn;
+
+    $sql = "
+        SELECT 
+            dia_semana,
+            TIME_FORMAT(inicio, '%H:%i') AS inicio,
+            TIME_FORMAT(fim, '%H:%i') AS fim,
+            disciplina
+        FROM horarios_aula
+        ORDER BY FIELD(dia_semana, 'segunda', 'terca', 'quarta', 'quinta', 'sexta'), inicio
+    ";
+
+    $resultado = $conn->query($sql);
+
+    $horarios = [
+        'segunda' => [],
+        'terca'   => [],
+        'quarta'  => [],
+        'quinta'  => [],
+        'sexta'   => []
+    ];
+
+    while ($linha = $resultado->fetch_assoc()) {
+        $horarios[$linha['dia_semana']][] = $linha;
+    }
+
+    return $horarios;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function listarHorarios($diaSemana = null) {
+    global $conn;
+
+    if ($diaSemana) {
+        $sql = "SELECT id, dia_semana, inicio, fim, disciplina
+                  FROM horarios_aula
+                 WHERE dia_semana = '$diaSemana'
+              ORDER BY FIELD(dia_semana,'segunda','terca','quarta','quinta','sexta'), inicio, fim, id";
+        $resultado = $conn->query($sql);
+    } else {
+        $sql = "SELECT id, dia_semana, inicio, fim, disciplina
+                  FROM horarios_aula
+              ORDER BY FIELD(dia_semana,'segunda','terca','quarta','quinta','sexta'), inicio, fim, id";
+        $resultado = $conn->query($sql);
+    }
+
+    $lista = [];
+    if ($resultado) while ($linha = $resultado->fetch_assoc()) $lista[] = $linha;
+    return $lista;
+}

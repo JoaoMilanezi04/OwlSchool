@@ -4,9 +4,13 @@
 
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/admin/usuario.php';
 
 
+
+require_once __DIR__ . '/../../api/users/create.php';
+require_once __DIR__ . '/../../api/users/read.php';
+require_once __DIR__ . '/../../api/users/update.php';
+require_once __DIR__ . '/../../api/users/delete.php';
 
 
 
@@ -53,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-$lista = listUsuarios();
+$lista = readUsuarios();
 
 
 

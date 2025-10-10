@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
 
-require_once __DIR__ . '/../../api/admin/admin.php';
+require_once __DIR__ . '/../../api/utils/admin.php';
 
 
 
@@ -48,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_advertencia_id
 
 /* Dados para render */
 $advertencias = readAdvertencias();
+
+
 
 
 $alunosParaSelect = listAlunosParaSelect();
@@ -136,7 +138,8 @@ $alunosParaSelect = listAlunosParaSelect();
                           <td><?= htmlspecialchars($advertencia['titulo']) ?></td>
                           <td class="text-break"><?= nl2br(htmlspecialchars($advertencia['descricao'])) ?></td>
                           <td class="text-break">
-                            <?= htmlspecialchars($advertencia['alunos']) ?>
+                            <?= htmlspecialchars($advertencia['aluno_nome']) ?>
+
                           </td>
                           <td class="text-end">
                             <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalEditar<?= $advertencia['id'] ?>">
