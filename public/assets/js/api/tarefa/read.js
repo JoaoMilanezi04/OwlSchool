@@ -1,43 +1,37 @@
 async function carregarTarefas() {
+
   try {
 
-    const resp = await fetch("/afonso/owl-school/api/tarefa/read.php");
+    const response = await fetch("/afonso/owl-school/api/tarefa/read.php");
+    const resultado = await response.json();
 
-    const data = await resp.json();
-
-    if (!data.success) {
-      alert("Erro: " + data.message);
+    if (!resultado.success) {
+      alert("Erro: " + resultado.message);
       return;
     }
 
-    // Se tiver uma <tbody id="tbodyTarefas">, preenche:
-    const tbody = document.getElementById("tbodyTarefas");
-    if (!tbody) {
-      console.log("tarefas:", data.tarefas);
-      return; // sem tabela, apenas loga
-    }
+    const corpoTabela = document.getElementById("tbodyTarefas");
+    if (!corpoTabela) return;
 
-    tbody.innerHTML = "";
-    for (const t of data.tarefas) {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${t.titulo}</td>
-        <td>${t.data_entrega}</td>
-        <td class="small">${t.descricao}</td>
+    corpoTabela.innerHTML = "";
+
+    for (const tarefa of resultado.tarefas) {
+
+      const linha = document.createElement("tr");
+      linha.innerHTML = `
+        <td>${tarefa.titulo}</td>
+        <td>${tarefa.data_entrega}</td>
+        <td class="small">${tarefa.descricao}</td>
         <td class="text-end">
-          <button class="btn btn-sm btn-outline-secondary"
-                  onclick="abrirEdicao(${t.id}, '${t.titulo.replace(/'/g,"&#39;")}', '${t.descricao.replace(/'/g,"&#39;")}', '${t.data_entrega}')">
-            Editar
-          </button>
-          <button class="btn btn-sm btn-outline-danger" onclick="excluirTarefa(${t.id})">
-            Excluir
-          </button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="editarTarefa(${tarefa.id})">Editar</button>
+          <button class="btn btn-sm btn-outline-danger" onclick="excluirTarefa(${tarefa.id})">Excluir</button>
         </td>
       `;
-      tbody.appendChild(tr);
+
+      corpoTabela.appendChild(linha);
     }
-  } catch (e) {
-    console.error(e);
+
+  } catch (erro) {
     alert("Erro de conexão ao listar tarefas.");
   }
 }

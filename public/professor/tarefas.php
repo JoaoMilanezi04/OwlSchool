@@ -21,13 +21,11 @@ require_role('professor');
     <main class="container py-4">
       <div class="row g-4">
 
-        <!-- Criar nova tarefa (via JS) -->
+        <!-- Criar nova tarefa -->
         <div class="col-12 col-lg-4">
           <div class="card h-100">
             <div class="card-body">
               <h2 class="h6 mb-3">Criar nova tarefa</h2>
-
-              <!-- não submete; JS captura pelo botão -->
               <div class="mb-3">
                 <label class="form-label">Título</label>
                 <input id="titulo" class="form-control" required>
@@ -48,17 +46,15 @@ require_role('professor');
           </div>
         </div>
 
-        <!-- Lista de tarefas (preenchida pelo read.js) -->
+        <!-- Lista de tarefas -->
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-body">
               <h2 class="h6 mb-3">Tarefas criadas</h2>
-
               <div class="table-responsive">
                 <table class="table table-striped align-middle mb-0">
                   <thead>
                     <tr>
-                      <th>ID</th>
                       <th>Título</th>
                       <th>Entrega</th>
                       <th>Descrição</th>
@@ -74,51 +70,47 @@ require_role('professor');
           </div>
         </div>
 
-        <!-- Editar / Excluir (via JS) -->
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="h6 mb-3">Editar / Excluir tarefa</h2>
-              <div class="row g-3">
-                <div class="col-12 col-md-2">
-                  <label class="form-label">ID</label>
-                  <input id="id" class="form-control" placeholder="Selecione na tabela">
-                </div>
-                <div class="col-12 col-md-3">
-                  <label class="form-label">Título</label>
-                  <input id="titulo_edit" class="form-control">
-                </div>
-                <div class="col-12 col-md-3">
-                  <label class="form-label">Descrição</label>
-                  <input id="descricao_edit" class="form-control">
-                </div>
-                <div class="col-12 col-md-2">
-                  <label class="form-label">Data de entrega</label>
-                  <input id="data_entrega_edit" type="date" class="form-control">
-                </div>
-                <div class="col-12 col-md-2 d-flex align-items-end gap-2">
-                  <button id="btnEditar"  type="button" class="btn btn-outline-secondary w-100">Salvar edição</button>
-                  <button id="btnExcluir" type="button" class="btn btn-outline-danger w-100">Excluir</button>
-                </div>
-              </div>
-              <small class="text-muted d-block mt-2">
-                Dica: clique em “Editar” na tabela para preencher os campos acima automaticamente.
-              </small>
-            </div>
-          </div>
-        </div>
+
+
+
+
 
       </div>
     </main>
   </div>
 
+  <!-- Modal de edição -->
+<!-- Modal de Edição -->
+
+<!-- Modal de Edição -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="editTituloTopo" class="modal-title">Editar tarefa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <input id="edit_titulo" class="form-control mb-3" placeholder="Título">
+        <textarea id="edit_descricao" class="form-control mb-3" rows="3" placeholder="Descrição"></textarea>
+        <input id="edit_data" type="date" class="form-control" placeholder="Entrega">
+      </div>
+      <div class="modal-footer">
+        <button id="btnSalvar" type="button" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- no final do <body> ou até no <head>, mas com defer -->
-<script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js" defer></script>
-<script src="/afonso/owl-school/public/assets/js/api/tarefa/create.js" defer></script>
-<script src="/afonso/owl-school/public/assets/js/api/tarefa/update.js" defer></script>
-<script src="/afonso/owl-school/public/assets/js/api/tarefa/delete.js" defer></script>
+  <!-- JS da API -->
+  <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js" defer></script>
+  <script src="/afonso/owl-school/public/assets/js/api/tarefa/create.js" defer></script>
+  <script src="/afonso/owl-school/public/assets/js/api/tarefa/delete.js" defer></script>
+  <script src="/afonso/owl-school/public/assets/js/api/tarefa/update.js" defer></script>
 
 </body>
 </html>

@@ -1,21 +1,22 @@
-async function excluirTarefa(id) {
-  if (!id) return;
+async function excluirTarefa(identificador) {
+
+  if (!identificador) return;
 
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
-  const fd = new FormData();
-  fd.append("id", id);
+  const formularioDados = new FormData();
+  formularioDados.append("id", identificador);
 
-  const resp = await fetch("/afonso/owl-school/api/tarefa/delete.php", {
+  const resposta = await fetch("/afonso/owl-school/api/tarefa/delete.php", {
     method: "POST",
-    body: fd
+    body: formularioDados
   });
 
-  const data = await resp.json();
+  const resultado = await resposta.json();
 
-  if (data.success) {
+  if (resultado.success) {
     if (typeof carregarTarefas === "function") carregarTarefas();
   } else {
-    alert("Erro: " + (data.message || "falha ao excluir"));
+    alert("Erro: " + (resultado.message || "falha ao excluir"));
   }
 }
