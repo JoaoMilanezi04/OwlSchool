@@ -1,19 +1,25 @@
 async function carregarTarefas() {
 
+
   try {
+
 
     const response = await fetch("/afonso/owl-school/api/tarefa/read.php");
     const resultado = await response.json();
+
 
     if (!resultado.success) {
       alert("Erro: " + resultado.message);
       return;
     }
 
+
     const corpoTabela = document.getElementById("tbodyTarefas");
-    if (!corpoTabela) return;
+    
+
 
     corpoTabela.innerHTML = "";
+
 
     for (const tarefa of resultado.tarefas) {
 

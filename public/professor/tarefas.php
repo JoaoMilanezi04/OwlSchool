@@ -12,6 +12,7 @@ require_role('professor');
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OlwSchool — Gerenciar Tarefas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -21,7 +22,6 @@ require_role('professor');
     <main class="container py-4">
       <div class="row g-4">
 
-        <!-- Criar nova tarefa -->
         <div class="col-12 col-lg-4">
           <div class="card h-100">
             <div class="card-body">
@@ -46,7 +46,7 @@ require_role('professor');
           </div>
         </div>
 
-        <!-- Lista de tarefas -->
+
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-body">
@@ -62,7 +62,7 @@ require_role('professor');
                     </tr>
                   </thead>
                   <tbody id="tbodyTarefas">
-                    <!-- linhas inseridas via JS -->
+
                   </tbody>
                 </table>
               </div>
@@ -71,16 +71,11 @@ require_role('professor');
         </div>
 
 
-
-
-
-
       </div>
     </main>
   </div>
 
-  <!-- Modal de edição -->
-<!-- Modal de Edição -->
+
 
 <!-- Modal de Edição -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
@@ -103,10 +98,6 @@ require_role('professor');
 </div>
 
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- JS da API -->
   <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/tarefa/create.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/tarefa/delete.js" defer></script>

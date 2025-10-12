@@ -1,98 +1,83 @@
-const elementoModalEdicao = document.getElementById("editModal");
-const instanciaModalBootstrap = new bootstrap.Modal(elementoModalEdicao);
+let idDaTarefaAtual = null;
 
-const tituloDoModal = document.getElementById("editTituloTopo");
-const campoEditarTitulo = document.getElementById("edit_titulo");
-const campoEditarDescricao = document.getElementById("edit_descricao");
-const campoEditarData = document.getElementById("edit_data");
-const botaoSalvarEdicao = document.getElementById("btnSalvar");
 
-let identificadorAtualDaTarefa = null;
+async function editarTarefa(idTarefa) {
+  idDaTarefaAtual = idTarefa;
 
-window.editarTarefa = async function (identificador) {
 
-  identificadorAtualDaTarefa = identificador;
 
-  tituloDoModal.textContent = "Editar tarefa";
+  const elementoModal = document.getElementById("editModal");
+  const modal = new bootstrap.Modal(elementoModal);
+  modal.show();
+
+
 
   try {
-
     const resposta = await fetch("/afonso/owl-school/api/tarefa/read.php");
-    const resultado = await resposta.json();
+    const dados = await resposta.json();
+    const tarefa = dados.tarefas.find(t => String(t.id) === String(idTarefa));
 
-    if (!resultado.success) {
-      alert("Erro ao ler tarefas.");
-      return;
-    }
 
-    const tarefa = (resultado.tarefas || []).find(function (item) {
-      return String(item.id) === String(identificador);
-    });
 
-    if (!tarefa) {
-      alert("Tarefa não encontrada.");
-      return;
-    }
+    document.getElementById("edit_titulo").value = tarefa.titulo;
+    document.getElementById("edit_descricao").value = tarefa.descricao;
+    document.getElementById("edit_data").value = tarefa.data_entrega;
 
-    campoEditarTitulo.value = tarefa.titulo || "";
-    campoEditarDescricao.value = tarefa.descricao || "";
-    campoEditarData.value = tarefa.data_entrega || "";
 
-    instanciaModalBootstrap.show();
 
   } catch (erro) {
     alert("Erro ao carregar tarefa.");
   }
-};
+}
 
-botaoSalvarEdicao.addEventListener("click", async function () {
 
-  if (!identificadorAtualDaTarefa) {
-    alert("Erro: sem identificador.");
-    return;
-  }
 
-  const titulo = (campoEditarTitulo.value || "").trim();
-  const descricao = (campoEditarDescricao.value || "").trim();
-  const data_entrega = campoEditarData.value || "";
+document.getElementById("btnSalvar").onclick = async function () {
 
-  if (!titulo || !descricao || !data_entrega) {
-    alert("Preencha todos os campos!");
-    return;
-  }
 
-  const formularioDados = new FormData();
-  formularioDados.append("id", identificadorAtualDaTarefa);
-  formularioDados.append("titulo", titulo);
-  formularioDados.append("descricao", descricao);
-  formularioDados.append("data_entrega", data_entrega);
+  const titulo = document.getElementById("edit_titulo").value;
+  const descricao = document.getElementById("edit_descricao").value;
+  const dataEntrega = document.getElementById("edit_data").value;
 
-  botaoSalvarEdicao.disabled = true;
+
+
+  const formulario = new FormData();
+
+  formulario.append("id", idDaTarefaAtual);
+  formulario.append("titulo", titulo);
+  formulario.append("descricao", descricao);
+  formulario.append("data_entrega", dataEntrega);
+
+
 
   try {
-
     const resposta = await fetch("/afonso/owl-school/api/tarefa/update.php", {
       method: "POST",
-      body: formularioDados
+      body: formulario
     });
+
 
     const resultado = await resposta.json();
 
-    if (!resultado.success) {
-      alert("Erro: " + (resultado.message || "Erro ao atualizar."));
-      return;
+
+    if (resultado.success) {
+      alert("Tarefa atualizada com sucesso!");
+
+
+      if (typeof carregarTarefas === "function") carregarTarefas();
+
+
+      const elementoModal = document.getElementById("editModal");
+      const modal = bootstrap.Modal.getInstance(elementoModal);
+      modal.hide();
+      
+
+    } else {
+      alert("Erro ao atualizar tarefa: " + (resultado.message || "erro desconhecido."));
     }
-
-    instanciaModalBootstrap.hide();
-    identificadorAtualDaTarefa = null;
-
-    if (typeof carregarTarefas === "function") carregarTarefas();
-
-    alert("Tarefa atualizada!");
-
+    
   } catch (erro) {
     alert("Erro ao atualizar tarefa.");
-  } finally {
-    botaoSalvarEdicao.disabled = false;
   }
-});
+};
+
