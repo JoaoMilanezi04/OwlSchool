@@ -1,16 +1,17 @@
 <?php
+require_once __DIR__ . '/../../db/conexao.php';
+header('Content-Type: application/json');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $prova_id = $_POST['prova_id'] ?? '';
+  $aluno_id = $_POST['aluno_id'] ?? '';
 
-require __DIR__ . '/../../db/conexao.php';
+  $ok = $conn->query("DELETE FROM prova_nota WHERE prova_id=$prova_id AND aluno_id=$aluno_id");
 
-
-
-
-function deleteNotaAluno($provaId, $alunoId) {
-    global $conn;
-    $sql = "DELETE FROM prova_nota
-            WHERE prova_id = $provaId AND aluno_id = $alunoId";
-    $conn->query($sql);
+  if ($ok) echo json_encode(['success'=>true,'message'=>'Nota excluída.']);
+  else echo json_encode(['success'=>false,'message'=>'Erro ao excluir: '.$conn->error]);
+} else {
+  echo json_encode(['success'=>false,'message'=>'Método inválido.']);
 }
 
 

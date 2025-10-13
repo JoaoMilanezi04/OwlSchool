@@ -5,18 +5,21 @@ async function editarTarefa(idTarefa) {
   idDaTarefaAtual = idTarefa;
 
 
-
   const elementoModal = document.getElementById("editModal");
   const modal = new bootstrap.Modal(elementoModal);
   modal.show();
 
 
-
   try {
-    const resposta = await fetch("/afonso/owl-school/api/tarefa/read.php");
-    const dados = await resposta.json();
-    const tarefa = dados.tarefas.find(t => String(t.id) === String(idTarefa));
+    const resposta = await fetch("/afonso/owl-school/api/tarefa/read.php", {
+      method: "POST"
+    });
 
+
+    const dados = await resposta.json();
+
+
+    const tarefa = dados.tarefas.find(t => String(t.id) === String(idTarefa));
 
 
     document.getElementById("edit_titulo").value = tarefa.titulo;
@@ -30,8 +33,6 @@ async function editarTarefa(idTarefa) {
   }
 }
 
-
-
 document.getElementById("btnSalvar").onclick = async function () {
 
 
@@ -40,14 +41,13 @@ document.getElementById("btnSalvar").onclick = async function () {
   const dataEntrega = document.getElementById("edit_data").value;
 
 
-
   const formulario = new FormData();
+
 
   formulario.append("id", idDaTarefaAtual);
   formulario.append("titulo", titulo);
   formulario.append("descricao", descricao);
   formulario.append("data_entrega", dataEntrega);
-
 
 
   try {
@@ -60,6 +60,7 @@ document.getElementById("btnSalvar").onclick = async function () {
     const resultado = await resposta.json();
 
 
+
     if (resultado.success) {
       alert("Tarefa atualizada com sucesso!");
 
@@ -70,14 +71,14 @@ document.getElementById("btnSalvar").onclick = async function () {
       const elementoModal = document.getElementById("editModal");
       const modal = bootstrap.Modal.getInstance(elementoModal);
       modal.hide();
-      
+
 
     } else {
       alert("Erro ao atualizar tarefa: " + (resultado.message || "erro desconhecido."));
     }
-    
+
+
   } catch (erro) {
     alert("Erro ao atualizar tarefa.");
   }
 };
-

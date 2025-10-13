@@ -1,31 +1,28 @@
 <?php
+require_once __DIR__ . '/../../db/conexao.php';
+header('Content-Type: application/json');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $prova_id = $_POST['prova_id'] ?? '';
+  if ($prova_id === '') { echo json_encode(['success'=>false,'message'=>'prova_id obrigatório']); exit; }
 
-require __DIR__ . '/../../db/conexao.php';
+  $sql = "SELECT prova_id, aluno_id, nota
+            FROM prova_nota
+           WHERE prova_id = $prova_id
+           ORDER BY aluno_id";
+  $rs = $conn->query($sql);
 
-
-
-
-function readNotasByProva($provaId) {
-  global $conn;
-  $sql = "
-    SELECT
-      a.usuario_id AS aluno_id,
-      COALESCE(u.nome, CONCAT('Aluno #', a.usuario_id)) AS nome,
-      pn.nota,
-      IF(pn.nota IS NULL, 0, 1) AS lancada
-    FROM aluno a
-    LEFT JOIN usuario u ON u.id = a.usuario_id
-    LEFT JOIN prova_nota pn
-           ON pn.aluno_id = a.usuario_id
-          AND pn.prova_id = $provaId
-    ORDER BY nome ASC, aluno_id ASC
-  ";
-  $res = $conn->query($sql);
-  $rows = [];
-  while ($r = $res->fetch_assoc()) $rows[] = $r;
-  return $rows;
+  if ($rs) {
+    $notas = [];
+    while ($r = $rs->fetch_assoc()) $notas[] = $r;
+    echo json_encode(['success'=>true,'notas'=>$notas]);
+  } else {
+    echo json_encode(['success'=>false,'message'=>'Erro ao listar: '.$conn->error]);
+  }
+} else {
+  echo json_encode(['success'=>false,'message'=>'Método inválido.']);
 }
+
 
 
 
