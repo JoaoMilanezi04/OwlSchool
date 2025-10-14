@@ -54,76 +54,7 @@ require_role('professor');
                   </thead>
                   <tbody id="tbodyProvas">
                     <!-- Exemplo de prova -->
-                    <tr>
-                      <td>Prova de Matemática</td>
-                      <td>2025-10-20</td>
-                      <td class="text-end">
-                        <a class="btn btn-sm btn-primary me-2" data-bs-toggle="collapse" href="#collapseNotas1">Lançar notas</a>
-                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#editModalProva">Editar</button>
-                        <button class="btn btn-sm btn-outline-danger">Excluir</button>
-                      </td>
-                    </tr>
-
-                    <!-- Collapse com notas -->
-                    <tr class="bg-light">
-                      <td colspan="3" class="p-0">
-                        <div class="collapse" id="collapseNotas1">
-                          <div class="p-3 border-top">
-                            <div class="table-responsive">
-                              <table class="table table-sm align-middle">
-                                <thead>
-                                  <tr>
-                                    <th>Aluno</th>
-                                    <th>Nota</th>
-                                    <th class="text-end">Ações</th>
-                                  </tr>
-                                </thead>
-                                <tbody id="tbodyNotas1">
-                                  <!-- Aluno 1 -->
-                                  <tr>
-                                    <td>João da Silva (#1)</td>
-                                    <td><input type="number" step="0.01" min="0" max="10" value="8.50" class="form-control form-control-sm"></td>
-                                    <td class="text-end">
-                                      <button class="btn btn-sm btn-outline-primary me-1"
-                                              onclick="preencherFormularioNota(1, '8.50')">Editar</button>
-                                      <button class="btn btn-sm btn-outline-danger"
-                                              onclick="excluirNota(1)">Excluir</button>
-                                    </td>
-                                  </tr>
-                                  <!-- Aluno 2 -->
-                                  <tr>
-                                    <td>Ana Santos (#2)</td>
-                                    <td><input type="number" step="0.01" min="0" max="10" value="NAO_LANCADA" class="form-control form-control-sm" placeholder="NAO_LANCADA"></td>
-                                    <td class="text-end">
-                                      <button class="btn btn-sm btn-outline-primary me-1"
-                                              onclick="preencherFormularioNota(2, 'NAO_LANCADA')">Editar</button>
-                                      <button class="btn btn-sm btn-outline-danger"
-                                              onclick="excluirNota(2)">Excluir</button>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-2">
-                              <button class="btn btn-success" onclick="criarNota()">Salvar todas</button>
-                              <button class="btn btn-outline-danger ms-auto" onclick="excluirNotas()">Limpar todas</button>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </main>
-  </div>
+  
 
   <!-- Modal Editar Prova -->
   <div class="modal fade" id="editModalProva" tabindex="-1">
@@ -151,6 +82,9 @@ require_role('professor');
     </div>
   </div>
 
+
+
+  
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova/read.js" defer></script>

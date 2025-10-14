@@ -2,11 +2,14 @@
 require_once __DIR__ . '/../../db/conexao.php';
 header('Content-Type: application/json');
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $id     = $_POST['id']     ?? '';
     $titulo = $_POST['titulo'] ?? '';
     $corpo  = $_POST['corpo']  ?? '';
 
+    
     if ($id === '' || $titulo === '' || $corpo === '') {
         echo json_encode([
             'success' => false,

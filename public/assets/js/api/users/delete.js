@@ -1,0 +1,22 @@
+async function excluirUsuario(identificador) {
+
+  if (!identificador) return;
+
+  if (!confirm("Tem certeza que deseja excluir?")) return;
+
+  const formularioDados = new FormData();
+  formularioDados.append("id", identificador);
+
+  const resposta = await fetch("/afonso/owl-school/api/users/delete.php", {
+    method: "POST",
+    body: formularioDados
+  });
+
+  const resultado = await resposta.json();
+
+  if (resultado.success) {
+    if (typeof carregarUsuarios === "function") carregarUsuarios();
+  } else {
+    alert("Erro: " + (resultado.message || "falha ao excluir"));
+  }
+}

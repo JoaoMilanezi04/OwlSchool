@@ -2,49 +2,89 @@
 
 require_once __DIR__ . '/../../db/conexao.php';
 
+header('Content-Type: application/json');
 
 
-function updateUsuario($usuarioId, $nome, $email, $senhaOpcional, $tipoUsuario, $telefoneOpcional = null) {
-    global $conn;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if ($senhaOpcional !== '') {
-        $sql = "
+
+    $id           = $_POST['id'];
+    $nome         = $_POST['nome'];
+    $email        = $_POST['email'];
+    $senha        = $_POST['senha'] ?? '';
+    $tipo_usuario = $_POST['tipo_usuario'];
+    $telefone     = $_POST['telefone'] ?? '';
+
+
+    if ($senha !== '') {
+        $sqlUsuario = "
             UPDATE usuario
                SET nome = '$nome',
                    email = '$email',
-                   senha = '$senhaOpcional',
-                   tipo_usuario = '$tipoUsuario'
-             WHERE id = $usuarioId
+                   senha = '$senha',
+                   tipo_usuario = '$tipo_usuario'
+             WHERE id = $id
         ";
+
+
     } else {
-        $sql = "
+        $sqlUsuario = "
             UPDATE usuario
                SET nome = '$nome',
                    email = '$email',
-                   tipo_usuario = '$tipoUsuario'
-             WHERE id = $usuarioId
+                   tipo_usuario = '$tipo_usuario'
+             WHERE id = $id
         ";
     }
 
-    $conn->query($sql);
 
-    $conn->query("DELETE FROM aluno WHERE usuario_id = $usuarioId");
-    $conn->query("DELETE FROM professor WHERE usuario_id = $usuarioId");
-    $conn->query("DELETE FROM responsavel WHERE usuario_id = $usuarioId");
-
-    if ($tipoUsuario === 'aluno') {
-        $conn->query("INSERT INTO aluno (usuario_id) VALUES ($usuarioId)");
+    if (!$conn->query($sqlUsuario)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao atualizar usuário: ' . $conn->error
+        ]);
+        exit;
     }
 
-    if ($tipoUsuario === 'professor') {
-        if (!$telefoneOpcional) return false;
-        $conn->query("INSERT INTO professor (usuario_id, telefone) VALUES ($usuarioId, '$telefoneOpcional')");
+
+    $conn->query("DELETE FROM aluno WHERE usuario_id = $id");
+    $conn->query("DELETE FROM professor WHERE usuario_id = $id");
+    $conn->query("DELETE FROM responsavel WHERE usuario_id = $id");
+
+
+    if ($tipo_usuario === 'aluno') {
+        $sqlVinc = "INSERT INTO aluno (usuario_id) VALUES ($id)";
     }
 
-    if ($tipoUsuario === 'responsavel') {
-        if (!$telefoneOpcional) return false;
-        $conn->query("INSERT INTO responsavel (usuario_id, telefone) VALUES ($usuarioId, '$telefoneOpcional')");
+
+    if ($tipo_usuario === 'professor') {
+        $sqlVinc = "INSERT INTO professor (usuario_id, telefone) VALUES ($id, '$telefone')";
     }
 
-    return true;
+
+    if ($tipo_usuario === 'responsavel') {
+        $sqlVinc = "INSERT INTO responsavel (usuario_id, telefone) VALUES ($id, '$telefone')";
+    }
+
+
+    if (isset($sqlVinc) && !$conn->query($sqlVinc)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao atualizar vínculo: ' . $conn->error
+        ]);
+        exit;
+    }
+
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Usuário atualizado com sucesso.'
+    ]);
+
+
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método inválido.'
+    ]);
 }

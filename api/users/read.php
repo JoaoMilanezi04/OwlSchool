@@ -1,11 +1,11 @@
 <?php
 
 require_once __DIR__ . '/../../db/conexao.php';
+header('Content-Type: application/json');
 
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-function readUsuarios() {
-    global $conn;
 
     $sql = "
         SELECT
@@ -21,17 +21,36 @@ function readUsuarios() {
         ORDER BY usuario.id ASC
     ";
 
+
     $resultado = $conn->query($sql);
     $usuarios = [];
+
 
     if ($resultado) {
         while ($linha = $resultado->fetch_assoc()) {
             $usuarios[] = $linha;
         }
+
+
+        echo json_encode([
+            'success'  => true,
+            'usuarios' => $usuarios
+        ]);
+
+
+
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao listar: ' . $conn->error
+        ]);
     }
 
-    return $usuarios;
+
+
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método inválido.'
+    ]);
 }
-
-
-
