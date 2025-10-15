@@ -52,7 +52,7 @@ require_role('professor');
             <div class="card-body">
               <h2 class="h6 mb-3">Tarefas criadas</h2>
               <div class="table-responsive">
-                <table class="table table-striped align-middle mb-0">
+                <table class="table align-middle mb-0">
                   <thead>
                     <tr>
                       <th>Título</th>

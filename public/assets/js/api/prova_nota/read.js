@@ -1,78 +1,80 @@
-// public/assets/js/api/prova_nota/read.js
-async function carregarNotas(provaId, containerId) {
-  const container = document.getElementById(containerId || `notasArea${provaId}`);
-  if (!container) return;
-
+async function carregarNotasDaProva(provaId) {
   try {
-    const fd = new FormData();
-    fd.append("prova_id", provaId);
+    const formularioDados = new FormData();
+    formularioDados.append("prova_id", provaId);
 
-    const resp = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
+    const resposta = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
       method: "POST",
-      body: fd
+      body: formularioDados
     });
 
-    const json = await resp.json();
-    if (!json.success) {
-      container.innerHTML = `<div class="alert alert-warning mb-0">Erro: ${json.message || "falha ao listar notas."}</div>`;
+    const resultado = await resposta.json();
+
+    if (!resultado.success) {
+      alert("Erro ao listar notas: " + (resultado.message || ""));
       return;
     }
 
-    const notas = json.notas || [];
+    const corpoTabela = document.getElementById("tbodyNotas");
+    corpoTabela.innerHTML = "";
 
-    // monta tabela (sem colocar string em value de <input type="number">)
-    let linhas = notas.map(nota => {
-      const value = (nota.lancada && nota.nota !== null && nota.nota !== undefined) ? String(nota.nota) : "";
-      const placeholder = (!value ? 'NAO_LANCADA' : '');
-
-      return `
+    if (!resultado.notas || resultado.notas.length === 0) {
+      corpoTabela.innerHTML = `
         <tr>
-          <td>${nota.nome} <span class="text-muted">(#${nota.aluno_id})</span></td>
+          <td colspan="3" class="text-center text-muted">
+            Nenhum aluno encontrado.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    for (const item of resultado.notas) {
+      const notaVal = item.nota ?? "";
+
+      const linha = `
+        <tr>
+          <td>${item.aluno_nome || ("Aluno #" + item.aluno_id)}</td>
           <td>
-            <input type="number" step="0.01" min="0" max="10"
+            <input type="number"
                    class="form-control form-control-sm"
-                   value="${value}"
-                   ${placeholder ? `placeholder="${placeholder}"` : ""}>
+                   id="nota_${item.aluno_id}"
+                   value="${notaVal}">
           </td>
           <td class="text-end">
-            <button class="btn btn-sm btn-outline-primary me-1"
-              onclick="(function(el){preencherFormularioNota(${nota.aluno_id}, el.value || '');})(this.closest('tr').querySelector('input'))">
+            <button class="btn btn-sm btn-outline-success me-2"
+                    onclick="prepararCriarNota(${item.aluno_id})">
+              Salvar
+            </button>
+            <button class="btn btn-sm btn-outline-secondary me-2"
+                    onclick="prepararAtualizarNota(${item.aluno_id})">
               Editar
             </button>
             <button class="btn btn-sm btn-outline-danger"
-              onclick="excluirNota(${nota.aluno_id})">
+                    onclick="excluirNota(${item.aluno_id})">
               Excluir
             </button>
           </td>
         </tr>
       `;
-    }).join("");
 
-    if (!linhas) {
-      linhas = `<tr><td colspan="3" class="text-muted">Nenhum aluno encontrado.</td></tr>`;
+      corpoTabela.insertAdjacentHTML("beforeend", linha);
     }
 
-    container.innerHTML = `
-      <div class="table-responsive">
-        <table class="table table-sm align-middle">
-          <thead>
-            <tr>
-              <th>Aluno</th>
-              <th>Nota</th>
-              <th class="text-end">Ações</th>
-            </tr>
-          </thead>
-          <tbody>${linhas}</tbody>
-        </table>
-      </div>
-
-      <div class="d-flex flex-wrap gap-2">
-        <button class="btn btn-success" onclick="if(window.salvarTodasNotas) salvarTodasNotas(${provaId}, '${container.id}'); else if(window.criarNota) criarNota();">Salvar todas</button>
-        <button class="btn btn-outline-danger ms-auto" onclick="if(window.limparTodasNotas) limparTodasNotas(${provaId}); else if(window.excluirNotas) excluirNotas();">Limpar todas</button>
-      </div>
-    `;
-  } catch (e) {
+  } catch (erro) {
     alert("Erro de conexão ao listar notas.");
-    container.innerHTML = `<div class="alert alert-danger mb-0">Falha de conexão.</div>`;
   }
+}
+
+// funções auxiliares para manter o innerHTML limpo
+function prepararCriarNota(alunoId) {
+  document.getElementById("aluno_id").value = alunoId;
+  document.getElementById("nota").value = document.getElementById("nota_" + alunoId).value;
+  criarNota();
+}
+
+function prepararAtualizarNota(alunoId) {
+  document.getElementById("aluno_id").value = alunoId;
+  document.getElementById("nota").value = document.getElementById("nota_" + alunoId).value;
+  atualizarNota();
 }

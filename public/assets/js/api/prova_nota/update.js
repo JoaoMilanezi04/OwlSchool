@@ -17,18 +17,11 @@ async function atualizarNota() {
 
   if (resultado.success) {
     alert("Nota atualizada!");
-    if (typeof carregarNotas === "function") carregarNotas(provaId);
+    if (typeof carregarNotas === "function") carregarNotasDaProva(provaId);
   } else {
     alert("Erro: " + resultado.message);
   }
 }
 
 
-function preencherFormularioNota(alunoId, valorNota) {
-  document.getElementById("aluno_id").value = alunoId;
-  document.getElementById("nota").value = valorNota;
-  document.getElementById("aluno_id").focus();
-}
 
-
-document.getElementById("btnAtualizarNota")?.addEventListener("click", atualizarNota);

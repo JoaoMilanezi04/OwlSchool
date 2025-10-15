@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../db/conexao.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
     $diaSemana  = $_POST['dia_semana'];
     $horaInicio = $_POST['inicio'];
     $horaFim    = $_POST['fim'];

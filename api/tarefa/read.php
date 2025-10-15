@@ -14,7 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $tarefas = [];
     if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) $tarefas[] = $linha;
+
+        while ($linha = $resultado->fetch_assoc()) {
+            $tarefas[] = $linha;
+        }
+
+
+
         echo json_encode([
             'success' => true,
             'tarefas' => $tarefas

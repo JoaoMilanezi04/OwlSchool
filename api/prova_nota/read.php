@@ -3,64 +3,55 @@ require_once __DIR__ . '/../../db/conexao.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $prova_id = $_POST['prova_id'] ?? '';
-  if ($prova_id === '') { echo json_encode(['success'=>false,'message'=>'prova_id obrigatório']); exit; }
 
-  $sql = "SELECT prova_id, aluno_id, nota
-            FROM prova_nota
-           WHERE prova_id = $prova_id
-           ORDER BY aluno_id";
-  $rs = $conn->query($sql);
+    $prova_id = $_POST['prova_id'] ?? '';
 
-  if ($rs) {
-    $notas = [];
-    while ($r = $rs->fetch_assoc()) $notas[] = $r;
-    echo json_encode(['success'=>true,'notas'=>$notas]);
-  } else {
-    echo json_encode(['success'=>false,'message'=>'Erro ao listar: '.$conn->error]);
-  }
-} else {
-  echo json_encode(['success'=>false,'message'=>'Método inválido.']);
-}
+    if ($prova_id === '') {
+        echo json_encode([
+            'success' => false,
+            'message' => 'O campo prova_id é obrigatório.'
+        ]);
+        exit;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-function listProvasENotasDoAluno($alunoId) {
-    global $conn;
     $sql = "
         SELECT 
-            prova.id AS prova_id,
-            prova.titulo AS titulo,
-            prova.data AS data,
-            prova_nota.nota AS nota
-        FROM prova
+            $prova_id AS prova_id,
+            aluno.usuario_id AS aluno_id,
+            usuario.nome AS aluno_nome,
+            prova_nota.nota
+        FROM aluno
+        JOIN usuario ON usuario.id = aluno.usuario_id
         LEFT JOIN prova_nota 
-          ON prova_nota.prova_id = prova.id 
-         AND prova_nota.aluno_id = $alunoId
+               ON prova_nota.aluno_id = aluno.usuario_id 
+              AND prova_nota.prova_id = $prova_id
+        ORDER BY usuario.nome
     ";
+
     $resultado = $conn->query($sql);
-    $lista = [];
-    while ($linha = $resultado->fetch_assoc()) $lista[] = $linha;
-    return $lista;
+
+    if ($resultado) {
+        $notas = [];
+        while ($linha = $resultado->fetch_assoc()) {
+            $notas[] = $linha;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'notas' => $notas
+        ]);
+
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao listar: ' . $conn->error
+        ]);
+    }
+
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método inválido.'
+    ]);
 }
-
-
-
-
-function mediaNotasDoAluno($alunoId) {
-    global $conn;
-    $sql = "SELECT AVG(nota) AS media FROM prova_nota WHERE aluno_id = $alunoId";
-    $resultado = $conn->query($sql);
-    $linha = $resultado->fetch_assoc();
-    return $linha['media'];
-}
+?>

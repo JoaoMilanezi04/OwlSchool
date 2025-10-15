@@ -16,7 +16,7 @@ async function excluirNota(alunoId) {
   const resultado = await resposta.json();
 
   if (resultado.success) {
-    if (typeof carregarNotas === "function") carregarNotas(provaId);
+    if (typeof carregarNotas === "function") carregarNotasDaProva(provaId);
   } else {
     alert("Erro: " + (resultado.message || "falha ao excluir"));
   }

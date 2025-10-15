@@ -21,10 +21,10 @@ async function criarNota() {
     document.getElementById("aluno_id").value = "";
     document.getElementById("nota").value = "";
 
-    if (typeof carregarNotas === "function") carregarNotas(provaId);
+    if (typeof carregarNotas === "function") carregarNotasDaProva(provaId);
   } else {
     alert("Erro: " + resultado.message);
   }
 }
 
-document.getElementById("btnCriarNota")?.addEventListener("click", criarNota);
+

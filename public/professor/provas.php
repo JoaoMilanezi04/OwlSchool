@@ -52,9 +52,16 @@ require_role('professor');
                       <th class="text-end">Ações</th>
                     </tr>
                   </thead>
-                  <tbody id="tbodyProvas">
-                    <!-- Exemplo de prova -->
-  
+                  <tbody id="tbodyProvas"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- /row -->
+    </main>
+  </div>
 
   <!-- Modal Editar Prova -->
   <div class="modal fade" id="editModalProva" tabindex="-1">
@@ -82,19 +89,67 @@ require_role('professor');
     </div>
   </div>
 
+  <!-- Modal Lançar Notas -->
+  <div class="modal fade" id="modalLancamentoNotas" tabindex="-1" style="display:none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Lançar notas — <span id="tituloProvaNotas"></span>
+            <small class="text-muted ms-2">(Prova ID: <span id="provaIdNotas"></span>)</small>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
 
+        <div class="modal-body">
+          <!-- input oculto usado pelos scripts -->
+          <input type="hidden" id="prova_id">
 
-  
+          <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th style="width:140px">Nota</th>
+                  <th class="text-end">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyNotas"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Provas -->
   <script src="/afonso/owl-school/public/assets/js/api/prova/read.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova/create.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova/update.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova/delete.js" defer></script>
 
+  <!-- Notas -->
   <script src="/afonso/owl-school/public/assets/js/api/prova_nota/read.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova_nota/create.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova_nota/update.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova_nota/delete.js" defer></script>
+
+  <!-- Abrir modal -->
+  <script>
+async function abrirLancamentoNotas(idProva, tituloProva) {
+  document.getElementById("prova_id").value = idProva;
+
+  const elementoModal = document.getElementById("modalLancamentoNotas");
+  const modal = new bootstrap.Modal(elementoModal);
+  modal.show();
+
+  if (typeof carregarNotasDaProva === "function") {
+    await carregarNotasDaProva(idProva);
+  }
+}
+  </script>
 </body>
 </html>
