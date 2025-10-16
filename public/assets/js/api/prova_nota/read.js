@@ -1,80 +1,64 @@
-async function carregarNotasDaProva(provaId) {
+async function listarNotasDaProva(provaId) {
   try {
-    const formularioDados = new FormData();
-    formularioDados.append("prova_id", provaId);
+    const fd = new FormData();
+    fd.append("prova_id", provaId);
 
-    const resposta = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
+    const resp = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
       method: "POST",
-      body: formularioDados
+      body: fd
     });
+    const dados = await resp.json();
 
-    const resultado = await resposta.json();
-
-    if (!resultado.success) {
-      alert("Erro ao listar notas: " + (resultado.message || ""));
+    if (!dados.success) {
+      alert("Erro: " + (dados.message || "Falha ao listar notas."));
       return;
     }
 
-    const corpoTabela = document.getElementById("tbodyNotas");
-    corpoTabela.innerHTML = "";
+    const cardNotas = document.getElementById("cardNotas");
+    cardNotas.classList.remove("d-none");
+    cardNotas.innerHTML = `
+      <div class="card-body">
+        <h5 class="card-title mb-3">${dados.titulo_prova}</h5>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th>Nota</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyNotas"></tbody>
+        </table>
+      </div>
+    `;
 
-    if (!resultado.notas || resultado.notas.length === 0) {
-      corpoTabela.innerHTML = `
-        <tr>
-          <td colspan="3" class="text-center text-muted">
-            Nenhum aluno encontrado.
-          </td>
-        </tr>
-      `;
+    const corpo = document.getElementById("tbodyNotas");
+    corpo.innerHTML = "";
+
+    const notas = dados.notas;
+    if (!notas.length) {
+      corpo.innerHTML = `<tr><td colspan="3" class="text-muted">Nenhum aluno encontrado.</td></tr>`;
       return;
     }
 
-    for (const item of resultado.notas) {
-      const notaVal = item.nota ?? "";
+    for (const n of notas) {
+      const nome = n.aluno_nome;
+      const nota = n.nota ?? "-";
+      const notaVal = n.nota != null ? String(n.nota) : "";
 
-      const linha = `
-        <tr>
-          <td>${item.aluno_nome || ("Aluno #" + item.aluno_id)}</td>
-          <td>
-            <input type="number"
-                   class="form-control form-control-sm"
-                   id="nota_${item.aluno_id}"
-                   value="${notaVal}">
-          </td>
-          <td class="text-end">
-            <button class="btn btn-sm btn-outline-success me-2"
-                    onclick="prepararCriarNota(${item.aluno_id})">
-              Salvar
-            </button>
-            <button class="btn btn-sm btn-outline-secondary me-2"
-                    onclick="prepararAtualizarNota(${item.aluno_id})">
-              Editar
-            </button>
-            <button class="btn btn-sm btn-outline-danger"
-                    onclick="excluirNota(${item.aluno_id})">
-              Excluir
-            </button>
-          </td>
-        </tr>
+      const linha = document.createElement("tr");
+      linha.innerHTML = `
+        <td>${nome}</td>
+        <td>${nota}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-success me-2" onclick="abrirModalCriarNota(${provaId}, ${n.aluno_id})">Salvar</button>
+          <button class="btn btn-sm btn-outline-secondary me-2" onclick="abrirModalEditarNota(${provaId}, ${n.aluno_id}, '${n.nota ?? ""}')">Editar</button>
+          <button class="btn btn-sm btn-outline-danger" onclick="excluirNota(${provaId}, ${n.aluno_id})">Excluir</button>
+        </td>
       `;
-
-      corpoTabela.insertAdjacentHTML("beforeend", linha);
+      corpo.appendChild(linha);
     }
-
-  } catch (erro) {
+  } catch {
     alert("Erro de conexão ao listar notas.");
   }
-}
-
-// funções auxiliares para manter o innerHTML limpo
-function prepararCriarNota(alunoId) {
-  document.getElementById("aluno_id").value = alunoId;
-  document.getElementById("nota").value = document.getElementById("nota_" + alunoId).value;
-  criarNota();
-}
-
-function prepararAtualizarNota(alunoId) {
-  document.getElementById("aluno_id").value = alunoId;
-  document.getElementById("nota").value = document.getElementById("nota_" + alunoId).value;
-  atualizarNota();
 }

@@ -1,30 +1,43 @@
-async function criarNota() {
-  const provaId = document.getElementById("prova_id").value;
-  const alunoId = document.getElementById("aluno_id").value;
-  const nota    = document.getElementById("nota").value;
+let idProvaAtual = null;
+let idAlunoAtual = null;
 
-  const dados = new FormData();
-  dados.append("prova_id", provaId);
-  dados.append("aluno_id", alunoId);
-  dados.append("nota", nota);
+async function abrirModalCriarNota(provaId, alunoId) {
+  idProvaAtual = provaId;
+  idAlunoAtual = alunoId;
 
-  const resposta = await fetch("/afonso/owl-school/api/prova_nota/create.php", {
-    method: "POST",
-    body: dados
-  });
+  const elementoModal = document.getElementById("createNotaModal");
+  const modal = new bootstrap.Modal(elementoModal);
+  modal.show();
 
-  const resultado = await resposta.json();
 
-  if (resultado.success) {
-    alert("Nota criada!");
-
-    document.getElementById("aluno_id").value = "";
-    document.getElementById("nota").value = "";
-
-    if (typeof carregarNotas === "function") carregarNotasDaProva(provaId);
-  } else {
-    alert("Erro: " + resultado.message);
-  }
+  document.getElementById("create_nota").value = "";
 }
 
+document.getElementById("btnSalvarNota").onclick = async function () {
+  let nota = document.getElementById("create_nota").value;
+  nota = nota.replace(",", "."); 
 
+  const formulario = new FormData();
+  formulario.append("prova_id", idProvaAtual);
+  formulario.append("aluno_id", idAlunoAtual);
+  formulario.append("nota", nota);
+
+  try {
+    const resposta = await fetch("/afonso/owl-school/api/prova_nota/create.php", {
+      method: "POST",
+      body: formulario
+    });
+
+    const resultado = await resposta.json();
+
+    if (resultado.success) {
+      alert("Nota lançada com sucesso!");
+      if (typeof listarNotasDaProva === "function") listarNotasDaProva(idProvaAtual);
+      bootstrap.Modal.getInstance(document.getElementById("createNotaModal")).hide();
+    } else {
+      alert("Erro ao criar nota: " + (resultado.message || "erro desconhecido."));
+    }
+  } catch (erro) {
+    alert("Erro ao criar nota.");
+  }
+};

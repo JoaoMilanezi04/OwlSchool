@@ -3,13 +3,13 @@ let idDaProvaAtual = null;
 async function editarProva(idProva) {
   idDaProvaAtual = idProva;
 
-  // abre o modal
+
   const elementoModal = document.getElementById("editModalProva");
   const modal = new bootstrap.Modal(elementoModal);
   modal.show();
 
   try {
-    // carrega a lista e acha a prova pelo id (igual tarefas)
+
     const resposta = await fetch("/afonso/owl-school/api/prova/read.php", {
       method: "POST"
     });
@@ -18,7 +18,7 @@ async function editarProva(idProva) {
     const prova = dados.provas.find(p => String(p.id) === String(idProva));
     if (!prova) throw new Error("Prova não encontrada.");
 
-    // preenche campos
+
     document.getElementById("edit_titulo_prova").value = prova.titulo;
     document.getElementById("edit_data_prova").value   = prova.data;
 
@@ -27,7 +27,7 @@ async function editarProva(idProva) {
   }
 }
 
-// salvar atualização
+
 document.getElementById("btnSalvarProva").onclick = async function () {
   const titulo = document.getElementById("edit_titulo_prova").value;
   const data   = document.getElementById("edit_data_prova").value;

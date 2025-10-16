@@ -57,6 +57,35 @@ require_role('professor');
               </div>
             </div>
           </div>
+
+          <!-- Área de notas da prova -->
+          <div id="cardNotas" class="card d-none mt-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h6 mb-0">
+                  Notas — <span id="tituloProvaNotas"></span>
+                  <small class="text-muted ms-2">(Prova ID: <span id="provaIdNotas"></span>)</small>
+                </h2>
+              </div>
+
+              <!-- Usado para saber qual prova recarregar após criar/editar/excluir -->
+              <input type="hidden" id="prova_id">
+
+              <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>Aluno</th>
+                      <th style="width:140px">Nota</th>
+                      <th class="text-end">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyNotas"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /Área de notas -->
         </div>
 
       </div> <!-- /row -->
@@ -89,34 +118,45 @@ require_role('professor');
     </div>
   </div>
 
-  <!-- Modal Lançar Notas -->
-  <div class="modal fade" id="modalLancamentoNotas" tabindex="-1" style="display:none;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+  <!-- Modal Criar Nota -->
+  <div class="modal fade" id="createNotaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">
-            Lançar notas — <span id="tituloProvaNotas"></span>
-            <small class="text-muted ms-2">(Prova ID: <span id="provaIdNotas"></span>)</small>
-          </h5>
+          <h5 class="modal-title">Lançar nota</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-
         <div class="modal-body">
-          <!-- input oculto usado pelos scripts -->
-          <input type="hidden" id="prova_id">
-
-          <div class="table-responsive">
-            <table class="table table-striped align-middle mb-0">
-              <thead>
-                <tr>
-                  <th>Aluno</th>
-                  <th style="width:140px">Nota</th>
-                  <th class="text-end">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tbodyNotas"></tbody>
-            </table>
+          <div class="mb-3">
+            <label for="create_nota" class="form-label">Nota</label>
+            <input type="number" step="0.01" min="0" max="100" id="create_nota" class="form-control">
           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarNota">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Nota -->
+  <div class="modal fade" id="editNotaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar nota</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="edit_nota" class="form-label">Nota</label>
+            <input type="number" step="0.01" min="0" max="100" id="edit_nota" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarEdicaoNota">Salvar</button>
         </div>
       </div>
     </div>
@@ -137,19 +177,7 @@ require_role('professor');
   <script src="/afonso/owl-school/public/assets/js/api/prova_nota/update.js" defer></script>
   <script src="/afonso/owl-school/public/assets/js/api/prova_nota/delete.js" defer></script>
 
-  <!-- Abrir modal -->
-  <script>
-async function abrirLancamentoNotas(idProva, tituloProva) {
-  document.getElementById("prova_id").value = idProva;
+  <!-- Helper para mostrar a área de notas e carregar a lista -->
 
-  const elementoModal = document.getElementById("modalLancamentoNotas");
-  const modal = new bootstrap.Modal(elementoModal);
-  modal.show();
-
-  if (typeof carregarNotasDaProva === "function") {
-    await carregarNotasDaProva(idProva);
-  }
-}
-  </script>
 </body>
 </html>

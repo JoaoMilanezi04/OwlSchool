@@ -21,7 +21,7 @@ linha.innerHTML = `
   <td>${prova.titulo}</td>
   <td>${prova.data}</td>
   <td class="text-end">
-    <button class="btn btn-sm btn-outline-primary" onclick="abrirLancamentoNotas(${prova.id}, '${prova.titulo}')">Lançar notas</button>
+    <button class="btn btn-sm btn-outline-primary" onclick="listarNotasDaProva(${prova.id}, '${prova.titulo}')">Lançar notas</button>
     <button class="btn btn-sm btn-outline-secondary" onclick="editarProva(${prova.id})">Editar</button>
     <button class="btn btn-sm btn-outline-danger" onclick="excluirProva(${prova.id})">Excluir</button>
   </td>

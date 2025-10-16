@@ -1,13 +1,29 @@
 <?php
 
+require_once __DIR__ . '/../../db/conexao.php';
+header('Content-Type: application/json');
 
-require __DIR__ . '/../../db/conexao.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $id = $_POST['id'] ?? 0;
 
+    $sql = "DELETE FROM chamada WHERE id = $id";
 
+    if ($conn->query($sql)) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Chamada excluída com sucesso.'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao excluir: ' . $conn->error
+        ]);
+    }
 
-function deleteChamada($id) {
-    global $conn;
-    $conn->query("DELETE FROM chamada_item WHERE chamada_id = $id");
-    $conn->query("DELETE FROM chamada WHERE id = $id");
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método inválido.'
+    ]);
 }
