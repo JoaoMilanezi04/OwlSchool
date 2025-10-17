@@ -12,9 +12,9 @@ async function excluirChamada(identificador) {
 
   const resultado = await resposta.json();
 
-  if (resultado.success) {
-    if (typeof carregarChamadas === "function") carregarChamadas();
-  } else {
-    alert("Erro: " + (resultado.message || "falha ao excluir"));
-  }
+if (resultado.success) {
+  location.reload();
+} else {
+  alert("Erro: " + (resultado.message || "Falha ao excluir chamada."));
+}
 }

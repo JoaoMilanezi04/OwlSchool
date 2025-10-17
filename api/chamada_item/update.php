@@ -15,21 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         WHERE chamada_id = $chamadaId AND aluno_id = $alunoId
     ";
 
-    if ($conn->query($sql)) {
+if ($conn->query($sql)) {
+    if ($conn->affected_rows > 0) {
         echo json_encode([
             'success' => true,
-            'message' => 'Status de presença atualizado.'
+            'message' => 'Status de presença atualizado com sucesso.'
         ]);
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Erro ao atualizar: ' . $conn->error
+            'message' => 'Nenhum registro encontrado para atualizar.'
         ]);
     }
-
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Método inválido.'
+        'message' => 'Erro ao atualizar presença: ' . $conn->error
     ]);
+}
 }

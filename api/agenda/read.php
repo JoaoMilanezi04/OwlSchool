@@ -29,32 +29,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success'=>false,'message'=>'Método inválido.']);
 }
 
-
-
-
-
-
-
-
-
-
-function listarHorarios($diaSemana = null) {
-    global $conn;
-
-    if ($diaSemana) {
-        $sql = "SELECT id, dia_semana, inicio, fim, disciplina
-                  FROM horarios_aula
-                 WHERE dia_semana = '$diaSemana'
-              ORDER BY FIELD(dia_semana,'segunda','terca','quarta','quinta','sexta'), inicio, fim, id";
-        $resultado = $conn->query($sql);
-    } else {
-        $sql = "SELECT id, dia_semana, inicio, fim, disciplina
-                  FROM horarios_aula
-              ORDER BY FIELD(dia_semana,'segunda','terca','quarta','quinta','sexta'), inicio, fim, id";
-        $resultado = $conn->query($sql);
-    }
-
-    $lista = [];
-    if ($resultado) while ($linha = $resultado->fetch_assoc()) $lista[] = $linha;
-    return $lista;
-}

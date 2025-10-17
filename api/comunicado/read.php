@@ -1,40 +1,34 @@
 <?php
 require_once __DIR__ . '/../../db/conexao.php';
-header('Content-Type: application/json');
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+header('Content-Type: application/json; charset=utf-8');
 
-
-    $sql = "SELECT id, titulo, corpo FROM comunicado ORDER BY id DESC";
-
-    $resultado = $conn->query($sql);
-
-    if ($resultado) {
-
-        $comunicados = [];
-        
-        while ($linha = $resultado->fetch_assoc()) {
-            $comunicados[] = $linha;
-        }
-
-        echo json_encode([
-            'success' => true,
-            'comunicados' => $comunicados
-        ]);
-
-
-    } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Erro ao listar: ' . $conn->error
-        ]);
-    }
-
-
-} else {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Método inválido.'
-    ]);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  echo json_encode(['success' => false, 'message' => 'Método inválido.']);
+  exit;
 }
-?>
+
+if (!isset($_SESSION['user_id'], $_SESSION['tipo_usuario'])) {
+  echo json_encode(['success' => false, 'message' => 'Usuário não logado.']);
+  exit;
+}
+
+$sql = "SELECT id, titulo, corpo FROM comunicado ORDER BY id DESC";
+$resultado = $conn->query($sql);
+
+if (!$resultado) {
+  echo json_encode(['success' => false, 'message' => 'Erro ao listar: ' . $conn->error]);
+  exit;
+}
+
+$comunicados = [];
+while ($linha = $resultado->fetch_assoc()) {
+  $comunicados[] = $linha;
+}
+
+echo json_encode([
+  'success' => true,
+  'comunicados' => $comunicados,
+  'tipo_usuario' => $_SESSION['tipo_usuario']
+]);

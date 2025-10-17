@@ -28,4 +28,4 @@ async function criarChamada() {
   }
 }
 
-document.getElementById("btnCriar").addEventListener("click", criarChamada);
+document.getElementById("btnCriarChamada").addEventListener("click", criarChamada);

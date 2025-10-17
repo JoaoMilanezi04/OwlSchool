@@ -1,54 +1,57 @@
 <?php
-require __DIR__ . '/../../db/conexao.php';
 
+require_once __DIR__ . '/../../db/conexao.php';
+header('Content-Type: application/json');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $chamadaId = (int)($_POST['chamada_id'] ?? 0);
 
+    if ($chamadaId <= 0) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'ID da chamada não informado.'
+        ]);
+        exit;
+    }
 
-
-function listChamadasDoAluno($alunoUsuarioId) {
-    global $conn;
     $sql = "
         SELECT
-            chamada.id AS chamada_id,
-            chamada.data AS data,
-            chamada_item.status AS status
-        FROM chamada
-        LEFT JOIN chamada_item
-               ON chamada_item.chamada_id = chamada.id
-              AND chamada_item.aluno_id = $alunoUsuarioId
+            ci.chamada_id,
+            a.usuario_id AS aluno_id,
+            u.nome AS aluno_nome,
+            ci.status
+        FROM aluno a
+        JOIN usuario u ON u.id = a.usuario_id
+        LEFT JOIN chamada_item ci
+               ON ci.aluno_id = a.usuario_id
+              AND ci.chamada_id = $chamadaId
+        ORDER BY u.nome
     ";
+
     $resultado = $conn->query($sql);
-    $linhas = [];
-    while ($linha = $resultado->fetch_assoc()) $linhas[] = $linha;
-    return $linhas;
+
+    if (!$resultado) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao buscar presenças: ' . $conn->error
+        ]);
+        exit;
+    }
+
+    $itens = [];
+    while ($linha = $resultado->fetch_assoc()) {
+        $itens[] = $linha;
+    }
+
+    echo json_encode([
+        'success' => true,
+        'itens' => $itens
+    ]);
+
+} else {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método inválido.'
+    ]);
 }
-
-
-
-
-function getResumoFrequencia($alunoUsuarioId) {
-    global $conn;
-    $sql = "
-        SELECT
-            COUNT(chamada.id) AS total_dias,
-            SUM(CASE WHEN chamada_item.status = 'presente' THEN 1 ELSE 0 END) AS presentes
-        FROM chamada
-        LEFT JOIN chamada_item
-               ON chamada_item.chamada_id = chamada.id
-              AND chamada_item.aluno_id = $alunoUsuarioId
-    ";
-    $resultado = $conn->query($sql);
-    $dados = $resultado->fetch_assoc();
-    $totalDias = $dados['total_dias'] + 0;
-    $presentes = $dados['presentes'] + 0;
-    $faltas = $totalDias - $presentes;
-    $percentual = $totalDias > 0 ? ($presentes / $totalDias) * 100 : 0;
-    return [
-        'total_dias' => $totalDias,
-        'presentes' => $presentes,
-        'faltas' => $faltas,
-        'percentual_presenca' => $percentual
-    ];
-}
-

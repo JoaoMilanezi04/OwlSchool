@@ -16,10 +16,17 @@ async function carregarAdvertencias() {
     for (const advertencia of resultado.advertencias) {
       const linha = document.createElement("tr");
       linha.innerHTML = `
-        <td>${advertencia.titulo}</td>
-        <td class="small">${advertencia.descricao}</td>
+        <td>
+          <strong>${advertencia.titulo}</strong><br>
+          <small class="text-muted">${advertencia.descricao}</small>
+        </td>
+        <td>${advertencia.aluno_nome}</td>
         <td class="text-end">
-          <button class="btn btn-sm btn-outline-secondary" onclick="editarAdvertencia(${advertencia.id})">Editar</button>
+          <button class="btn btn-sm btn-outline-secondary"
+  onclick="abrirModalEditarAdvertencia(${advertencia.id}, '${advertencia.titulo}', '${advertencia.descricao}')">
+  Editar
+</button>
+
           <button class="btn btn-sm btn-outline-danger" onclick="excluirAdvertencia(${advertencia.id})">Excluir</button>
         </td>
       `;

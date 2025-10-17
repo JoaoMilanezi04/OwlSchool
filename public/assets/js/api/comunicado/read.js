@@ -1,3 +1,5 @@
+// comunicado/read.js — usando sessão PHP (resultado.tipo_usuario)
+
 async function carregarComunicados() {
   try {
     const resposta = await fetch("/afonso/owl-school/api/comunicado/read.php", {
@@ -11,19 +13,28 @@ async function carregarComunicados() {
       return;
     }
 
+    const tipoUsuario = resultado.tipo_usuario; // <-- vem da sessão PHP
     const corpoTabela = document.getElementById("tbodyComunicados");
     corpoTabela.innerHTML = "";
 
     for (const comunicado of resultado.comunicados) {
       const linha = document.createElement("tr");
+
+      // Monta célula de ações só para professor/admin
+      let acoesHTML = "";
+      if (tipoUsuario === "professor" || tipoUsuario === "admin") {
+        acoesHTML = `
+          <button class="btn btn-sm btn-outline-secondary" onclick="editarComunicado(${comunicado.id})">Editar</button>
+          <button class="btn btn-sm btn-outline-danger ms-1" onclick="excluirComunicado(${comunicado.id})">Excluir</button>
+        `;
+      }
+
       linha.innerHTML = `
         <td>${comunicado.titulo}</td>
         <td class="small">${comunicado.corpo}</td>
-        <td class="text-end">
-          <button class="btn btn-sm btn-outline-secondary" onclick="editarComunicado(${comunicado.id})">Editar</button>
-          <button class="btn btn-sm btn-outline-danger" onclick="excluirComunicado(${comunicado.id})">Excluir</button>
-        </td>
+        <td class="text-end">${acoesHTML}</td>
       `;
+
       corpoTabela.appendChild(linha);
     }
 

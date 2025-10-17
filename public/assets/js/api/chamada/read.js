@@ -14,26 +14,27 @@ async function carregarChamadas() {
     corpoTabela.innerHTML = "";
 
     for (const chamada of resultado.chamadas) {
-      const linha = document.createElement("tr");
-      linha.innerHTML = `
-        <td>${chamada.data}</td>
-        <td class="text-end">
-          <button class="btn btn-sm btn-outline-primary"
-                  onclick="listarAlunosDaChamada(${chamada.id})">
-            Lançar presença
-          </button>
-          <button class="btn btn-sm btn-outline-secondary"
-                  onclick="editarChamada(${chamada.id})">
-            Editar
-          </button>
-          <button class="btn btn-sm btn-outline-danger"
-                  onclick="excluirChamada(${chamada.id})">
-            Excluir
-          </button>
-        </td>
-      `;
-      corpoTabela.appendChild(linha);
-    }
+  corpoTabela.insertAdjacentHTML("beforeend", `
+    <tr>
+      <td>${chamada.data}</td>
+      <td class="text-end">
+        <button class="btn btn-primary btn-sm"
+                onclick="listarItensDaChamada(${chamada.id}, '${chamada.data}')">
+          Lançar presença
+        </button>
+        <button class="btn btn-sm btn-outline-secondary"
+                onclick="editarChamada(${chamada.id})">
+          Editar
+        </button>
+        <button class="btn btn-sm btn-outline-danger"
+                onclick="excluirChamada(${chamada.id})">
+          Excluir
+        </button>
+      </td>
+    </tr>
+  `);
+}
+
   } catch (erro) {
     alert("Erro de conexão ao listar chamadas.");
   }

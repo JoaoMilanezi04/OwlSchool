@@ -1,12 +1,16 @@
 async function listarNotasDaProva(provaId) {
+
   try {
-    const fd = new FormData();
-    fd.append("prova_id", provaId);
+
+    const formulario = new FormData();
+    formulario.append("prova_id", provaId);
 
     const resp = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
       method: "POST",
-      body: fd
+      body: formulario
+
     });
+
     const dados = await resp.json();
 
     if (!dados.success) {
@@ -15,7 +19,9 @@ async function listarNotasDaProva(provaId) {
     }
 
     const cardNotas = document.getElementById("cardNotas");
+
     cardNotas.classList.remove("d-none");
+
     cardNotas.innerHTML = `
       <div class="card-body">
         <h5 class="card-title mb-3">${dados.titulo_prova}</h5>
@@ -36,17 +42,19 @@ async function listarNotasDaProva(provaId) {
     corpo.innerHTML = "";
 
     const notas = dados.notas;
+
     if (!notas.length) {
       corpo.innerHTML = `<tr><td colspan="3" class="text-muted">Nenhum aluno encontrado.</td></tr>`;
       return;
     }
 
     for (const n of notas) {
+
       const nome = n.aluno_nome;
       const nota = n.nota ?? "-";
-      const notaVal = n.nota != null ? String(n.nota) : "";
 
       const linha = document.createElement("tr");
+
       linha.innerHTML = `
         <td>${nome}</td>
         <td>${nota}</td>
@@ -58,6 +66,7 @@ async function listarNotasDaProva(provaId) {
       `;
       corpo.appendChild(linha);
     }
+
   } catch {
     alert("Erro de conexão ao listar notas.");
   }

@@ -12,9 +12,9 @@ async function excluirProva(identificador) {
 
   const resultado = await resposta.json();
 
-  if (resultado.success) {
-    if (typeof carregarProvas === "function") carregarProvas();
-  } else {
-    alert("Erro: " + (resultado.message || "falha ao excluir"));
-  }
+if (resultado.success) {
+  location.reload();
+} else {
+  alert("Erro: " + (resultado.message || "Falha ao excluir chamada."));
+}
 }

@@ -7,35 +7,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "
         SELECT
-            advertencia.id,
-            advertencia.titulo,
-            advertencia.descricao,
+            aluno.usuario_id AS aluno_id,
             usuario.nome AS aluno_nome
-        FROM advertencia
-        LEFT JOIN aluno_advertencia
-            ON aluno_advertencia.advertencia_id = advertencia.id
-        LEFT JOIN usuario
-            ON usuario.id = aluno_advertencia.aluno_id
-        ORDER BY advertencia.id DESC
+        FROM aluno
+        INNER JOIN usuario
+            ON usuario.id = aluno.usuario_id
+        ORDER BY usuario.nome ASC
     ";
 
     $resultado = $conn->query($sql);
 
     if ($resultado) {
-        $advertencias = [];
-
+        $alunos = [];
         while ($linha = $resultado->fetch_assoc()) {
-            $advertencias[] = $linha;
+            $alunos[] = $linha;
         }
 
         echo json_encode([
-            'success'      => true,
-            'advertencias' => $advertencias
+            'success' => true,
+            'alunos'  => $alunos
         ]);
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Erro ao listar: ' . $conn->error
+            'message' => 'Erro ao listar alunos: ' . $conn->error
         ]);
     }
 

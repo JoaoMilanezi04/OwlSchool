@@ -1,26 +1,13 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-
 require_once __DIR__ . '/../../api/utils/responsavel.php';
-
-
-require_once __DIR__ . '/../../api/tarefa/read.php';
-require_once __DIR__ . '/../../api/advertencia/read.php';
-require_once __DIR__ . '/../../api/comunicado/read.php';
-
 
 require_login();
 require_role('responsavel');
 
-$comunicados = readComunicado();
-
 $responsavelId = $_SESSION['user_id'];
-
-$filhoNome    = getNomeFilho($responsavelId);
-$advertencias = readAdvertenciasFilho($responsavelId);
-$tarefas      = readTarefa();
-
+$filhoNome     = getNomeFilho($responsavelId);
 ?>
 
 <!doctype html>
@@ -43,84 +30,68 @@ $tarefas      = readTarefa();
       <!-- Comunicados -->
       <!-- ============================== -->
       <h1 class="h5 mb-3">📢 Comunicados</h1>
-
-      <?php if (empty($comunicados)): ?>
-        <div class="alert alert-secondary">Nenhum comunicado disponível.</div>
-      <?php else: ?>
-        <div class="list-group shadow-sm mb-5">
-          <?php foreach ($comunicados as $comunicado): ?>
-            <div class="list-group-item">
-              <h5 class="mb-1"><?= htmlspecialchars($comunicado['titulo']) ?></h5>
-              <p class="mb-1 small"><?= nl2br(htmlspecialchars($comunicado['corpo'])) ?></p>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      <?php endif; ?>
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Corpo</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyComunicados">
+          <tr><td colspan="3" class="text-center text-muted">Carregando comunicados...</td></tr>
+        </tbody>
+      </table>
 
       <!-- ============================== -->
       <!-- Tarefas -->
       <!-- ============================== -->
-      <h2 class="h5 mb-3">🧾 Tarefas</h2>
-
-      <?php if (empty($tarefas)): ?>
-        <div class="alert alert-secondary">Nenhuma tarefa cadastrada.</div>
-      <?php else: ?>
-        <div class="row g-3 mb-5">
-          <?php foreach ($tarefas as $tarefa): ?>
-            <div class="col-12 col-md-6">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title mb-2"><?= htmlspecialchars($tarefa['titulo']) ?></h5>
-                  <p class="card-text small"><?= nl2br(htmlspecialchars($tarefa['descricao'])) ?></p>
-                </div>
-                <div class="card-footer">
-                  <span class="text-muted small">Entrega: <?= htmlspecialchars($tarefa['data_entrega']) ?></span>
-                </div>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      <?php endif; ?>
+      <h2 class="h5 mt-5 mb-3">🧾 Tarefas</h2>
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Entrega</th>
+            <th>Descrição</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyTarefas">
+          <tr><td colspan="4" class="text-center text-muted">Carregando tarefas...</td></tr>
+        </tbody>
+      </table>
 
       <!-- ============================== -->
       <!-- Advertências -->
       <!-- ============================== -->
-      <h2 class="h5 mb-3">⚠️ Advertências</h2>
+      <h2 class="h5 mt-5 mb-3">⚠️ Advertências</h2>
 
       <?php if (!$filhoNome): ?>
         <div class="alert alert-warning">Nenhum filho vinculado à sua conta foi encontrado.</div>
-      <?php elseif (empty($advertencias)): ?>
-        <div class="alert alert-secondary">Nenhuma advertência registrada para <?= htmlspecialchars($filhoNome) ?>.</div>
       <?php else: ?>
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <p class="mb-3">
-              <strong>Aluno:</strong> <?= htmlspecialchars($filhoNome) ?>
-            </p>
-            <div class="table-responsive">
-              <table class="table table-striped align-middle mb-0">
-                <thead>
-                  <tr>
-                    <th style="width: 250px;">Título</th>
-                    <th>Descrição</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach ($advertencias as $adv): ?>
-                    <tr>
-                      <td><?= htmlspecialchars($adv['titulo']) ?></td>
-                      <td><?= nl2br(htmlspecialchars($adv['descricao'])) ?></td>
-                    </tr>
-                  <?php endforeach; ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <p><strong>Aluno:</strong> <?= htmlspecialchars($filhoNome) ?></p>
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyAdvertencias">
+            <tr><td colspan="2" class="text-center text-muted">Carregando advertências...</td></tr>
+          </tbody>
+        </table>
       <?php endif; ?>
 
     </main>
   </div>
+
+  <script>
+    const idDoResponsavel = <?= (int) $responsavelId ?>;
+  </script>
+
+  <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/comunicado/read.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/advertencia_filho.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

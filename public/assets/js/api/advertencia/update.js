@@ -1,39 +1,25 @@
-let idDaAdvertenciaAtual = null;
+let idAdvertenciaAtual = null;
 
-async function editarAdvertencia(idAdvertencia) {
-  idDaAdvertenciaAtual = idAdvertencia;
+async function abrirModalEditarAdvertencia(id, titulo, descricao) {
 
-  // abre o modal
+  idAdvertenciaAtual = id;
+
+  // Preenche os campos direto, sem precisar buscar de novo
+  document.getElementById("edit_titulo").value = titulo;
+  document.getElementById("edit_descricao").value = descricao;
+
+  // Abre o modal
   const elementoModal = document.getElementById("editModalAdvertencia");
   const modal = new bootstrap.Modal(elementoModal);
   modal.show();
-
-  try {
-    // carrega lista e acha a advertência pelo id
-    const resposta = await fetch("/afonso/owl-school/api/advertencia/read.php", {
-      method: "POST"
-    });
-    const dados = await resposta.json();
-
-    const advertencia = dados.advertencias.find(a => String(a.id) === String(idAdvertencia));
-    if (!advertencia) throw new Error("Advertência não encontrada.");
-
-    // preenche campos
-    document.getElementById("edit_titulo_advertencia").value    = advertencia.titulo;
-    document.getElementById("edit_descricao_advertencia").value = advertencia.descricao;
-
-  } catch (erro) {
-    alert("Erro ao carregar advertência.");
-  }
 }
 
-// salvar atualização
 document.getElementById("btnSalvarAdvertencia").onclick = async function () {
-  const titulo    = document.getElementById("edit_titulo_advertencia").value;
-  const descricao = document.getElementById("edit_descricao_advertencia").value;
+  const titulo = document.getElementById("edit_titulo").value;
+  const descricao = document.getElementById("edit_descricao").value;
 
   const formulario = new FormData();
-  formulario.append("id", idDaAdvertenciaAtual);
+  formulario.append("id", idAdvertenciaAtual);
   formulario.append("titulo", titulo);
   formulario.append("descricao", descricao);
 
@@ -48,15 +34,17 @@ document.getElementById("btnSalvarAdvertencia").onclick = async function () {
     if (resultado.success) {
       alert("Advertência atualizada com sucesso!");
 
-      if (typeof carregarAdvertencias === "function") carregarAdvertencias();
+      if (typeof carregarAdvertencias === "function") {
+        carregarAdvertencias();
+      }
 
-      const elementoModal = document.getElementById("editModalAdvertencia");
-      const modal = bootstrap.Modal.getInstance(elementoModal);
+      const modal = bootstrap.Modal.getInstance(document.getElementById("editModalAdvertencia"));
       modal.hide();
 
     } else {
       alert("Erro ao atualizar advertência: " + (resultado.message || "erro desconhecido."));
     }
+
   } catch (erro) {
     alert("Erro ao atualizar advertência.");
   }

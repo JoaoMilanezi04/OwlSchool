@@ -1,17 +1,17 @@
 <?php
 
-
 require_once __DIR__ . '/../db/conexao.php';
 session_start();
 
+header('Content-Type: application/json');
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  echo json_encode(['success' => false, 'message' => 'Método inválido.']);
+  exit;
+}
 
-
-$email = $_POST['email'];
-$senha = $_POST['senha'];
-
-
-
+$email = $_POST['email'] ?? '';
+$senha = $_POST['senha'] ?? '';
 
 $sql = "
   SELECT id,
@@ -22,30 +22,28 @@ $sql = "
      AND senha = '$senha'
 ";
 
-$result = $conn->query($sql);
-$user   = $result->fetch_assoc();
+$resultado = $conn->query($sql);
+$usuario   = $resultado ? $resultado->fetch_assoc() : null;
 
-
-
-if (!$user) {
-  header('Location: ../public/index.php?erro=usuario');
+if (!$usuario) {
+  echo json_encode(['success' => false, 'message' => 'Usuário ou senha incorretos.']);
   exit;
 }
 
+$_SESSION['user_id']      = $usuario['id'];
+$_SESSION['user_name']    = $usuario['nome'];
+$_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
 
+echo json_encode([
+  'success' => true,
+  'message' => 'Login realizado com sucesso.',
+  'usuario' => [
+    'id' => $usuario['id'],
+    'nome' => $usuario['nome'],
+    'tipo_usuario' => $usuario['tipo_usuario']
+  ]
+]);
 
-$_SESSION['user_id']      = $user['id'];
-$_SESSION['user_name']    = $user['nome'];
-$_SESSION['tipo_usuario'] = $user['tipo_usuario'];
-
-
-
-
-switch ($user['tipo_usuario']) {
-  case 'aluno':       header('Location: ../public/aluno/aluno.php'); break;
-  case 'professor':   header('Location: ../public/professor/professor.php'); break;
-  case 'responsavel': header('Location: ../public/responsavel/responsavel.php'); break;
-  case 'admin':       header('Location: ../public/admin/admin.php'); break;
-  default:            header('Location: ../public/index.php?erro=tipo'); break;
-}
 exit;
+
+?>
