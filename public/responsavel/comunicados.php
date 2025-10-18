@@ -6,8 +6,7 @@ require_once __DIR__ . '/../../api/utils/responsavel.php';
 require_login();
 require_role('responsavel');
 
-$responsavelId = $_SESSION['user_id'];
-$filhoNome     = getNomeFilho($responsavelId);
+
 ?>
 
 <!doctype html>
@@ -37,9 +36,7 @@ $filhoNome     = getNomeFilho($responsavelId);
             <th>Corpo</th>
           </tr>
         </thead>
-        <tbody id="tbodyComunicados">
-          <tr><td colspan="3" class="text-center text-muted">Carregando comunicados...</td></tr>
-        </tbody>
+        <tbody id="tbodyComunicados"></tbody>
       </table>
 
       <!-- ============================== -->
@@ -52,12 +49,9 @@ $filhoNome     = getNomeFilho($responsavelId);
             <th>Título</th>
             <th>Entrega</th>
             <th>Descrição</th>
-            <th class="text-end">Ações</th>
           </tr>
         </thead>
-        <tbody id="tbodyTarefas">
-          <tr><td colspan="4" class="text-center text-muted">Carregando tarefas...</td></tr>
-        </tbody>
+        <tbody id="tbodyTarefas"></tbody>
       </table>
 
       <!-- ============================== -->
@@ -65,10 +59,6 @@ $filhoNome     = getNomeFilho($responsavelId);
       <!-- ============================== -->
       <h2 class="h5 mt-5 mb-3">⚠️ Advertências</h2>
 
-      <?php if (!$filhoNome): ?>
-        <div class="alert alert-warning">Nenhum filho vinculado à sua conta foi encontrado.</div>
-      <?php else: ?>
-        <p><strong>Aluno:</strong> <?= htmlspecialchars($filhoNome) ?></p>
         <table class="table table-striped align-middle">
           <thead>
             <tr>
@@ -76,22 +66,16 @@ $filhoNome     = getNomeFilho($responsavelId);
               <th>Descrição</th>
             </tr>
           </thead>
-          <tbody id="tbodyAdvertencias">
-            <tr><td colspan="2" class="text-center text-muted">Carregando advertências...</td></tr>
-          </tbody>
+          <tbody id="tbodyAdvertencias"></tbody>
         </table>
-      <?php endif; ?>
+
 
     </main>
   </div>
 
-  <script>
-    const idDoResponsavel = <?= (int) $responsavelId ?>;
-  </script>
-
   <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
   <script src="/afonso/owl-school/public/assets/js/api/comunicado/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/utils/advertencia_filho.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/advertencia/advertencia_filho.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

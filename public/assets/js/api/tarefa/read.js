@@ -2,10 +2,8 @@ async function carregarTarefas() {
   try {
     const response = await fetch("/afonso/owl-school/api/tarefa/read.php", {
       method: "POST"
-
     });
 
-    
     const resultado = await response.json();
 
     if (!resultado.success) {
@@ -13,23 +11,27 @@ async function carregarTarefas() {
       return;
     }
 
+    const tipoUsuario = resultado.tipo_usuario; // vem da sessão PHP
     const corpoTabela = document.getElementById("tbodyTarefas");
     corpoTabela.innerHTML = "";
 
     for (const tarefa of resultado.tarefas) {
+      let acoesHTML = "";
+      if (tipoUsuario === "professor" || tipoUsuario === "admin") {
+        acoesHTML = `
+          <button class="btn btn-sm btn-outline-secondary" onclick="editarTarefa(${tarefa.id})">Editar</button>
+          <button class="btn btn-sm btn-outline-danger ms-1" onclick="excluirTarefa(${tarefa.id})">Excluir</button>
+        `;
+      }
 
-corpoTabela.innerHTML += `
-  <tr>
-    <td>${tarefa.titulo}</td>
-    <td>${tarefa.data_entrega}</td>
-    <td class="small">${tarefa.descricao}</td>
-    <td class="text-end">
-      <button class="btn btn-sm btn-outline-secondary" onclick="editarTarefa(${tarefa.id})">Editar</button>
-      <button class="btn btn-sm btn-outline-danger" onclick="excluirTarefa(${tarefa.id})">Excluir</button>
-    </td>
-  </tr>
-`;
-
+      corpoTabela.innerHTML += `
+        <tr>
+          <td>${tarefa.titulo}</td>
+          <td>${tarefa.data_entrega}</td>
+          <td class="small">${tarefa.descricao}</td>
+          <td class="text-end">${acoesHTML}</td>
+        </tr>
+      `;
     }
   } catch (erro) {
     alert("Erro de conexão ao listar tarefas.");

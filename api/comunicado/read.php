@@ -9,10 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   exit;
 }
 
-if (!isset($_SESSION['user_id'], $_SESSION['tipo_usuario'])) {
-  echo json_encode(['success' => false, 'message' => 'Usuário não logado.']);
-  exit;
-}
 
 $sql = "SELECT id, titulo, corpo FROM comunicado ORDER BY id DESC";
 $resultado = $conn->query($sql);

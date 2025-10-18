@@ -2,24 +2,10 @@
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
 
-
-require_once __DIR__ . '/../../api/comunicado/read.php';
-require_once __DIR__ . '/../../api/tarefa/read.php';
-require_once __DIR__ . '/../../api/advertencia/read.php';
-
-
-
-
 require_login();
 require_role('aluno');
-
-$alunoId = $_SESSION['user_id'];
-
-
-$comunicados  = readComunicado();
-$tarefas      = readTarefa();
-$advertencias = readAdvertenciasAluno($alunoId);
 ?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -40,72 +26,51 @@ $advertencias = readAdvertenciasAluno($alunoId);
       <!-- Comunicados -->
       <!-- ============================== -->
       <h1 class="h5 mb-3">📢 Comunicados</h1>
-      <?php if (empty($comunicados)): ?>
-        <div class="alert alert-secondary">Nenhum comunicado disponível.</div>
-      <?php else: ?>
-        <div class="list-group shadow-sm mb-5">
-          <?php foreach ($comunicados as $c): ?>
-            <div class="list-group-item">
-              <h5 class="mb-1"><?= htmlspecialchars($c['titulo']) ?></h5>
-              <p class="mb-1 small"><?= nl2br(htmlspecialchars($c['corpo'])) ?></p>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      <?php endif; ?>
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Corpo</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyComunicados"></tbody>
+      </table>
 
       <!-- ============================== -->
       <!-- Tarefas -->
       <!-- ============================== -->
-      <h2 class="h5 mb-3">🧾 Tarefas</h2>
-      <?php if (empty($tarefas)): ?>
-        <div class="alert alert-secondary">Nenhuma tarefa cadastrada.</div>
-      <?php else: ?>
-        <div class="row g-3 mb-5">
-          <?php foreach ($tarefas as $t): ?>
-            <div class="col-12 col-md-6">
-              <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title mb-2"><?= htmlspecialchars($t['titulo']) ?></h5>
-                  <p class="card-text small"><?= nl2br(htmlspecialchars($t['descricao'])) ?></p>
-                </div>
-                <div class="card-footer">
-                  <span class="text-muted small">Entrega: <?= htmlspecialchars($t['data_entrega']) ?></span>
-                </div>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      <?php endif; ?>
+      <h2 class="h5 mt-5 mb-3">🧾 Tarefas</h2>
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Entrega</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyTarefas"></tbody>
+      </table>
 
       <!-- ============================== -->
       <!-- Advertências -->
       <!-- ============================== -->
-      <h2 class="h5 mb-3">⚠️ Advertências</h2>
-      <?php if (empty($advertencias)): ?>
-        <div class="alert alert-secondary">Nenhuma advertência registrada.</div>
-      <?php else: ?>
-        <div class="table-responsive">
-          <table class="table table-striped align-middle mb-0">
-            <thead>
-              <tr>
-                <th style="width: 250px;">Título</th>
-                <th>Descrição</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($advertencias as $a): ?>
-                <tr>
-                  <td><?= htmlspecialchars($a['titulo']) ?></td>
-                  <td><?= nl2br(htmlspecialchars($a['descricao'])) ?></td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      <?php endif; ?>
+      <h2 class="h5 mt-5 mb-3">⚠️ Advertências</h2>
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyAdvertencias"></tbody>
+      </table>
 
     </main>
   </div>
+
+  <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/comunicado/read.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/advertencia/advertencia_aluno.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

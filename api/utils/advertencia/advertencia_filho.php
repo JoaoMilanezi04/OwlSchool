@@ -1,49 +1,56 @@
 <?php
-require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../helpers/get_id_filho.php'; // ajusta o caminho se for outro
+require_once __DIR__ . '/../../../db/conexao.php';
+session_start();
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // lê o id do responsável vindo do JS
-    $responsavelId = isset($_POST['responsavel_id']) ? (int) $_POST['responsavel_id'] : 0;
-
-    if ($responsavelId <= 0) {
-        echo json_encode(['success'=>false, 'message'=>'responsavel_id inválido.']);
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['success' => false, 'message' => 'Usuário não logado.']);
         exit;
     }
 
-    // pega o id do filho (aluno) conforme tua regra
-    $alunoId = getIdFilho($responsavelId);
-    if (!$alunoId) {
-        echo json_encode(['success'=>false, 'message'=>'Filho não encontrado para este responsável.']);
-        exit;
-    }
+    $responsavelId = (int) $_SESSION['user_id'];
 
-    // consulta no teu estilo (JOIN explícito só pra ficar claro)
     $sql = "
-        SELECT 
-            advertencia.id,
-            advertencia.titulo,
-            advertencia.descricao
-        FROM aluno_advertencia
-        JOIN advertencia 
-          ON aluno_advertencia.advertencia_id = advertencia.id
-        WHERE aluno_advertencia.aluno_id = $alunoId
-        ORDER BY aluno_advertencia.id DESC
+        SELECT
+            advertencia.id        AS id,
+            advertencia.titulo    AS titulo,
+            advertencia.descricao AS descricao,
+            usuario.nome          AS aluno_nome
+        FROM aluno_responsavel
+        JOIN aluno_advertencia
+          ON aluno_advertencia.aluno_id = aluno_responsavel.aluno_id
+        JOIN advertencia
+          ON advertencia.id = aluno_advertencia.advertencia_id
+        JOIN usuario
+          ON usuario.id = aluno_responsavel.aluno_id
+        WHERE aluno_responsavel.responsavel_id = $responsavelId
+        ORDER BY advertencia.id DESC
     ";
 
     $resultado = $conn->query($sql);
 
     if ($resultado) {
         $advertencias = [];
-        while ($linha = $resultado->fetch_assoc()) $advertencias[] = $linha;
+        while ($linha = $resultado->fetch_assoc()) {
+            $advertencias[] = $linha;
+        }
 
-        echo json_encode(['success'=>true, 'advertencias'=>$advertencias]);
+        echo json_encode([
+            'success' => true,
+            'advertencias' => $advertencias
+        ]);
     } else {
-        echo json_encode(['success'=>false, 'message'=>'Erro: ' . $conn->error]);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro: ' . $conn->error
+        ]);
     }
 
 } else {
-    echo json_encode(['success'=>false, 'message'=>'Método inválido.']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método inválido.'
+    ]);
 }

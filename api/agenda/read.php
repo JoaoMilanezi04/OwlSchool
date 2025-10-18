@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../db/conexao.php';
-header('Content-Type: application/json');
+session_start();
+
+header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql = "
@@ -18,14 +20,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($resultado) {
         $porDia = ['segunda'=>[], 'terca'=>[], 'quarta'=>[], 'quinta'=>[], 'sexta'=>[]];
+
         while ($linha = $resultado->fetch_assoc()) {
             $porDia[$linha['dia_semana']][] = $linha;
         }
-        echo json_encode(['success'=>true, 'por_dia'=>$porDia]);
+
+        echo json_encode([
+            'success'       => true,
+            'por_dia'       => $porDia,
+            'tipo_usuario'  => $_SESSION['tipo_usuario'] ?? null
+        ]);
     } else {
-        echo json_encode(['success'=>false,'message'=>'Erro: '.$conn->error]);
+        echo json_encode([
+            'success'       => false,
+            'message'       => 'Erro: ' . $conn->error,
+            'tipo_usuario'  => $_SESSION['tipo_usuario'] ?? null
+        ]);
     }
 } else {
-    echo json_encode(['success'=>false,'message'=>'Método inválido.']);
+    echo json_encode([
+        'success'       => false,
+        'message'       => 'Método inválido.',
+        'tipo_usuario'  => $_SESSION['tipo_usuario'] ?? null
+    ]);
 }
-

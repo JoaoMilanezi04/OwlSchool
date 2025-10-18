@@ -8,6 +8,7 @@ async function carregarAgenda() {
       return;
     }
 
+    const tipoUsuario = resultado.tipo_usuario;
     const dias = ["segunda", "terca", "quarta", "quinta", "sexta"];
     const dados = resultado.por_dia || {};
 
@@ -24,17 +25,22 @@ async function carregarAgenda() {
       }
 
       for (const h of lista) {
-        const linha = document.createElement("tr");
-        linha.innerHTML = `
-          <td>${h.inicio}</td>
-          <td>${h.fim}</td>
-          <td>${h.disciplina}</td>
-          <td class="text-end">
+        let acoesHTML = "";
+        if (tipoUsuario === "professor" || tipoUsuario === "admin") {
+          acoesHTML = `
             <button class="btn btn-sm btn-outline-secondary me-1" onclick="editarHorario(${h.id})">Editar</button>
             <button class="btn btn-sm btn-outline-danger" onclick="excluirHorario(${h.id})">Excluir</button>
-          </td>
-        `;
-        corpo.appendChild(linha);
+          `;
+        }
+
+        corpo.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td>${h.inicio}</td>
+            <td>${h.fim}</td>
+            <td>${h.disciplina}</td>
+            <td class="text-end">${acoesHTML}</td>
+          </tr>
+        `);
       }
     }
   } catch {
