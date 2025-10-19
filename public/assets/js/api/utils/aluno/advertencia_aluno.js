@@ -1,8 +1,9 @@
 async function carregarAdvertencias() {
   try {
-    const response = await fetch("/afonso/owl-school/api/utils/advertencia/advertencia_filho.php", {
+    const response = await fetch("/afonso/owl-school/api/utils/aluno/advertencia_aluno.php", {
       method: "POST"
     });
+
     const resultado = await response.json();
 
     if (!resultado.success) {
@@ -13,11 +14,11 @@ async function carregarAdvertencias() {
     const corpoTabela = document.getElementById("tbodyAdvertencias");
     corpoTabela.innerHTML = "";
 
-    // se vier vazio, mostra uma linha amigável (opcional)
+    // caso não tenha nenhuma advertência
     if (!resultado.advertencias || resultado.advertencias.length === 0) {
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>
-          <td colspan="2" class="text-center text-muted">Nenhuma advertência.</td>
+          <td colspan="2" class="text-center text-muted">Nenhuma advertência encontrada.</td>
         </tr>
       `);
       return;

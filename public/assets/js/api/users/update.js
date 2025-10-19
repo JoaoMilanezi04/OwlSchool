@@ -5,7 +5,7 @@ async function editarUsuario(idUsuario) {
   idDoUsuarioAtual = idUsuario;
 
   try {
-    const resp = await fetch("/afonso/owl-school/api/users/read.php", { method: "POST" });
+    const resp = await fetch("/afonso/owl-school/api/usuarios/read.php", { method: "POST" });
     const dados = await resp.json();
     
     if (!dados.success) throw new Error(dados.message || "Falha ao listar.");

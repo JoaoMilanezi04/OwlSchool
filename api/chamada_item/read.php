@@ -1,57 +1,53 @@
 <?php
-
 require_once __DIR__ . '/../../db/conexao.php';
+
 header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $chamadaId = (int)($_POST['chamada_id'] ?? 0);
-
-    if ($chamadaId <= 0) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'ID da chamada não informado.'
-        ]);
-        exit;
-    }
-
-    $sql = "
-        SELECT
-            ci.chamada_id,
-            a.usuario_id AS aluno_id,
-            u.nome AS aluno_nome,
-            ci.status
-        FROM aluno a
-        JOIN usuario u ON u.id = a.usuario_id
-        LEFT JOIN chamada_item ci
-               ON ci.aluno_id = a.usuario_id
-              AND ci.chamada_id = $chamadaId
-        ORDER BY u.nome
-    ";
-
-    $resultado = $conn->query($sql);
-
-    if (!$resultado) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Erro ao buscar presenças: ' . $conn->error
-        ]);
-        exit;
-    }
-
-    $itens = [];
-    while ($linha = $resultado->fetch_assoc()) {
-        $itens[] = $linha;
-    }
-
-    echo json_encode([
-        'success' => true,
-        'itens' => $itens
-    ]);
-
-} else {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Método inválido.'
-    ]);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Método inválido.'
+  ]);
+  exit;
 }
+
+
+$chamadaId = $_POST['chamada_id'];
+
+
+$stmt = $conn->prepare("
+  SELECT
+    chamada_item.chamada_id,
+    aluno.usuario_id AS aluno_id,
+    usuario.nome AS aluno_nome,
+    chamada_item.status
+  FROM aluno
+  JOIN usuario 
+    ON usuario.id = aluno.usuario_id
+  LEFT JOIN chamada_item
+    ON chamada_item.aluno_id = aluno.usuario_id
+    AND chamada_item.chamada_id = ?
+  ORDER BY usuario.nome
+");
+$stmt->bind_param("i", $chamadaId);
+$stmt->execute();
+
+
+$resultado = $stmt->get_result();
+$itens = [];
+
+
+while ($linha = $resultado->fetch_assoc()) {
+  $itens[] = $linha;
+}
+
+
+echo json_encode([
+  'success' => true,
+  'itens' => $itens
+]);
+
+
+$stmt->close();
+$conn->close();

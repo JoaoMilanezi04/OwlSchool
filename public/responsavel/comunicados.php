@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../db/conexao.php';
-require_once __DIR__ . '/../../api/utils/responsavel.php';
+
 
 require_login();
 require_role('responsavel');
@@ -75,7 +75,7 @@ require_role('responsavel');
 
   <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
   <script src="/afonso/owl-school/public/assets/js/api/comunicado/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/utils/advertencia/advertencia_filho.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/responsavel/advertencia_filho.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -21,7 +21,7 @@ async function criarUsuario() {
   formularioDados.append("tipo_usuario", tipo_usuario);
   formularioDados.append("telefone", telefone);
 
-  const resposta = await fetch("/afonso/owl-school/api/users/create.php", {
+  const resposta = await fetch("/afonso/owl-school/api/usuarios/create.php", {
     method: "POST",
     body: formularioDados
   });

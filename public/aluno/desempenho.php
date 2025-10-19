@@ -10,7 +10,7 @@ require_role('aluno');
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OlwSchool — Minhas Notas</title>
+  <title>OlwSchool — Minhas Notas e Frequência</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -36,10 +36,25 @@ require_role('aluno');
         <tbody id="tbodyNotas"></tbody>
       </table>
 
+      <!-- ============================== -->
+      <!-- Frequência -->
+      <!-- ============================== -->
+      <h1 class="h5 mt-5 mb-3">🕒 Frequência</h1>
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyFrequencias"></tbody>
+      </table>
+
     </main>
   </div>
 
-  <script src="/afonso/owl-school/public/assets/js/api/utils/nota/nota_aluno.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/aluno/nota_aluno.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/aluno/frequencia_aluno.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

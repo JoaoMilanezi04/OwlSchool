@@ -1,6 +1,6 @@
 async function carregarUsuarios() {
   try {
-    const response = await fetch("/afonso/owl-school/api/users/read.php", {
+    const response = await fetch("/afonso/owl-school/api/usuarios/read.php", {
       method: "POST"
     });
 

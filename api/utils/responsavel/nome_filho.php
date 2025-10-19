@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../../db/conexao.php';
+require_once __DIR__ . '/../../../db/conexao.php';
+
+session_start();
 
 header('Content-Type: application/json');
 
@@ -13,36 +15,41 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
+$responsavelId = (int) $_SESSION['user_id'];
+
+
 $stmt = $conn->prepare("
-  SELECT
-    aluno.usuario_id AS aluno_id,
-    usuario.nome AS aluno_nome
-  FROM aluno
+  SELECT usuario.nome AS nome_filho
+  FROM aluno_responsavel
+  JOIN aluno 
+    ON aluno.usuario_id = aluno_responsavel.aluno_id
   JOIN usuario 
     ON usuario.id = aluno.usuario_id
-  ORDER BY usuario.nome ASC
+  WHERE aluno_responsavel.responsavel_id = ?
+  LIMIT 1
 ");
+$stmt->bind_param("i", $responsavelId);
 $stmt->execute();
 
 
 $resultado = $stmt->get_result();
-$alunos = [];
+$nomeFilho = null;
 
 
 while ($linha = $resultado->fetch_assoc()) {
-  $alunos[] = $linha;
+  $nomeFilho = $linha['nome_filho'];
 }
 
 
-if (count($alunos) > 0) {
+if ($nomeFilho) {
   echo json_encode([
     'success' => true,
-    'alunos' => $alunos
+    'nome_filho' => $nomeFilho
   ]);
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Nenhum aluno encontrado.'
+    'message' => 'Filho não encontrado.'
   ]);
 }
 

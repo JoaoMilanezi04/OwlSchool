@@ -7,7 +7,7 @@ async function excluirUsuario(identificador) {
   const formularioDados = new FormData();
   formularioDados.append("id", identificador);
 
-  const resposta = await fetch("/afonso/owl-school/api/users/delete.php", {
+  const resposta = await fetch("/afonso/owl-school/api/usuarios/delete.php", {
     method: "POST",
     body: formularioDados
   });

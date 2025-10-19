@@ -70,7 +70,7 @@ require_role('aluno');
 
   <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
   <script src="/afonso/owl-school/public/assets/js/api/comunicado/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/utils/advertencia/advertencia_aluno.js"></script>
+  <script src="/afonso/owl-school/public/assets/js/api/utils/aluno/advertencia_aluno.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

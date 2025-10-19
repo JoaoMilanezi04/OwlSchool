@@ -1,6 +1,6 @@
 async function carregarNotasAluno() {
   try {
-    const response = await fetch("/afonso/owl-school/api/utils/nota/nota_aluno.php", {
+    const response = await fetch("/afonso/owl-school/api/utils/aluno/nota_aluno.php", {
       method: "POST"
     });
 
