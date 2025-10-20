@@ -1,43 +1,53 @@
 <?php
+
 require_once __DIR__ . '/../../db/conexao.php';
 header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $prova_id = $_POST['prova_id'] ?? '';
-    $aluno_id = $_POST['aluno_id'] ?? '';
-    $nota     = $_POST['nota'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Método inválido.'
+  ]);
+  exit;
+}
 
-    if ($prova_id === '' || $aluno_id === '' || $nota === '') {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Campos obrigatórios não informados.'
-        ]);
-        exit;
-    }
 
-    $sql = "
-        INSERT INTO prova_nota (prova_id, aluno_id, nota)
-        VALUES ($prova_id, $aluno_id, '$nota')
-        ON DUPLICATE KEY UPDATE nota = VALUES(nota)
-    ";
+$prova_id = $_POST['prova_id'] ?? '';
+$aluno_id = $_POST['aluno_id'] ?? '';
+$nota     = $_POST['nota']     ?? '';
 
-    if ($conn->query($sql)) {
-        echo json_encode([
-            'success' => true,
-            'message' => 'Nota criada ou atualizada com sucesso.'
-        ]);
-    } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Erro ao criar nota: ' . $conn->error
-        ]);
-    }
+
+if ($prova_id === '' || $aluno_id === '' || $nota === '') {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Campos obrigatórios não informados.'
+  ]);
+  exit;
+}
+
+
+$stmt = $conn->prepare("
+INSERT INTO prova_nota (prova_id, aluno_id, nota)
+  VALUES (?, ?, ?)
+  ON DUPLICATE KEY UPDATE nota = VALUES(nota)
+");
+$stmt->bind_param("iid", $prova_id, $aluno_id, $nota);
+
+
+if ($stmt->execute()) {
+  echo json_encode([
+    'success' => true,
+    'message' => 'Nota criada ou atualizada com sucesso.'
+  ]);
 
 } else {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Método inválido.'
-    ]);
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao criar nota: ' . $stmt->error
+  ]);
 }
-?>
+
+
+$stmt->close();
+$conn->close();
