@@ -4,7 +4,7 @@ async function carregarAgenda() {
     const resultado = await resposta.json();
 
     if (!resultado.success) {
-      alert("Erro: " + resultado.message);
+      alert(resultado.success);
       return;
     }
 
@@ -28,7 +28,17 @@ async function carregarAgenda() {
         let acoesHTML = "";
         if (tipoUsuario === "professor" || tipoUsuario === "admin") {
           acoesHTML = `
-            <button class="btn btn-sm btn-outline-secondary me-1" onclick="editarHorario(${h.id})">Editar</button>
+            <button
+  class="btn btn-sm btn-outline-secondary"
+  onclick="editarHorario(
+    ${h.id},
+    '${h.dia_semana}',
+    '${h.inicio}',
+    '${h.fim}',
+    '${h.disciplina?.replace(/'/g, "\\'") || ''}'
+  )">
+  Editar
+</button>
             <button class="btn btn-sm btn-outline-danger" onclick="excluirHorario(${h.id})">Excluir</button>
           `;
         }
@@ -44,7 +54,7 @@ async function carregarAgenda() {
       }
     }
   } catch {
-    alert("Erro de conexão ao listar horários.");
+    alert(resultado.success);
   }
 }
 

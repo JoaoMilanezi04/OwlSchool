@@ -1,20 +1,34 @@
-async function excluirAdvertencia(identificador) {
-  if (!identificador) return;
+async function excluirAdvertencia(id) {
+
+
+  if (!id) return;
+
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
-  const dados = new FormData();
-  dados.append("id", identificador);
+
+  const formularioDados = new FormData();
+
+  formularioDados.append("id", id);
+
 
   const resposta = await fetch("/afonso/owl-school/api/advertencia/delete.php", {
     method: "POST",
-    body: dados
+    body: formularioDados
+
   });
+
 
   const resultado = await resposta.json();
 
+
   if (resultado.success) {
-    if (typeof carregarAdvertencias === "function") carregarAdvertencias();
+
+    alert(resultado.message);
+
+    if (typeof carregarAdvertencias === "function") {carregarAdvertencias();}
+
+
   } else {
-    alert("Erro: " + (resultado.message || "Falha ao excluir"));
+    alert(resultado.message);
   }
 }

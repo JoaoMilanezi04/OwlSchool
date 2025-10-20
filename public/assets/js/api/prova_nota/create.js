@@ -1,7 +1,9 @@
 let idProvaAtual = null;
 let idAlunoAtual = null;
 
+
 async function abrirModalCriarNota(provaId, alunoId) {
+
   idProvaAtual = provaId;
   idAlunoAtual = alunoId;
 
@@ -9,35 +11,47 @@ async function abrirModalCriarNota(provaId, alunoId) {
   const modal = new bootstrap.Modal(elementoModal);
   modal.show();
 
-
   document.getElementById("create_nota").value = "";
 }
 
-document.getElementById("btnSalvarNota").onclick = async function () {
+
+async function salvarCriacaoNota() {
+
   let nota = document.getElementById("create_nota").value;
-  nota = nota.replace(",", "."); 
 
-  const formulario = new FormData();
-  formulario.append("prova_id", idProvaAtual);
-  formulario.append("aluno_id", idAlunoAtual);
-  formulario.append("nota", nota);
+  nota = nota.replace(",", ".");
 
-  try {
-    const resposta = await fetch("/afonso/owl-school/api/prova_nota/create.php", {
-      method: "POST",
-      body: formulario
-    });
 
-    const resultado = await resposta.json();
+  const formularioDados = new FormData();
 
-    if (resultado.success) {
-      alert("Nota lançada com sucesso!");
-      if (typeof listarNotasDaProva === "function") listarNotasDaProva(idProvaAtual);
-      bootstrap.Modal.getInstance(document.getElementById("createNotaModal")).hide();
-    } else {
-      alert("Erro ao criar nota: " + (resultado.message || "erro desconhecido."));
-    }
-  } catch (erro) {
-    alert("Erro ao criar nota.");
+  formularioDados.append("prova_id", idProvaAtual);
+  formularioDados.append("aluno_id", idAlunoAtual);
+  formularioDados.append("nota", nota);
+
+
+  const resposta = await fetch("/afonso/owl-school/api/prova_nota/create.php", {
+    method: "POST",
+    body: formularioDados
+
+  });
+
+
+  const resultado = await resposta.json();
+
+
+  if (resultado.success) {
+
+    alert("Nota lançada com sucesso!");
+
+    if (typeof listarNotasDaProva === "function") {listarNotasDaProva(idProvaAtual);}
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("createNotaModal"));
+    modal.hide();
+
+  } else {
+    alert("Erro ao criar nota: " + (resultado.message || "erro desconhecido."));
   }
-};
+}
+
+
+document.getElementById("btnSalvarNota").addEventListener("click", salvarCriacaoNota);

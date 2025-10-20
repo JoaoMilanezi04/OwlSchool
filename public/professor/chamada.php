@@ -64,8 +64,8 @@ require_role('professor');
                 </h2>
               </div>
 
-              <!-- Usado para saber qual chamada recarregar após criar/editar/excluir -->
-              <input type="hidden" id="chamada_id">
+ 
+              
 
               <div class="table-responsive">
                 <table class="table table-striped align-middle mb-0">

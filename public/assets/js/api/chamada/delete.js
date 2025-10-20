@@ -1,20 +1,28 @@
-async function excluirChamada(identificador) {
-  if (!identificador) return;
+async function excluirChamada(id) {
+
+  if (!id) return;
+
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
-  const dados = new FormData();
-  dados.append("id", identificador);
+  const formularioDados = new FormData();
+
+  formularioDados.append("id", id);
 
   const resposta = await fetch("/afonso/owl-school/api/chamada/delete.php", {
     method: "POST",
-    body: dados
+    body: formularioDados
+
   });
 
   const resultado = await resposta.json();
 
-if (resultado.success) {
-  location.reload();
-} else {
-  alert("Erro: " + (resultado.message || "Falha ao excluir chamada."));
-}
+  if (resultado.success) {
+
+    alert(resultado.message);
+
+    location.reload();
+
+  } else {
+    alert(resultado.message);
+  }
 }

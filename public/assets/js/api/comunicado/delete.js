@@ -1,21 +1,28 @@
-async function excluirComunicado(identificador) {
-  if (!identificador) return;
+async function excluirComunicado(id) {
+
+  if (!id) return;
 
   if (!confirm("Tem certeza que deseja excluir?")) return;
 
-  const dados = new FormData();
-  dados.append("id", identificador);
+  const formularioDados = new FormData();
+
+  formularioDados.append("id", id);
 
   const resposta = await fetch("/afonso/owl-school/api/comunicado/delete.php", {
     method: "POST",
-    body: dados
+    body: formularioDados
+
   });
 
   const resultado = await resposta.json();
 
   if (resultado.success) {
-    if (typeof carregarComunicados === "function") carregarComunicados();
+
+    alert(resultado.message);
+
+    if (typeof carregarComunicados === "function") {carregarComunicados();}
+
   } else {
-    alert("Erro: " + (resultado.message || "falha ao excluir"));
+    alert(resultado.message);
   }
 }

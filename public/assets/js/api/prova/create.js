@@ -1,35 +1,39 @@
 async function criarProva() {
 
-  const campoTitulo = document.getElementById("titulo");
-  const campoData   = document.getElementById("data");
 
-  const titulo = campoTitulo.value;
-  const data   = campoData.value;
+  const titulo = document.getElementById("titulo").value;
+  const data   = document.getElementById("data").value;
+
 
   const formularioDados = new FormData();
+
   formularioDados.append("titulo", titulo);
   formularioDados.append("data", data);
+
 
   const resposta = await fetch("/afonso/owl-school/api/prova/create.php", {
     method: "POST",
     body: formularioDados
+
   });
+
 
   const resultado = await resposta.json();
 
+
   if (resultado.success) {
-    alert("Prova criada!");
 
-    campoTitulo.value = "";
-    campoData.value = "";
+    alert(resultado.message);
 
-    if (typeof carregarProvas === "function") {
-      carregarProvas();
-    }
+    document.getElementById("titulo").value = "";
+    document.getElementById("data").value   = "";
+
+    if (typeof carregarProvas === "function") {carregarProvas();}
 
   } else {
-    alert("Erro: " + resultado.message);
+    alert(resultado.message);
   }
 }
+
 
 document.getElementById("btnCriar").addEventListener("click", criarProva);

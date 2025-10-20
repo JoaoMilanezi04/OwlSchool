@@ -1,31 +1,33 @@
 async function criarChamada() {
 
-  const campoData = document.getElementById("data");
 
-  const data = campoData.value;
+  const data = document.getElementById("data").value;
 
   const formularioDados = new FormData();
+
   formularioDados.append("data", data);
+
 
   const resposta = await fetch("/afonso/owl-school/api/chamada/create.php", {
     method: "POST",
     body: formularioDados
+
   });
 
   const resultado = await resposta.json();
 
   if (resultado.success) {
-    alert("Chamada criada!");
 
-    campoData.value = "";
+    alert(resultado.message);
 
-    if (typeof carregarChamadas === "function") {
-      carregarChamadas();
-    }
+    document.getElementById("data").value = "";
+
+    if (typeof carregarChamadas === "function") {carregarChamadas()}
 
   } else {
-    alert("Erro: " + resultado.message);
+    alert(resultado.message);
   }
 }
+
 
 document.getElementById("btnCriarChamada").addEventListener("click", criarChamada);

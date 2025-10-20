@@ -1,57 +1,71 @@
 let idDoComunicadoAtual = null;
 
+
 async function editarComunicado(idComunicado) {
+
   idDoComunicadoAtual = idComunicado;
 
   const elementoModal = document.getElementById("editModalComunicado");
   const modal = new bootstrap.Modal(elementoModal);
   modal.show();
 
-  try {
-    const resposta = await fetch("/afonso/owl-school/api/comunicado/read.php", {
-      method: "POST"
-    });
-    const dados = await resposta.json();
 
-    const comunicado = dados.comunicados.find(c => String(c.id) === String(idComunicado));
-    if (!comunicado) throw new Error("Comunicado não encontrado.");
+  const resposta = await fetch("/afonso/owl-school/api/comunicado/read.php", {
+    method: "POST"
+  });
 
-    document.getElementById("edit_titulo").value = comunicado.titulo;
-    document.getElementById("edit_corpo").value  = comunicado.corpo;
+  const dados = await resposta.json();
 
-  } catch (erro) {
-    alert("Erro ao carregar comunicado.");
+  const comunicado = dados.comunicados.find(c => String(c.id) === String(idComunicado));
+
+  if (!comunicado) {
+    alert("Comunicado não encontrado.");
+    return;
   }
+
+  document.getElementById("edit_titulo").value = comunicado.titulo;
+  document.getElementById("edit_corpo").value  = comunicado.corpo;
 }
 
-document.getElementById("btnSalvarComunicado").onclick = async function () {
+
+async function salvarComunicado() {
+
   const titulo = document.getElementById("edit_titulo").value;
   const corpo  = document.getElementById("edit_corpo").value;
 
-  const form = new FormData();
-  form.append("id", idDoComunicadoAtual);
-  form.append("titulo", titulo);
-  form.append("corpo",  corpo);
 
-  try {
-    const resposta = await fetch("/afonso/owl-school/api/comunicado/update.php", {
-      method: "POST",
-      body: form
-    });
-    const resultado = await resposta.json();
+  const formularioDados = new FormData();
 
-    if (resultado.success) {
-      alert("Comunicado atualizado com sucesso!");
-      if (typeof carregarComunicados === "function") carregarComunicados();
+  formularioDados.append("id", idDoComunicadoAtual);
+  formularioDados.append("titulo", titulo);
+  formularioDados.append("corpo", corpo);
 
-      const elementoModal = document.getElementById("editModalComunicado");
-      const modal = bootstrap.Modal.getInstance(elementoModal);
-      modal.hide();
 
-    } else {
-      alert("Erro ao atualizar comunicado: " + (resultado.message || "erro desconhecido."));
+  const resposta = await fetch("/afonso/owl-school/api/comunicado/update.php", {
+    method: "POST",
+    body: formularioDados
+
+  });
+
+
+  const resultado = await resposta.json();
+
+
+  if (resultado.success) {
+
+    alert("Comunicado atualizado com sucesso!");
+
+    if (typeof carregarComunicados === "function") {
+      carregarComunicados();
     }
-  } catch (erro) {
-    alert("Erro ao atualizar comunicado.");
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("editModalComunicado"));
+    modal.hide();
+
+  } else {
+    alert("Erro ao atualizar comunicado: " + (resultado.message || "erro desconhecido."));
   }
-};
+}
+
+
+document.getElementById("btnSalvarComunicado").addEventListener("click", salvarComunicado);

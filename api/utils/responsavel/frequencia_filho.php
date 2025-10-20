@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$responsavelId = (int) $_SESSION['user_id'];
+$responsavelId = $_SESSION['user_id'];
 
 
 $stmt = $conn->prepare("
@@ -38,6 +38,17 @@ $stmt->execute();
 
 
 $resultado = $stmt->get_result();
+
+
+if (!$resultado) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao listar frequências: ' . $conn->error
+  ]);
+  exit;
+}
+
+
 $frequencias = [];
 
 

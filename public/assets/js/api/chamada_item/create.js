@@ -1,7 +1,9 @@
 let idChamadaAtual = null;
 let idAlunoAtualChamada = null;
 
+
 async function abrirModalCriarChamadaItem(chamadaId, alunoId) {
+
   idChamadaAtual = chamadaId;
   idAlunoAtualChamada = alunoId;
 
@@ -12,30 +14,42 @@ async function abrirModalCriarChamadaItem(chamadaId, alunoId) {
   document.getElementById("create_status").value = "presente";
 }
 
-document.getElementById("btnSalvarChamadaItem").onclick = async function () {
+
+async function salvarChamadaItem() {
+
   const status = document.getElementById("create_status").value;
 
-  const formulario = new FormData();
-  formulario.append("chamada_id", idChamadaAtual);
-  formulario.append("aluno_id", idAlunoAtualChamada);
-  formulario.append("status", status);
 
-  try {
-    const resposta = await fetch("/afonso/owl-school/api/chamada_item/create.php", {
-      method: "POST",
-      body: formulario
-    });
+  const formularioDados = new FormData();
 
-    const resultado = await resposta.json();
+  formularioDados.append("chamada_id", idChamadaAtual);
+  formularioDados.append("aluno_id", idAlunoAtualChamada);
+  formularioDados.append("status", status);
 
-    if (resultado.success) {
-      alert("Presença lançada com sucesso!");
-      if (typeof listarItensDaChamada === "function") listarItensDaChamada(idChamadaAtual);
-      bootstrap.Modal.getInstance(document.getElementById("createChamadaItemModal")).hide();
-    } else {
-      alert("Erro ao lançar presença: " + (resultado.message || "erro desconhecido."));
-    }
-  } catch (erro) {
-    alert("Erro ao lançar presença.");
+
+  const resposta = await fetch("/afonso/owl-school/api/chamada_item/create.php", {
+    method: "POST",
+    body: formularioDados
+
+  });
+
+
+  const resultado = await resposta.json();
+
+
+  if (resultado.success) {
+
+    alert(resultado.message);
+
+    if (typeof listarItensDaChamada === "function") {listarItensDaChamada(idChamadaAtual);}
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("createChamadaItemModal"));
+    modal.hide();
+
+  } else {
+    alert(resultado.message);
   }
-};
+}
+
+
+document.getElementById("btnSalvarChamadaItem").addEventListener("click", salvarChamadaItem);

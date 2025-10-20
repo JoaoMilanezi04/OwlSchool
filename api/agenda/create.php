@@ -13,10 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$diaSemana  = $_POST['dia_semana'] ?? '';
-$horaInicio = $_POST['inicio'] ?? '';
-$horaFim    = $_POST['fim'] ?? '';
-$disciplina = $_POST['disciplina'] ?? '';
+$diaSemana  = $_POST['dia_semana'];
+$horaInicio = $_POST['inicio'];
+$horaFim    = $_POST['fim'];
+$disciplina = $_POST['disciplina'];
 
 
 if (empty($diaSemana) || empty($horaInicio) || empty($horaFim) || empty($disciplina)) {
@@ -36,7 +36,6 @@ if ($stmt->execute()) {
   echo json_encode([
     "success" => true,
     "message" => "Horário criado com sucesso.",
-    "id" => $conn->insert_id
   ]);
   
 } else {

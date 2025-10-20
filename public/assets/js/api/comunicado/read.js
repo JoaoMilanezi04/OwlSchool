@@ -12,10 +12,23 @@ async function carregarComunicados() {
       return;
     }
 
+
+
+
+
     const tipoUsuario = resultado.tipo_usuario;
     const corpoTabela = document.getElementById("tbodyComunicados");
     corpoTabela.innerHTML = "";
 
+    if (!resultado.comunicados || resultado.comunicados.length === 0) {
+      corpoTabela.insertAdjacentHTML("beforeend", `
+        <tr>
+          <td colspan="2" class="text-center text-muted">Nenhum Comunicado.</td>
+        </tr>
+      `);
+      return;
+    }
+    
     for (const comunicado of resultado.comunicados) {
       let acoesHTML = "";
       if (tipoUsuario === "professor" || tipoUsuario === "admin") {

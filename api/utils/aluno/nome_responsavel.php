@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 
 
-$alunoId =$_SESSION['user_id'];
+$alunoId = $_SESSION['user_id'];
 
 
 $stmt = $conn->prepare("
@@ -36,6 +36,15 @@ $stmt->execute();
 $resultado = $stmt->get_result();
 
 
+if (!$resultado) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao listar nome do responsável: ' . $conn->error
+  ]);
+  exit;
+}
+
+
 while ($linha = $resultado->fetch_assoc()) {
   $nomeResponsavel = $linha['nome_responsavel'];
 }
@@ -46,13 +55,13 @@ if ($nomeResponsavel) {
     'success' => true,
     'nome_responsavel' => $nomeResponsavel
   ]);
+
 } else {
   echo json_encode([
     'success' => false,
     'message' => 'Responsável não encontrado.'
   ]);
 }
-
 
 
 $stmt->close();

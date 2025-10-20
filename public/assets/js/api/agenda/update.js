@@ -1,36 +1,54 @@
 let idDoHorarioAtual = null;
 
-async function editarHorario(idHorario) {
+function editarHorario(idHorario, dia_semana, inicio, fim, disciplina) {
+
   idDoHorarioAtual = idHorario;
 
-  try {
-    const resposta = await fetch("/afonso/owl-school/api/agenda/read.php", { method: "POST" });
-    const dados = await resposta.json();
-    if (!dados.success) throw new Error(dados.message || "Falha ao listar.");
+  document.getElementById("edit_dia_semana").value = dia_semana;
+  document.getElementById("edit_inicio").value     = inicio;
+  document.getElementById("edit_fim").value        = fim;
+  document.getElementById("edit_disciplina").value = disciplina;
 
-    // procurar o horário dentro de por_dia
-    const dias = ["segunda", "terca", "quarta", "quinta", "sexta"];
-    let horario = null;
-    for (const d of dias) {
-      const lista = (dados.por_dia && dados.por_dia[d]) ? dados.por_dia[d] : [];
-      horario = lista.find(h => String(h.id) === String(idHorario));
-      if (horario) break;
-    }
-    if (!horario) throw new Error("Horário não encontrado.");
+  const elementoModal = document.getElementById("editModalHorario");
+  const modal = new bootstrap.Modal(elementoModal);
+  modal.show();
 
-    // preencher campos
-    document.getElementById("edit_dia_semana").value = horario.dia_semana;
-    document.getElementById("edit_inicio").value     = horario.inicio; // "HH:MM"
-    document.getElementById("edit_fim").value        = horario.fim;    // "HH:MM"
-    document.getElementById("edit_disciplina").value = horario.disciplina;
+}
 
-    // abrir modal só depois de preencher
-    const elementoModal = document.getElementById("editModalHorario");
-    const modal = new bootstrap.Modal(elementoModal);
-    modal.show();
+async function salvarEdicaoHorario() {
 
-  } catch (erro) {
-    alert("Erro ao carregar horário.");
-    console.error(erro);
+  const dia_semana = document.getElementById("edit_dia_semana").value;
+  const inicio     = document.getElementById("edit_inicio").value;
+  const fim        = document.getElementById("edit_fim").value;
+  const disciplina = document.getElementById("edit_disciplina").value;
+
+  const formulario = new FormData();
+
+  formulario.append("id", idDoHorarioAtual);
+  formulario.append("dia_semana", dia_semana);
+  formulario.append("inicio", inicio);
+  formulario.append("fim", fim);
+  formulario.append("disciplina", disciplina);
+
+  const resposta = await fetch("/afonso/owl-school/api/agenda/update.php", {
+    method: "POST",
+    body: formulario
+
+  });
+
+  const resultado = await resposta.json();
+
+  if (resultado.success) {
+    alert(resultado.success);
+
+    if (typeof carregarAgenda === "function") carregarAgenda();
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("editModalHorario"));
+    modal.hide();
+  
+  } else {
+    alert(resultado.success);
   }
 }
+
+document.getElementById("btnSalvarEdicaoHorario").addEventListener("click", salvarEdicaoHorario);

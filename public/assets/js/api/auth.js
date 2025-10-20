@@ -1,4 +1,4 @@
-// login.js — simples: getElementById + fetch + FormData
+
 document.getElementById("formLogin").onsubmit = async function (e) {
   e.preventDefault();
 

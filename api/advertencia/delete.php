@@ -16,19 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $id = $_POST['id'];
 
 
-$stmt1 = $conn->prepare("DELETE FROM aluno_advertencia WHERE advertencia_id = ?");
-$stmt1->bind_param("i", $id);
+$stmt = $conn->prepare("DELETE FROM advertencia WHERE id = ?");
+$stmt->bind_param("i", $id);
 
 
-$stmt1->execute();
-$stmt1->close();
-
-
-$stmt2 = $conn->prepare("DELETE FROM advertencia WHERE id = ?");
-$stmt2->bind_param("i", $id);
-
-
-if ($stmt2->execute()) {
+if ($stmt->execute()) {
   echo json_encode([
     'success' => true,
     'message' => 'Advertência excluída com sucesso.'

@@ -38,8 +38,6 @@ require_role('admin');
               <div class="mb-3">
                 <label class="form-label">Aluno</label>
 <select id="aluno_id" class="form-select" required></select>
-
-                <!-- Dica: depois você pode trocar por um <select> populado via API de alunos -->
               </div>
 
               <button id="btnCriarAdvertencia" class="btn btn-primary w-100">Salvar</button>
@@ -69,7 +67,7 @@ require_role('admin');
           </div>
         </div>
 
-      </div> <!-- /row -->
+      </div> 
     </main>
   </div>
 

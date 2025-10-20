@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$responsavelId = (int) $_SESSION['user_id'];
+$responsavelId = $_SESSION['user_id'];
 
 
 $stmt = $conn->prepare("
@@ -33,7 +33,15 @@ $stmt->execute();
 
 
 $resultado = $stmt->get_result();
-$nomeFilho = null;
+
+
+if (!$resultado) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao listar mome dp filho: ' . $conn->error
+  ]);
+  exit;
+}
 
 
 while ($linha = $resultado->fetch_assoc()) {
@@ -46,6 +54,7 @@ if ($nomeFilho) {
     'success' => true,
     'nome_filho' => $nomeFilho
   ]);
+
 } else {
   echo json_encode([
     'success' => false,

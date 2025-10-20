@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../db/conexao.php';
+
 header('Content-Type: application/json');
 
 
@@ -13,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$titulo = $_POST['titulo'] ?? '';
-$data   = $_POST['data']   ?? '';
+$titulo = $_POST['titulo'];
+$data   = $_POST['data'];
 
 
 if (empty($titulo) || empty($data)) {
@@ -26,15 +27,16 @@ if (empty($titulo) || empty($data)) {
 }
 
 
+
 $stmt = $conn->prepare("INSERT INTO prova (titulo, data) VALUES (?, ?)");
 $stmt->bind_param("ss", $titulo, $data);
+
 
 
 if ($stmt->execute()) {
   echo json_encode([
     'success' => true,
     'message' => 'Prova criada com sucesso.',
-    'id'      => $conn->insert_id
   ]);
 
 } else {

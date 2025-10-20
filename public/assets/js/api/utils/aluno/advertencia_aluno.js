@@ -14,7 +14,7 @@ async function carregarAdvertencias() {
     const corpoTabela = document.getElementById("tbodyAdvertencias");
     corpoTabela.innerHTML = "";
 
-    // caso não tenha nenhuma advertência
+ 
     if (!resultado.advertencias || resultado.advertencias.length === 0) {
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>

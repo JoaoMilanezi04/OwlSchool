@@ -6,7 +6,7 @@ async function carregarChamadas() {
     const resultado = await response.json();
 
     if (!resultado.success) {
-      alert("Erro: " + resultado.message);
+      alert(resultado.success);
       return;
     }
 
@@ -36,7 +36,7 @@ async function carregarChamadas() {
 }
 
   } catch (erro) {
-    alert("Erro de conexão ao listar chamadas.");
+    alert(resultado.success);
   }
 }
 

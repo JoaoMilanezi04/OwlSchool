@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../db/conexao.php';
+
 header('Content-Type: application/json');
 
 
@@ -13,11 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$nome         = $_POST['nome']         ?? '';
-$email        = $_POST['email']        ?? '';
-$senha        = $_POST['senha']        ?? '';
-$tipo_usuario = $_POST['tipo_usuario'] ?? '';
-$telefone     = $_POST['telefone']     ?? '';
+$nome         = $_POST['nome'];
+$email        = $_POST['email'];
+$senha        = $_POST['senha'];
+$tipo_usuario = $_POST['tipo_usuario'];
+$telefone     = $_POST['telefone'];
 
 
 if (empty($nome) || empty($email) || empty($senha) || empty($tipo_usuario)) {
@@ -29,10 +30,7 @@ if (empty($nome) || empty($email) || empty($senha) || empty($tipo_usuario)) {
 }
 
 
-$stmtUsuario = $conn->prepare("
-  INSERT INTO usuario (nome, email, senha, tipo_usuario)
-  VALUES (?, ?, ?, ?)
-");
+$stmtUsuario = $conn->prepare("INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)");
 $stmtUsuario->bind_param("ssss", $nome, $email, $senha, $tipo_usuario);
 
 
@@ -68,7 +66,6 @@ if ($stmtUsuario->execute()) {
   echo json_encode([
     'success' => true,
     'message' => 'Usuário criado com sucesso.',
-    'id'      => $novoUsuarioId
   ]);
 
 } else {
@@ -76,8 +73,7 @@ if ($stmtUsuario->execute()) {
     'success' => false,
     'message' => 'Erro ao criar usuário: ' . $stmtUsuario->error
   ]);
-  $stmtUsuario->close();
 }
 
-
+$stmtUsuario->close();
 $conn->close();

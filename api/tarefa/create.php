@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../db/conexao.php';
+
 header('Content-Type: application/json');
 
 
@@ -13,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$titulo       = $_POST['titulo']       ?? '';
-$descricao    = $_POST['descricao']    ?? '';
-$data_entrega = $_POST['data_entrega'] ?? '';
+$titulo       = $_POST['titulo'];
+$descricao    = $_POST['descricao'];
+$data_entrega = $_POST['data_entrega'];
 
 
 if (empty($titulo) || empty($descricao) || empty($data_entrega)) {
@@ -35,7 +36,6 @@ if ($stmt->execute()) {
   echo json_encode([
     'success' => true,
     'message' => 'Tarefa criada com sucesso.',
-    'id'      => $conn->insert_id
   ]);
 
 } else {

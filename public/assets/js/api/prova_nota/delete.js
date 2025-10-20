@@ -1,20 +1,27 @@
 async function excluirNota(provaId, alunoId) {
+
   if (!confirm("Tem certeza que deseja excluir esta nota?")) return;
 
-  const fd = new FormData();
-  fd.append("prova_id", provaId);
-  fd.append("aluno_id", alunoId);
+  const formularioDados = new FormData();
 
-  try {
-    const resp = await fetch("/afonso/owl-school/api/prova_nota/delete.php", {
-      method: "POST",
-      body: fd
-    });
-    const resultado = await resp.json();
+  formularioDados.append("prova_id", provaId);
+  formularioDados.append("aluno_id", alunoId);
+
+  const resposta = await fetch("/afonso/owl-school/api/prova_nota/delete.php", {
+    method: "POST",
+    body: formularioDados
+
+  });
+
+  const resultado = await resposta.json();
+
+  if (resultado.success) {
 
     alert(resultado.message);
-    if (resultado.success) listarNotasDaProva(provaId);
-  } catch (erro) {
-    alert("Erro ao excluir nota.");
+
+    if (typeof listarNotasDaProva === "function") {listarNotasDaProva(provaId);}
+
+  } else {
+    alert(resultado.message);
   }
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../db/conexao.php';
+
 header('Content-Type: application/json');
 
 
@@ -13,26 +14,24 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$prova_id = $_POST['prova_id'] ?? '';
-$aluno_id = $_POST['aluno_id'] ?? '';
-$nota     = $_POST['nota']     ?? '';
+$prova_id = $_POST['prova_id'];
+$aluno_id = $_POST['aluno_id'];
+$nota     = $_POST['nota'];
 
 
-if ($prova_id === '' || $aluno_id === '' || $nota === '') {
+if (empty($prova_id) || empty($aluno_id) || empty($nota)) {
   echo json_encode([
     'success' => false,
-    'message' => 'Campos obrigatórios não informados.'
+    'message' => 'Campos obrigatórios ausentes.'
   ]);
   exit;
 }
 
 
-$stmt = $conn->prepare("
-INSERT INTO prova_nota (prova_id, aluno_id, nota)
-  VALUES (?, ?, ?)
-  ON DUPLICATE KEY UPDATE nota = VALUES(nota)
-");
+
+$stmt = $conn->prepare("INSERT INTO prova_nota (prova_id, aluno_id, nota) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE nota = VALUES(nota)");
 $stmt->bind_param("iid", $prova_id, $aluno_id, $nota);
+
 
 
 if ($stmt->execute()) {

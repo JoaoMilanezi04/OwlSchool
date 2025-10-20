@@ -26,6 +26,16 @@ $stmt->execute();
 
 
 $resultado = $stmt->get_result();
+
+
+if (!$resultado) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao listar alunos: ' . $conn->error
+  ]);
+  exit;
+}
+
 $alunos = [];
 
 
@@ -39,6 +49,7 @@ if (count($alunos) > 0) {
     'success' => true,
     'alunos' => $alunos
   ]);
+
 } else {
   echo json_encode([
     'success' => false,

@@ -29,6 +29,19 @@ $stmt->execute();
 
 
 $resultado = $stmt->get_result();
+
+
+
+if (!$resultado) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao buscar horários: ' . $conn->error
+  ]);
+  exit;
+}
+
+
+
 $porDia = ['segunda'=>[], 'terca'=>[], 'quarta'=>[], 'quinta'=>[], 'sexta'=>[]];
 
 

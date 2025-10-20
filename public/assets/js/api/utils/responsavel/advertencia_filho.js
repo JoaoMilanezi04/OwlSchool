@@ -13,7 +13,7 @@ async function carregarAdvertencias() {
     const corpoTabela = document.getElementById("tbodyAdvertencias");
     corpoTabela.innerHTML = "";
 
-    // se vier vazio, mostra uma linha amigável (opcional)
+
     if (!resultado.advertencias || resultado.advertencias.length === 0) {
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>

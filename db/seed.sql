@@ -53,3 +53,39 @@ INSERT INTO aluno_responsavel (aluno_id, responsavel_id) VALUES
   (1, 4),
   (2, 5),
   (3, 6);
+
+
+
+/* ==============================
+   HORÁRIOS DE AULA
+   ============================== */
+INSERT INTO horarios_aula (dia_semana, inicio, fim, disciplina) VALUES
+  ('segunda', '07:30:00', '08:20:00', 'Matemática'),
+  ('segunda', '08:20:00', '09:10:00', 'Português'),
+  ('segunda', '09:20:00', '10:10:00', 'Ciências'),
+  ('segunda', '10:10:00', '11:00:00', 'História'),
+  ('segunda', '11:00:00', '11:50:00', 'Geografia'),
+
+  ('terca', '07:30:00', '08:20:00', 'Inglês'),
+  ('terca', '08:20:00', '09:10:00', 'Matemática'),
+  ('terca', '09:20:00', '10:10:00', 'Português'),
+  ('terca', '10:10:00', '11:00:00', 'Educação Física'),
+  ('terca', '11:00:00', '11:50:00', 'Artes'),
+
+  ('quarta', '07:30:00', '08:20:00', 'História'),
+  ('quarta', '08:20:00', '09:10:00', 'Geografia'),
+  ('quarta', '09:20:00', '10:10:00', 'Matemática'),
+  ('quarta', '10:10:00', '11:00:00', 'Português'),
+  ('quarta', '11:00:00', '11:50:00', 'Ciências'),
+
+  ('quinta', '07:30:00', '08:20:00', 'Matemática'),
+  ('quinta', '08:20:00', '09:10:00', 'Inglês'),
+  ('quinta', '09:20:00', '10:10:00', 'Português'),
+  ('quinta', '10:10:00', '11:00:00', 'História'),
+  ('quinta', '11:00:00', '11:50:00', 'Educação Física'),
+
+  ('sexta', '07:30:00', '08:20:00', 'Geografia'),
+  ('sexta', '08:20:00', '09:10:00', 'Matemática'),
+  ('sexta', '09:20:00', '10:10:00', 'Português'),
+  ('sexta', '10:10:00', '11:00:00', 'Ciências'),
+  ('sexta', '11:00:00', '11:50:00', 'Artes');

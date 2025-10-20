@@ -11,9 +11,20 @@ async function carregarTarefas() {
       return;
     }
 
-    const tipoUsuario = resultado.tipo_usuario; // vem da sessão PHP
+    const tipoUsuario = resultado.tipo_usuario; 
     const corpoTabela = document.getElementById("tbodyTarefas");
     corpoTabela.innerHTML = "";
+
+    
+    if (!resultado.tarefas || resultado.tarefas.length === 0) {
+      corpoTabela.insertAdjacentHTML("beforeend", `
+        <tr>
+          <td colspan="2" class="text-center text-muted">Nenhuma Tarefa.</td>
+        </tr>
+      `);
+      return;
+    }
+    
 
     for (const tarefa of resultado.tarefas) {
       let acoesHTML = "";

@@ -15,34 +15,28 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$email = $_POST['email'] ?? '';
-$senha = $_POST['senha'] ?? '';
+$email = $_POST['email'];
+$senha = $_POST['senha'];
 
 
-$stmt = $conn->prepare("
-  SELECT 
-    id,
-    nome,
-    tipo_usuario
-  FROM usuario
-  WHERE email = ?
-    AND senha = ?
-");
+if (empty($email) || empty($senha)) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Campos obrigatórios ausentes.'
+  ]);
+  exit;
+}
+
+
+$stmt = $conn->prepare("SELECT id, nome, tipo_usuario FROM usuario WHERE email = ? AND senha = ?");
 $stmt->bind_param("ss", $email, $senha);
+
 $stmt->execute();
 
 
 $resultado = $stmt->get_result();
+
 $usuario = $resultado->fetch_assoc();
-
-
-if (!$usuario) {
-  echo json_encode([
-    'success' => false,
-    'message' => 'Usuário ou senha incorretos.'
-  ]);
-  exit;
-}
 
 
 $_SESSION['user_id'] = $usuario['id'];

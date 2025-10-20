@@ -1,7 +1,7 @@
   <?php
 
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
-  header('Location: afonso/owl-school/public/index.php?erro=acesso_negado');
+  header('Location: ../index.php?erro=acesso_negado');
   exit;
 }
 

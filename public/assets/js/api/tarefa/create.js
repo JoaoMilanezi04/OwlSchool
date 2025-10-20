@@ -1,58 +1,40 @@
 async function criarTarefa() {
 
 
-
-  const campoTitulo = document.getElementById("titulo");
-  const campoDescricao = document.getElementById("descricao");
-  const campoDataEntrega = document.getElementById("data_entrega");
-
-
-
-
-  const titulo = campoTitulo.value;
-  const descricao = campoDescricao.value;
-  const data_entrega = campoDataEntrega.value;
-
-
+  const titulo        = document.getElementById("titulo").value;
+  const descricao     = document.getElementById("descricao").value;
+  const data_entrega  = document.getElementById("data_entrega").value;
 
 
   const formularioDados = new FormData();
-
 
   formularioDados.append("titulo", titulo);
   formularioDados.append("descricao", descricao);
   formularioDados.append("data_entrega", data_entrega);
 
 
-
   const resposta = await fetch("/afonso/owl-school/api/tarefa/create.php", {
     method: "POST",
     body: formularioDados
-  });
 
+  });
 
 
   const resultado = await resposta.json();
 
 
-
   if (resultado.success) {
-    alert("Tarefa criada!");
 
+    alert(resultado.message);
 
-    campoTitulo.value = "";
-    campoDescricao.value = "";
-    campoDataEntrega.value = "";
+    document.getElementById("titulo").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("data_entrega").value = "";
 
-
-
-    if (typeof carregarTarefas === "function") {
-      carregarTarefas();
-    }
-
+    if (typeof carregarTarefas === "function") {carregarTarefas();}
 
   } else {
-    alert("Erro: " + resultado.message);
+    alert(resultado.message);
   }
 }
 

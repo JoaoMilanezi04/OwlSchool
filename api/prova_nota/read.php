@@ -15,20 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $prova_id = $_POST['prova_id'];
 
-$titulo_prova = '';
-
-$stmtTitulo = $conn->prepare("SELECT titulo FROM prova WHERE id = ? LIMIT 1");
-$stmtTitulo->bind_param("i", $prova_id);
-$stmtTitulo->execute();
-
-$rsTitulo = $stmtTitulo->get_result();
-
-if ($rsTitulo && $rsTitulo->num_rows) {
-  $titulo_prova = $rsTitulo->fetch_assoc()['titulo'];
-}
-
-$stmtTitulo->close();
-
 
 $stmt = $conn->prepare("
   SELECT 
@@ -46,13 +32,12 @@ $stmt = $conn->prepare("
 $stmt->bind_param("i", $prova_id);
 $stmt->execute();
 
-
 $resultado = $stmt->get_result();
 
 if (!$resultado) {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao listar: ' . $conn->error
+    'message' => 'Erro ao listar notas: ' . $conn->error
   ]);
   exit;
 }
@@ -65,6 +50,7 @@ while ($linha = $resultado->fetch_assoc()) {
   $nota = $linha['nota'];
   if ($nota !== null) $nota = (float)$nota;
 
+  
   $notas[] = [
     'aluno_id' => (int)$linha['aluno_id'],
     'aluno_nome' => $linha['aluno_nome'],
@@ -76,7 +62,6 @@ while ($linha = $resultado->fetch_assoc()) {
 echo json_encode([
   'success' => true,
   'prova_id' => $prova_id,
-  'titulo_prova' => $titulo_prova,
   'notas' => $notas
 ]);
 

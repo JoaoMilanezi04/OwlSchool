@@ -33,6 +33,18 @@ $stmt->execute();
 
 
 $resultado = $stmt->get_result();
+
+
+
+if (!$resultado) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao listar frequências: ' . $conn->error
+  ]);
+  exit;
+}
+
+
 $frequencias = [];
 
 

@@ -1,48 +1,46 @@
 async function criarHorario() {
 
 
-
-  const campoDia = document.getElementById("dia_semana");
-  const campoInicio = document.getElementById("inicio");
-  const campoFim = document.getElementById("fim");
-  const campoDisciplina = document.getElementById("disciplina");
-
+  const dia_semana = document.getElementById("dia_semana").value;
+  const inicio = document.getElementById("inicio").value;
+  const fim = document.getElementById("fim").value;
+  const disciplina = document.getElementById("disciplina").value;
 
 
-  const dados = new FormData();
+  const formularioDados = new FormData();
 
-
-  dados.append("dia_semana", campoDia.value);
-  dados.append("inicio", campoInicio.value);
-  dados.append("fim", campoFim.value);
-  dados.append("disciplina", campoDisciplina.value);
-
+  formularioDados.append("dia_semana", dia_semana);
+  formularioDados.append("inicio", inicio);
+  formularioDados.append("fim", fim);
+  formularioDados.append("disciplina", disciplina);
 
 
   const resposta = await fetch("/afonso/owl-school/api/agenda/create.php", {
     method: "POST",
-    body: dados
-  });
+    body: formularioDados
 
+  });
 
 
   const resultado = await resposta.json();
 
 
-
   if (resultado.success) {
-    alert("Horário criado!");
 
-    campoDia.value = "";
-    campoInicio.value = "";
-    campoFim.value = "";
-    campoDisciplina.value = "";
+    alert(resultado.message);
 
-    
-    if (typeof carregarAgenda === "function") carregarAgenda();
+    document.getElementById("dia_semana").value = "";
+    document.getElementById("inicio").value = "";
+    document.getElementById("fim").value = "";
+    document.getElementById("disciplina").value = "";
+
+
+    if (typeof carregarAgenda === "function") {carregarAgenda();}
+
   } else {
-    alert("Erro: " + resultado.message);
+    alert(resultado.message);
   }
 }
+
 
 document.getElementById("btnCriarHorario").addEventListener("click", criarHorario);

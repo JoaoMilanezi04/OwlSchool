@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$data = $_POST['data'] ?? '';
+$data = $_POST['data'];
 
 
 if (empty($data)) {
   echo json_encode([
     'success' => false,
-    'message' => 'Campo "data" é obrigatório.'
+    'message' => 'Campos obrigatórios ausentes.'
   ]);
   exit;
 }
@@ -33,7 +33,6 @@ if ($stmt->execute()) {
   echo json_encode([
     'success' => true,
     'message' => 'Chamada criada com sucesso.',
-    'id'      => $conn->insert_id
   ]);
 
 } else {

@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-$chamadaId = $_POST['chamada_id'] ?? 0;
-$alunoId   = $_POST['aluno_id']   ?? 0;
-$status    = $_POST['status']     ?? '';
+$chamadaId = $_POST['chamada_id'];
+$alunoId   = $_POST['aluno_id'];
+$status    = $_POST['status'];
 
 
 if (empty($chamadaId) || empty($alunoId) || empty($status)) {
@@ -27,11 +27,7 @@ if (empty($chamadaId) || empty($alunoId) || empty($status)) {
 }
 
 
-$stmt = $conn->prepare("
-  INSERT INTO chamada_item (chamada_id, aluno_id, status)
-  VALUES (?, ?, ?)
-  ON DUPLICATE KEY UPDATE status = VALUES(status)
-");
+$stmt = $conn->prepare("INSERT INTO chamada_item (chamada_id, aluno_id, status) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE status = VALUES(status)");
 $stmt->bind_param("iis", $chamadaId, $alunoId, $status);
 
 
@@ -41,12 +37,13 @@ if ($stmt->execute()) {
     'message' => 'Status de presença salvo.'
   ]);
 
-} else {
-  echo json_encode([
-    'success' => false,
-    'message' => 'Erro ao salvar: ' . $stmt->error
-  ]);
-}
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Erro ao salvar: ' . $conn->error
+    ]);
+  }
+
 
 
 $stmt->close();
