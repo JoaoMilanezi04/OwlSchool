@@ -20,8 +20,8 @@ async function excluirChamada(id) {
 
     alert(resultado.message);
 
-    location.reload();
-
+    if (typeof carregarChamadas === "function") {carregarChamadas()}
+    
   } else {
     alert(resultado.message);
   }

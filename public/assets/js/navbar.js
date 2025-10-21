@@ -1,1 +1,0 @@
-// navbar.js - sem jQuery

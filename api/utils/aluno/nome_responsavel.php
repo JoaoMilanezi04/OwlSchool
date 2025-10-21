@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-
 $alunoId = $_SESSION['user_id'];
 
 

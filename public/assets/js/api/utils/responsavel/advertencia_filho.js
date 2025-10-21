@@ -1,14 +1,8 @@
 async function carregarAdvertencias() {
-  try {
-    const response = await fetch("/afonso/owl-school/api/utils/responsavel/advertencia_filho.php", {
-      method: "POST"
-    });
+
+    const response = await fetch("/afonso/owl-school/api/utils/responsavel/advertencia_filho.php", { method: "POST" });
     const resultado = await response.json();
 
-    if (!resultado.success) {
-      alert("Erro: " + resultado.message);
-      return;
-    }
 
     const corpoTabela = document.getElementById("tbodyAdvertencias");
     corpoTabela.innerHTML = "";
@@ -23,7 +17,9 @@ async function carregarAdvertencias() {
       return;
     }
 
+
     for (const adv of resultado.advertencias) {
+
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>
           <td>${adv.titulo}</td>
@@ -31,10 +27,6 @@ async function carregarAdvertencias() {
         </tr>
       `);
     }
-
-  } catch (erro) {
-    alert("Erro de conexão ao listar advertências.");
-  }
 }
 
 document.addEventListener("DOMContentLoaded", carregarAdvertencias);

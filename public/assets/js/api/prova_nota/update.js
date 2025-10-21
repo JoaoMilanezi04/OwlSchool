@@ -41,17 +41,15 @@ async function salvarEdicaoNota() {
 
   if (resultado.success) {
 
-    alert("Nota atualizada com sucesso!");
+    alert(resultado.message);
 
-    if (typeof listarNotasDaProva === "function") {
-      listarNotasDaProva(idProvaAtualEditar);
-    }
+    if (typeof listarNotasDaProva === "function") {listarNotasDaProva(idProvaAtualEditar);}
 
     const modal = bootstrap.Modal.getInstance(document.getElementById("editNotaModal"));
     modal.hide();
 
   } else {
-    alert("Erro ao atualizar nota: " + (resultado.message || "erro desconhecido."));
+    alert(resultado.message);
   }
 }
 

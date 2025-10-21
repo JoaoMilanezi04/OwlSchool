@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../db/conexao.php';
 
 header('Content-Type: application/json');
 
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   echo json_encode([
     'success' => false,
@@ -12,30 +11,31 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   exit;
 }
 
-
 $chamadaId = $_POST['chamada_id'];
 
 
 $stmt = $conn->prepare("
   SELECT
-    chamada_item.chamada_id,
-    aluno.usuario_id AS aluno_id,
-    usuario.nome AS aluno_nome,
-    chamada_item.status
-  FROM aluno
-  JOIN usuario 
-    ON usuario.id = aluno.usuario_id
-  LEFT JOIN chamada_item
-    ON chamada_item.aluno_id = aluno.usuario_id
-    AND chamada_item.chamada_id = ?
-  ORDER BY usuario.nome
+  chamada.id              AS chamada_id,
+  aluno.usuario_id        AS aluno_id,
+  usuario.nome            AS aluno_nome,
+  chamada_item.status     AS status,
+  chamada.data            AS data_chamada
+FROM aluno
+JOIN usuario
+  ON usuario.id = aluno.usuario_id
+JOIN chamada
+  ON chamada.id = ?
+LEFT JOIN chamada_item
+  ON chamada_item.aluno_id = aluno.usuario_id
+ AND chamada_item.chamada_id = chamada.id
+ORDER BY usuario.nome;
 ");
 $stmt->bind_param("i", $chamadaId);
 $stmt->execute();
 
 
 $resultado = $stmt->get_result();
-
 
 
 if (!$resultado) {
@@ -45,7 +45,6 @@ if (!$resultado) {
   ]);
   exit;
 }
-
 
 
 $itens = [];

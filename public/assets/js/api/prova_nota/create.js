@@ -41,7 +41,7 @@ async function salvarCriacaoNota() {
 
   if (resultado.success) {
 
-    alert("Nota lançada com sucesso!");
+    alert(resultado.message);
 
     if (typeof listarNotasDaProva === "function") {listarNotasDaProva(idProvaAtual);}
 
@@ -49,7 +49,7 @@ async function salvarCriacaoNota() {
     modal.hide();
 
   } else {
-    alert("Erro ao criar nota: " + (resultado.message || "erro desconhecido."));
+    alert(resultado.message);
   }
 }
 

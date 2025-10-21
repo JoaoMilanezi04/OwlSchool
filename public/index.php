@@ -1,9 +1,3 @@
-<?php
-$erro = $_GET['erro'] ?? null;
-$msg = ($erro === 'usuario') ? 'Usuário não encontrado.' :
-       (($erro === 'senha') ? 'Senha incorreta.' :
-       (($erro === 'tipo') ? 'Tipo de usuário inválido.' : null));
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,20 +12,18 @@ $msg = ($erro === 'usuario') ? 'Usuário não encontrado.' :
     .brand { font-weight: 700; letter-spacing:.2px; }
     .muted { color:#6c757d; }
   </style>
+  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/cursor.css">
+<script src="/afonso/owl-school/public/assets/js/cursor.js"></script>
+
 </head>
 <body>
-
+<script src="/afonso/owl-school/public/assets/js/cursor.js"></script>
 <div class="container d-flex justify-content-center align-items-center" style="min-height:100vh;">
   <div class="login-card card">
     <div class="card-body p-4">
       <h1 class="h4 mb-1 text-center brand">🦉 OwlSchool</h1>
       <p class="text-center muted mb-4">Acesse sua conta</p>
 
-      <?php if ($msg): ?>
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-          <span class="me-2">❌</span> <?= $msg ?>
-        </div>
-      <?php endif; ?>
 
       <div id="alertArea" class="alert alert-danger d-none" role="alert"></div>
 
@@ -58,7 +50,6 @@ $msg = ($erro === 'usuario') ? 'Usuário não encontrado.' :
 <?php include __DIR__ . '/../partials/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- JS simples que faz o fetch para /afonso/owl-school/api/login.php -->
 <script src="/afonso/owl-school/public/assets/js/api/auth.js"></script>
 
 </body>

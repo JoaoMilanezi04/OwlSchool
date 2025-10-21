@@ -30,13 +30,8 @@ if (empty($id) || empty($diaSemana) || empty($horaInicio) || empty($horaFim) || 
 }
 
 
-$stmt = $conn->prepare("
-    UPDATE horarios_aula
-       SET dia_semana = ?, inicio = ?, fim = ?, disciplina = ?
-     WHERE id = ?
-");
+$stmt = $conn->prepare("UPDATE horarios_aula SET dia_semana = ?, inicio = ?, fim = ?, disciplina = ? WHERE id = ?");
 $stmt->bind_param("ssssi", $diaSemana, $horaInicio, $horaFim, $disciplina, $id);
-
 
 
 if ($stmt->execute()) {
@@ -60,7 +55,6 @@ if ($stmt->execute()) {
         "message" => "Erro ao atualizar horário: " . $stmt->error
     ]);
 }
-
 
 
 $stmt->close();

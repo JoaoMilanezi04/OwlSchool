@@ -28,10 +28,8 @@ if (empty($prova_id) || empty($aluno_id) || empty($nota)) {
 }
 
 
-
 $stmt = $conn->prepare("INSERT INTO prova_nota (prova_id, aluno_id, nota) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE nota = VALUES(nota)");
 $stmt->bind_param("iid", $prova_id, $aluno_id, $nota);
-
 
 
 if ($stmt->execute()) {

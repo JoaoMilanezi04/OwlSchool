@@ -14,11 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-
 $titulo         = $_POST['titulo'];
 $descricao      = $_POST['descricao'];
 $alunoUsuarioId = $_POST['aluno_id'];
-
 
 
 if (empty($titulo) || empty($descricao) || empty($alunoUsuarioId)) {
@@ -30,10 +28,8 @@ if (empty($titulo) || empty($descricao) || empty($alunoUsuarioId)) {
 }
 
 
-
 $stmt1 = $conn->prepare("INSERT INTO advertencia (titulo, descricao) VALUES (?, ?)");
 $stmt1->bind_param("ss", $titulo, $descricao);
-
 
 
 if ($stmt1->execute()) {
@@ -41,10 +37,8 @@ if ($stmt1->execute()) {
   $stmt1->close();
 
 
-
   $stmt2 = $conn->prepare("INSERT INTO aluno_advertencia (advertencia_id, aluno_id) VALUES (?, ?)");
   $stmt2->bind_param("ii", $advertenciaId, $alunoUsuarioId);
-
 
 
   if ($stmt2->execute()) {

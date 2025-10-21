@@ -28,7 +28,6 @@ if (empty($id) || empty($titulo) || empty($data)) {
 }
 
 
-
 $stmt = $conn->prepare("UPDATE prova SET titulo = ?, data = ? WHERE id = ?");
 $stmt->bind_param("ssi", $titulo, $data, $id);
 

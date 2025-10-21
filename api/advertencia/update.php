@@ -29,10 +29,8 @@ if (empty($id) || empty($titulo) || empty($descricao)) {
 }
 
 
-
 $stmt = $conn->prepare("UPDATE advertencia SET titulo = ?, descricao = ? WHERE id = ?");
 $stmt->bind_param("ssi", $titulo, $descricao, $id);
-
 
 
 if ($stmt->execute()) {
@@ -56,7 +54,6 @@ if ($stmt->execute()) {
         'message' => 'Erro ao atualizar advertência: ' . $stmt->error
     ]);
 }
-
 
 
 $stmt->close();

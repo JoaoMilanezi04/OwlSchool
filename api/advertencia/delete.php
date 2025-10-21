@@ -34,5 +34,5 @@ if ($stmt->execute()) {
 }
 
 
-$stmt2->close();
+$stmt->close();
 $conn->close();

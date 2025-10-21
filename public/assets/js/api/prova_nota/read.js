@@ -1,31 +1,28 @@
 async function listarNotasDaProva(provaId) {
 
-  try {
 
-    const formulario = new FormData();
-    formulario.append("prova_id", provaId);
+    const formularioDados = new FormData();
 
-    const resp = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
+    formularioDados.append("prova_id", provaId);
+
+
+    const resposta = await fetch("/afonso/owl-school/api/prova_nota/read.php", {
       method: "POST",
-      body: formulario
+      body: formularioDados
 
     });
 
-    const dados = await resp.json();
+    const dados = await resposta.json();
 
-    if (!dados.success) {
-      alert("Erro: " + (dados.message || "Falha ao listar notas."));
-      return;
-    }
 
     const cardNotas = document.getElementById("cardNotas");
-
     cardNotas.classList.remove("d-none");
 
     cardNotas.innerHTML = `
       <div class="card-body">
         <h5 class="card-title mb-3">${dados.titulo_prova}</h5>
         <table class="table table-hover">
+
           <thead>
             <tr>
               <th>Aluno</th>
@@ -33,6 +30,7 @@ async function listarNotasDaProva(provaId) {
               <th class="text-end">Ações</th>
             </tr>
           </thead>
+
           <tbody id="tbodyNotas"></tbody>
         </table>
       </div>
@@ -41,33 +39,33 @@ async function listarNotasDaProva(provaId) {
     const corpo = document.getElementById("tbodyNotas");
     corpo.innerHTML = "";
 
+
     const notas = dados.notas;
+
 
     if (!notas.length) {
       corpo.innerHTML = `<tr><td colspan="3" class="text-muted">Nenhum aluno encontrado.</td></tr>`;
       return;
     }
 
+    
     for (const n of notas) {
 
       const nome = n.aluno_nome;
       const nota = n.nota ?? "-";
+    
+      corpo.insertAdjacentHTML("beforeend", `
+        <tr>
+          <td>${nome}</td>
+          <td>${nota}</td>
+          <td class="text-end">
 
-      const linha = document.createElement("tr");
+            <button class="btn btn-sm btn-outline-success me-2" onclick="abrirModalCriarNota(${provaId}, ${n.aluno_id})">Salvar</button>
+            <button class="btn btn-sm btn-outline-secondary me-2" onclick="abrirModalEditarNota(${provaId}, ${n.aluno_id}, '${n.nota}')">Editar</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="excluirNota(${provaId}, ${n.aluno_id})">Excluir</button>
 
-      linha.innerHTML = `
-        <td>${nome}</td>
-        <td>${nota}</td>
-        <td class="text-end">
-          <button class="btn btn-sm btn-outline-success me-2" onclick="abrirModalCriarNota(${provaId}, ${n.aluno_id})">Salvar</button>
-          <button class="btn btn-sm btn-outline-secondary me-2" onclick="abrirModalEditarNota(${provaId}, ${n.aluno_id}, '${n.nota ?? ""}')">Editar</button>
-          <button class="btn btn-sm btn-outline-danger" onclick="excluirNota(${provaId}, ${n.aluno_id})">Excluir</button>
-        </td>
-      `;
-      corpo.appendChild(linha);
-    }
-
-  } catch {
-    alert("Erro de conexão ao listar notas.");
-  }
+          </td>
+        </tr>
+      `);
+    }    
 }

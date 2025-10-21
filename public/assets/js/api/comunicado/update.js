@@ -1,6 +1,5 @@
 let idDoComunicadoAtual = null;
 
-
 async function editarComunicado(idComunicado) {
 
   idDoComunicadoAtual = idComunicado;
@@ -10,18 +9,11 @@ async function editarComunicado(idComunicado) {
   modal.show();
 
 
-  const resposta = await fetch("/afonso/owl-school/api/comunicado/read.php", {
-    method: "POST"
-  });
+  const resposta = await fetch("/afonso/owl-school/api/comunicado/read.php", { method: "POST" });
 
   const dados = await resposta.json();
 
-  const comunicado = dados.comunicados.find(c => String(c.id) === String(idComunicado));
-
-  if (!comunicado) {
-    alert("Comunicado não encontrado.");
-    return;
-  }
+  const comunicado = dados.comunicados.find(comunicado => String(comunicado.id) === String(idComunicado));
 
   document.getElementById("edit_titulo").value = comunicado.titulo;
   document.getElementById("edit_corpo").value  = comunicado.corpo;
@@ -55,15 +47,13 @@ async function salvarComunicado() {
 
     alert("Comunicado atualizado com sucesso!");
 
-    if (typeof carregarComunicados === "function") {
-      carregarComunicados();
-    }
+    if (typeof carregarComunicados === "function") {carregarComunicados();}
 
     const modal = bootstrap.Modal.getInstance(document.getElementById("editModalComunicado"));
     modal.hide();
 
   } else {
-    alert("Erro ao atualizar comunicado: " + (resultado.message || "erro desconhecido."));
+    alert(resultado.success);
   }
 }
 

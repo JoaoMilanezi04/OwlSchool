@@ -39,7 +39,7 @@ async function salvarEdicaoHorario() {
   const resultado = await resposta.json();
 
   if (resultado.success) {
-    alert(resultado.success);
+    alert(resultado.message);
 
     if (typeof carregarAgenda === "function") carregarAgenda();
 
@@ -47,8 +47,8 @@ async function salvarEdicaoHorario() {
     modal.hide();
   
   } else {
-    alert(resultado.success);
+    alert(resultado.message);
   }
 }
 
-document.getElementById("btnSalvarEdicaoHorario").addEventListener("click", salvarEdicaoHorario);
+document.getElementById("btnSalvarHorario").addEventListener("click", salvarEdicaoHorario);

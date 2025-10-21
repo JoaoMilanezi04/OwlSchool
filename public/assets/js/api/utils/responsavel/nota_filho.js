@@ -1,17 +1,12 @@
 async function carregarNotasFilhos() {
-  try {
-    const response = await fetch("/afonso/owl-school/api/utils/responsavel/nota_filho.php", {
-      method: "POST"
-    });
+
+    const response = await fetch("/afonso/owl-school/api/utils/responsavel/nota_filho.php", { method: "POST"});
     const resultado = await response.json();
 
-    if (!resultado.success) {
-      alert("Erro: " + resultado.message);
-      return;
-    }
 
     const corpoTabela = document.getElementById("tbodyNotas");
     corpoTabela.innerHTML = "";
+
 
     if (!resultado.notas || resultado.notas.length === 0) {
       corpoTabela.insertAdjacentHTML("beforeend", `
@@ -22,7 +17,9 @@ async function carregarNotasFilhos() {
       return;
     }
 
+
     for (const item of resultado.notas) {
+
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>
           <td>${item.aluno_nome}</td>
@@ -32,10 +29,6 @@ async function carregarNotasFilhos() {
         </tr>
       `);
     }
-
-  } catch (erro) {
-    alert("Erro de conexão ao listar notas.");
-  }
 }
 
 document.addEventListener("DOMContentLoaded", carregarNotasFilhos);

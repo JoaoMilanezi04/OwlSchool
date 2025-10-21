@@ -1,52 +1,47 @@
-/* Anel do cursor: bola leve com sombra */
+
 #cursor-ring {
+  --cursor-size: 26px;
+
   position: fixed;
   top: 0;
   left: 0;
-  width: 26px;
-  height: 26px;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+
   border-radius: 50%;
-  border: 2.5px solid #1976d2; /* azul vivo */
-  box-shadow: 0 0 16px 4px #1976d2aa; /* sombra azul mais forte */
-  background: rgba(25, 118, 210, 0.08); /* leve preenchimento azul */
-  transform: translate(-50%, -50%);
-  pointer-events: none; /* não bloqueia cliques */
-  z-index: 9999; /* fica por cima do conteúdo */
-  opacity: 0; /* começa invisível até o primeiro movimento */
-  transition: opacity 0.2s ease;
+  border: 2.5px solid #1976d2;
+  box-shadow: 0 0 16px 4px #1976d2aa;
+  background: rgba(25, 118, 210, 0.08);
+
+  pointer-events: none;
+  z-index: 9999;
+
+  opacity: 0; 
   will-change: transform, opacity;
+  transition: opacity 0.2s ease;
+  transform: translate3d(-50%, -50%, 0);
 }
 
-/* efeito ao clicar (JS adiciona a classe .ring-click) */
-#cursor-ring.ring-click {
-  animation: ringPulse 180ms ease;
-}
-
+#cursor-ring.ring-click { animation: ringPulse 180ms ease; }
 @keyframes ringPulse {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  70% {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
+  0%   { transform: translate3d(-50%, -50%, 0) scale(0.85); }
+  70%  { transform: translate3d(-50%, -50%, 0) scale(1.12); }
+  100% { transform: translate3d(-50%, -50%, 0) scale(1); }
 }
 
-/* Respeitar quem prefere menos movimento */
-@media (prefers-reduced-motion: reduce) {
-  #cursor-ring {
-    transition: none;
-    animation: none;
-  }
-}
 
-/* Tema claro/escuro simples (opcional) */
 @media (prefers-color-scheme: dark) {
   #cursor-ring {
     border-color: #90caf9;
     box-shadow: 0 0 18px 6px #90caf9cc;
     background: rgba(144, 202, 249, 0.12);
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  #cursor-ring {
+    transition: none;
+    animation: none;
   }
 }

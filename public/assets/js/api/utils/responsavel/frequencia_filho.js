@@ -1,20 +1,13 @@
 async function carregarFrequenciasFilhos() {
-  try {
-    const response = await fetch("/afonso/owl-school/api/utils/responsavel/frequencia_filho.php", {
-      method: "POST"
-    });
 
+    const response = await fetch("/afonso/owl-school/api/utils/responsavel/frequencia_filho.php", { method: "POST" });
     const resultado = await response.json();
 
-    if (!resultado.success) {
-      alert("Erro: " + resultado.message);
-      return;
-    }
 
     const corpoTabela = document.getElementById("tbodyFrequencias");
     corpoTabela.innerHTML = "";
 
-    // nenhum registro encontrado
+
     if (!resultado.frequencias || resultado.frequencias.length === 0) {
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>
@@ -25,6 +18,7 @@ async function carregarFrequenciasFilhos() {
     }
 
     for (const item of resultado.frequencias) {
+
       corpoTabela.insertAdjacentHTML("beforeend", `
         <tr>
           <td>${item.aluno_nome}</td>
@@ -33,10 +27,6 @@ async function carregarFrequenciasFilhos() {
         </tr>
       `);
     }
-
-  } catch (erro) {
-    alert("Erro de conexão ao listar frequências.");
-  }
 }
 
 document.addEventListener("DOMContentLoaded", carregarFrequenciasFilhos);

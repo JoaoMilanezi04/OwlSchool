@@ -1,54 +1,64 @@
 let idAdvertenciaAtual = null;
 
-async function abrirModalEditarAdvertencia(id, titulo, descricao) {
+async function abrirModalEditarAdvertencia(idAdvertencia) {
 
-  idAdvertenciaAtual = id;
-
-  document.getElementById("edit_titulo").value = titulo;
-  document.getElementById("edit_descricao").value = descricao;
+    idAdvertenciaAtual = idAdvertencia;
 
 
-  const elementoModal = document.getElementById("editModalAdvertencia");
-  const modal = new bootstrap.Modal(elementoModal);
-  modal.show();
+    const elementoModal = document.getElementById("editModalAdvertencia");
+    const modal = new bootstrap.Modal(elementoModal);
+    modal.show();
+
+
+    const resposta = await fetch("/afonso/owl-school/api/advertencia/read.php", { method: "POST" });
+
+    const dados = await resposta.json();
+
+
+    const advertencia = dados.advertencias.find(advertencia => String(advertencia.id) === String(idAdvertencia));
+
+
+    document.getElementById("edit_titulo").value = advertencia.titulo;
+    document.getElementById("edit_descricao").value = advertencia.descricao;
 
 }
 
 async function salvarAdvertencia() {
 
 
-  const titulo = document.getElementById("edit_titulo").value;
-  const descricao = document.getElementById("edit_descricao").value;
+    const titulo = document.getElementById("edit_titulo").value;
+    const descricao = document.getElementById("edit_descricao").value;
 
 
-  const formularioDados = new FormData();
-
-  formularioDados.append("id", idAdvertenciaAtual);
-  formularioDados.append("titulo", titulo);
-  formularioDados.append("descricao", descricao);
+    const formularioDados = new FormData();
 
 
-  const resposta = await fetch("/afonso/owl-school/api/advertencia/update.php", {
-    method: "POST",
-    body: formularioDados
-
-  });
-
-  const resultado = await resposta.json();
-
-  if (resultado.success) {
+    formularioDados.append("id", idAdvertenciaAtual);
+    formularioDados.append("titulo", titulo);
+    formularioDados.append("descricao", descricao);
 
 
-    alert("Advertência atualizada com sucesso!");
+    const resp = await fetch("/afonso/owl-school/api/advertencia/update.php", {
+      method: "POST",
+      body: formularioDados
 
-    if (typeof carregarAdvertencias === "function") {carregarAdvertencias();}
+    });
 
-    const modal = bootstrap.Modal.getInstance(document.getElementById("editModalAdvertencia"));
-    modal.hide();
+    const resultado = await resp.json();
 
-  } else {
-    alert(resultado.success);
-  }
+    if (resultado.success) {
+
+      alert(resultado.message);
+
+      if (typeof carregarAdvertencias === "function") {carregarAdvertencias();}
+
+      const modal = bootstrap.Modal.getInstance(document.getElementById("editModalAdvertencia"));
+      modal.hide();
+
+
+    } else {
+      alert(resultado.message);
+    }
 }
 
 

@@ -27,7 +27,6 @@ if (empty($chamadaId) || empty($alunoId) || empty($status)) {
 }
 
 
-
 $stmt = $conn->prepare("UPDATE chamada_item SET status = ? WHERE chamada_id = ? AND aluno_id = ?");
 $stmt->bind_param("sii", $status, $chamadaId, $alunoId);
 

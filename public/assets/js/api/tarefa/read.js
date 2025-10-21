@@ -1,15 +1,8 @@
 async function carregarTarefas() {
-  try {
-    const response = await fetch("/afonso/owl-school/api/tarefa/read.php", {
-      method: "POST"
-    });
 
+    const response = await fetch("/afonso/owl-school/api/tarefa/read.php", { method: "POST" });
     const resultado = await response.json();
 
-    if (!resultado.success) {
-      alert("Erro: " + resultado.message);
-      return;
-    }
 
     const tipoUsuario = resultado.tipo_usuario; 
     const corpoTabela = document.getElementById("tbodyTarefas");
@@ -28,6 +21,7 @@ async function carregarTarefas() {
 
     for (const tarefa of resultado.tarefas) {
       let acoesHTML = "";
+
       if (tipoUsuario === "professor" || tipoUsuario === "admin") {
         acoesHTML = `
           <button class="btn btn-sm btn-outline-secondary" onclick="editarTarefa(${tarefa.id})">Editar</button>
@@ -44,9 +38,7 @@ async function carregarTarefas() {
         </tr>
       `;
     }
-  } catch (erro) {
-    alert("Erro de conexão ao listar tarefas.");
-  }
+
 }
 
 document.addEventListener("DOMContentLoaded", carregarTarefas);

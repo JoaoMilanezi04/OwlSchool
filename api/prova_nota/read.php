@@ -16,6 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $prova_id = $_POST['prova_id'];
 
 
+$titulo_prova = null;
+
+$buscaTitulo = $conn->prepare("SELECT titulo FROM prova WHERE id = ?");
+$buscaTitulo->bind_param("i", $prova_id);
+$buscaTitulo->execute();
+
+$resTitulo = $buscaTitulo->get_result();
+
+if ($resTitulo && $row = $resTitulo->fetch_assoc()) {$titulo_prova = $row['titulo'];}
+
+$buscaTitulo->close();
+
+
 $stmt = $conn->prepare("
   SELECT 
     aluno.usuario_id AS aluno_id,
@@ -32,7 +45,9 @@ $stmt = $conn->prepare("
 $stmt->bind_param("i", $prova_id);
 $stmt->execute();
 
+
 $resultado = $stmt->get_result();
+
 
 if (!$resultado) {
   echo json_encode([
@@ -41,7 +56,6 @@ if (!$resultado) {
   ]);
   exit;
 }
-
 
 $notas = [];
 
@@ -52,7 +66,7 @@ while ($linha = $resultado->fetch_assoc()) {
 
   
   $notas[] = [
-    'aluno_id' => (int)$linha['aluno_id'],
+    'aluno_id' => $linha['aluno_id'],
     'aluno_nome' => $linha['aluno_nome'],
     'nota' => $nota
   ];
@@ -62,6 +76,7 @@ while ($linha = $resultado->fetch_assoc()) {
 echo json_encode([
   'success' => true,
   'prova_id' => $prova_id,
+  'titulo_prova' => $titulo_prova,
   'notas' => $notas
 ]);
 

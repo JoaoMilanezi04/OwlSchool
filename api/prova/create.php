@@ -27,10 +27,8 @@ if (empty($titulo) || empty($data)) {
 }
 
 
-
 $stmt = $conn->prepare("INSERT INTO prova (titulo, data) VALUES (?, ?)");
 $stmt->bind_param("ss", $titulo, $data);
-
 
 
 if ($stmt->execute()) {

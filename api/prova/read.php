@@ -20,7 +20,6 @@ $stmt->execute();
 $resultado = $stmt->get_result();
 
 
-
 if (!$resultado) {
   echo json_encode([
     'success' => false,

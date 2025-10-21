@@ -11,18 +11,12 @@ async function editarProva(idProva) {
   modal.show();
 
 
-  const resposta = await fetch("/afonso/owl-school/api/prova/read.php", {
-    method: "POST"
-  });
+  const resposta = await fetch("/afonso/owl-school/api/prova/read.php", { method: "POST" });
 
   const dados = await resposta.json();
 
-  const prova = dados.provas.find(p => String(p.id) === String(idProva));
+  const prova = dados.provas.find(prova => String(prova.id) === String(idProva));
 
-  if (!prova) {
-    alert("Prova não encontrada.");
-    return;
-  }
 
   document.getElementById("edit_titulo_prova").value = prova.titulo;
   document.getElementById("edit_data_prova").value   = prova.data;
@@ -54,17 +48,15 @@ async function salvarProva() {
 
   if (resultado.success) {
 
-    alert("Prova atualizada com sucesso!");
+    alert(resultado.success);
 
-    if (typeof carregarProvas === "function") {
-      carregarProvas();
-    }
+    if (typeof carregarProvas === "function") {carregarProvas();}
 
     const modal = bootstrap.Modal.getInstance(document.getElementById("editModalProva"));
     modal.hide();
 
   } else {
-    alert("Erro ao atualizar prova: " + (resultado.message || "erro desconhecido."));
+    alert(resultado.success);
   }
 }
 

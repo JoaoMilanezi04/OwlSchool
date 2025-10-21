@@ -51,7 +51,6 @@ if (!$resultado) {
 }
 
 
-
 $advertencias = [];
 
 

@@ -22,7 +22,6 @@ $stmt->execute();
 $resultado = $stmt->get_result();
 
 
-
 if (!$resultado) {
   echo json_encode([
     'success' => false,
@@ -32,9 +31,7 @@ if (!$resultado) {
 }
 
 
-
 $comunicados = [];
-
 
 
 while ($linha = $resultado->fetch_assoc()) {

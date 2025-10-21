@@ -38,17 +38,15 @@ async function salvarEdicaoChamadaItem() {
 
   if (resultado.success) {
 
-    alert("Status de presença atualizado com sucesso!");
+    alert(resultado.message);
 
-    if (typeof listarItensDaChamada === "function") {
-      listarItensDaChamada(idChamadaAtualEditar);
-    }
+    if (typeof listarItensDaChamada === "function") {listarItensDaChamada(idChamadaAtualEditar);}
 
     const modal = bootstrap.Modal.getInstance(document.getElementById("editChamadaItemModal"));
     modal.hide();
 
   } else {
-    alert("Erro ao atualizar presença: " + (resultado.message || "erro desconhecido."));
+    alert(resultado.message);
   }
 }
 
