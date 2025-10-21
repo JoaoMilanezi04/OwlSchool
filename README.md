@@ -38,8 +38,8 @@ OlwSchool/
 │   ├── responsavel/  # área do responsável
 │   ├── professor/    # área do professor
 │   ├── admin/        # área administrativa
-│   └── assets/       # arquivos estáticos (css, js, imagens)
-├── api/              # endpoints da API
+│   └── assets/       # arquivos estáticos e endpoints da API
+├── api/              # API
 ├── partials/         # componentes e partes reutilizáveis (navbar, footer, etc)
 ├── db/               # banco de dados e scripts SQL
 └── README.md
