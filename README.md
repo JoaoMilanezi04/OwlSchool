@@ -1,4 +1,4 @@
-# 🦉 OlwSchool
+# 🦉 OwlSchool
 
 Portal Escolar acadêmico desenvolvido para facilitar a comunicação entre **alunos, responsáveis, professores e administradores**.  
 Projeto simples, funcional e responsivo, utilizando **PHP + MySQL + Bootstrap**.
