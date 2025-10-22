@@ -12,14 +12,14 @@ document.getElementById("formLogin").onsubmit = async function (e) {
 
   try {
 
-    const resp = await fetch("/afonso/owl-school/api/auth.php", {
+    const resposta = await fetch("/afonso/owl-school/api/auth.php", {
       method: "POST",
       body: formularioDados
 
     });
 
 
-    const resultado = await resp.json();
+    const resultado = await resposta.json();
 
 
     const tipo = resultado.usuario.tipo_usuario;

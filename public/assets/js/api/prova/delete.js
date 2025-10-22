@@ -18,7 +18,7 @@ async function excluirProva(id) {
 
   if (resultado.success) {
 
-    alert(resultado.success);
+    alert(resultado.message);
 
     location.reload();  
 

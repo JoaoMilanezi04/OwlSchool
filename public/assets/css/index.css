@@ -1,0 +1,23 @@
+:root {
+  --card-w: 420px;
+}
+
+body {
+  background: #f8f9fa;
+}
+
+.login-card {
+  width: min(92vw, var(--card-w));
+  margin: 60px auto;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}

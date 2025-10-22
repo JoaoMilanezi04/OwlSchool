@@ -33,9 +33,9 @@ require_role('aluno');
   <div class="flex-grow-1" style="margin-left: 220px;">
     <main class="container py-4">
 
+
       <h1 class="h4 mb-4">Jogos</h1>
 
-      <!-- conteúdo futuro -->
 
     </main>
   </div>

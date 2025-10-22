@@ -29,10 +29,9 @@ require_role('admin');
   <div class="flex-grow-1" style="margin-left: 220px;">
     <main class="container py-4">
 
-      <!-- ============================== -->
-      <!-- Cabeçalho -->
-      <!-- ============================== -->
+
       <h1 class="h5 mb-3">📅 Agenda — Horários de Aula</h1>
+
 
       <!-- ============================== -->
       <!-- Adicionar horário -->

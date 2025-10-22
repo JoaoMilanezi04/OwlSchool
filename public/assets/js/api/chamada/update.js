@@ -12,7 +12,7 @@ async function editarChamada(idChamada) {
   const resposta = await fetch("/afonso/owl-school/api/chamada/read.php", { method: "POST"});
 
   const dados = await resposta.json();
-  const chamada = dados.chamadas.find(c => String(c.id) === String(idChamada));
+  const chamada = dados.chamadas.find(chamada => String(chamada.id) === String(idChamada));
 
 
   document.getElementById("edit_data_chamada").value = chamada.data;

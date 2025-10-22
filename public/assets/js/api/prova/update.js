@@ -48,7 +48,7 @@ async function salvarProva() {
 
   if (resultado.success) {
 
-    alert(resultado.success);
+    alert(resultado.message);
 
     if (typeof carregarProvas === "function") {carregarProvas();}
 
@@ -56,7 +56,7 @@ async function salvarProva() {
     modal.hide();
 
   } else {
-    alert(resultado.success);
+    alert(resultado.message);
   }
 }
 

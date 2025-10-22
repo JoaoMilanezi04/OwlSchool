@@ -60,7 +60,7 @@ require_role('aluno');
                 </tr>
               </thead>
               <tbody id="<?= $key ?>">
-                <!-- preenchido pelo JS -->
+
                 <tr><td colspan="3" class="text-muted">Carregando…</td></tr>
               </tbody>
             </table>

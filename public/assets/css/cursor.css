@@ -1,6 +1,5 @@
-
 #cursor-ring {
-  --cursor-size: 26px;
+  --cursor-size: 26px; /* 🔹 raio original */
 
   position: fixed;
   top: 0;
@@ -16,29 +15,88 @@
   pointer-events: none;
   z-index: 9999;
 
-  opacity: 0; 
-  will-change: transform, opacity;
-  transition: opacity 0.2s ease;
+  opacity: 0;
+  will-change: transform, opacity, box-shadow, background;
+  transition: opacity 0.9s ease; 
   transform: translate3d(-50%, -50%, 0);
 }
 
-#cursor-ring.ring-click { animation: ringPulse 180ms ease; }
-@keyframes ringPulse {
-  0%   { transform: translate3d(-50%, -50%, 0) scale(0.85); }
-  70%  { transform: translate3d(-50%, -50%, 0) scale(1.12); }
-  100% { transform: translate3d(-50%, -50%, 0) scale(1); }
+/* ============================== */
+/* Clique com brilho e preenchimento leve */
+/* ============================== */
+#cursor-ring.ring-click {
+  animation: clickFlash 500ms ease-out;
 }
 
+@keyframes clickFlash {
+  0% {
+    background: rgba(25, 118, 210, 0.1);
+    box-shadow: 0 0 16px 4px #1976d2aa;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+  25% {
+    background: rgba(25, 118, 210, 0.35);
+    box-shadow: 0 0 26px 10px #42a5f5dd;
+    transform: translate3d(-50%, -50%, 0) scale(1.05);
+  }
+  50% {
+    background: rgba(25, 118, 210, 0.5);
+    box-shadow: 0 0 36px 12px #64b5f6ee;
+    transform: translate3d(-50%, -50%, 0) scale(1.08);
+  }
+  75% {
+    background: rgba(25, 118, 210, 0.25);
+    box-shadow: 0 0 22px 8px #42a5f5cc;
+    transform: translate3d(-50%, -50%, 0) scale(1.03);
+  }
+  100% {
+    background: rgba(25, 118, 210, 0.08);
+    box-shadow: 0 0 16px 4px #1976d2aa;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+}
 
+/* ============================== */
+/* Tema escuro */
+/* ============================== */
 @media (prefers-color-scheme: dark) {
   #cursor-ring {
     border-color: #90caf9;
     box-shadow: 0 0 18px 6px #90caf9cc;
     background: rgba(144, 202, 249, 0.12);
   }
+
+  #cursor-ring.ring-click {
+    animation: clickFlashDark 500ms ease-out;
+  }
+
+  @keyframes clickFlashDark {
+    0% {
+      background: rgba(144, 202, 249, 0.12);
+      box-shadow: 0 0 18px 6px #90caf9cc;
+    }
+    25% {
+      background: rgba(144, 202, 249, 0.35);
+      box-shadow: 0 0 30px 10px #64b5f6dd;
+    }
+    50% {
+      background: rgba(144, 202, 249, 0.55);
+      box-shadow: 0 0 40px 16px #90caf9ee;
+    }
+    75% {
+      background: rgba(144, 202, 249, 0.25);
+      box-shadow: 0 0 26px 8px #64b5f6cc;
+    }
+    100% {
+      background: rgba(144, 202, 249, 0.12);
+      box-shadow: 0 0 18px 6px #90caf9cc;
+    }
+  }
 }
 
-
+/* ============================== */
+/* Reduzir movimento */
+/* ============================== */
 @media (prefers-reduced-motion: reduce) {
   #cursor-ring {
     transition: none;
