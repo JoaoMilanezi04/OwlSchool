@@ -19,7 +19,7 @@ require_role('responsavel');
   <title>OlwSchool — Comunicados, Tarefas e Advertências</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/responsavel/home.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/responsavel/comunicados.css">
   
 </head>
 
@@ -77,9 +77,9 @@ require_role('responsavel');
     </main>
   </div>
 
-  <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/comunicado/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/utils/responsavel/advertencia_filho.js"></script>
+  <script src="/owl-school/public/assets/js/api/tarefa/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/comunicado/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/utils/responsavel/advertencia_filho.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

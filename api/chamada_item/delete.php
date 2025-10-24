@@ -23,17 +23,27 @@ $stmt->bind_param("ii", $chamadaId, $alunoId);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Registro de presença removido.'
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Registro de presença removido.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhum registro de presença encontrado para excluir.'
+    ]);
+  }
 
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir registro.'
+    'message' => 'Erro ao excluir registro de presença: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

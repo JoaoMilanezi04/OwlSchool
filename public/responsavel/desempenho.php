@@ -18,7 +18,7 @@ require_role('responsavel');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/responsavel/home.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/responsavel/home.css">
 </head>
 
 <body class="bg-light">
@@ -68,8 +68,8 @@ require_role('responsavel');
   <!-- ============================== -->
   <!-- Scripts -->
   <!-- ============================== -->
-  <script src="/afonso/owl-school/public/assets/js/api/utils/responsavel/nota_filho.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/utils/responsavel/frequencia_filho.js"></script>
+  <script src="/owl-school/public/assets/js/api/utils/responsavel/nota_filho.js"></script>
+  <script src="/owl-school/public/assets/js/api/utils/responsavel/frequencia_filho.js"></script>
 
   <!-- Bootstrap (por último) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

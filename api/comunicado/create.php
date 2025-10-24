@@ -33,10 +33,19 @@ $stmt->bind_param("ss", $titulo, $corpo);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Comunicado criado com sucesso.',
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Comunicado criado com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhum comunicado criado.'
+    ]);
+  }
 
 } else {
   echo json_encode([
@@ -44,6 +53,7 @@ if ($stmt->execute()) {
     'message' => 'Erro ao criar comunicado: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

@@ -17,7 +17,7 @@ require_role('aluno');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/aluno/agenda.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/aluno/agenda.css">
 </head>
 
 <body class="bg-light">
@@ -75,7 +75,7 @@ require_role('aluno');
   <!-- Scripts -->
   <!-- ============================== -->
   <!-- Preenche cada <tbody id="segunda|terca|..."> -->
-  <script src="/afonso/owl-school/public/assets/js/api/agenda/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/agenda/read.js"></script>
 
   <!-- Bootstrap (por último) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -33,16 +33,24 @@ $stmt->bind_param("ss", $email, $senha);
 
 $stmt->execute();
 
-
 $resultado = $stmt->get_result();
 
 $usuario = $resultado->fetch_assoc();
 
+// Verificar se o usuário foi encontrado
+if (!$usuario) {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Email ou senha incorretos.'
+  ]);
+  $stmt->close();
+  $conn->close();
+  exit;
+}
 
 $_SESSION['user_id'] = $usuario['id'];
 $_SESSION['user_name'] = $usuario['nome'];
 $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
-
 
 echo json_encode([
   'success' => true,

@@ -21,17 +21,27 @@ $stmt->bind_param("i", $id);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Comunicado excluído com sucesso.'
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Comunicado excluído com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhum comunicado encontrado para excluir.'
+    ]);
+  }
 
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir comunicado.'
+    'message' => 'Erro ao excluir comunicado: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

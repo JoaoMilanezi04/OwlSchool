@@ -20,7 +20,7 @@ $userName = $_SESSION['user_name'];
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/responsavel/responsavel.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/responsavel/responsavel.css">
 </head>
 
 <body class="bg-light">
@@ -53,7 +53,7 @@ $userName = $_SESSION['user_name'];
   <!-- ============================== -->
   <!-- Scripts -->
   <!-- ============================== -->
-  <script src="/afonso/owl-school/public/assets/js/api/utils/responsavel/nome_filho.js"></script>
+  <script src="/owl-school/public/assets/js/api/utils/responsavel/nome_filho.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

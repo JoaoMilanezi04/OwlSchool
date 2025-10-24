@@ -17,7 +17,7 @@ require_role('professor');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/professor/chamada.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/professor/chamada.css">
 </head>
 
 <body class="bg-light">
@@ -181,15 +181,15 @@ require_role('professor');
   <!-- ============================== -->
   <!-- Scripts -->
   <!-- ============================== -->
-  <script src="/afonso/owl-school/public/assets/js/api/chamada/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/chamada/create.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/chamada/update.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/chamada/delete.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada/create.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada/update.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada/delete.js"></script>
 
-  <script src="/afonso/owl-school/public/assets/js/api/chamada_item/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/chamada_item/create.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/chamada_item/update.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/chamada_item/delete.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada_item/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada_item/create.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada_item/update.js"></script>
+  <script src="/owl-school/public/assets/js/api/chamada_item/delete.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

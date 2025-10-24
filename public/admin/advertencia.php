@@ -17,7 +17,7 @@ require_role('admin');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/admin/advertencia.css"> 
+  <link rel="stylesheet" href="/owl-school/public/assets/css/admin/advertencia.css"> 
 
 </head>
 
@@ -114,13 +114,13 @@ require_role('admin');
   <!-- ============================== -->
   <!-- Scripts -->
   <!-- ============================== -->
-  <script src="/afonso/owl-school/public/assets/js/api/advertencia/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/advertencia/create.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/advertencia/update.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/advertencia/delete.js"></script>
+  <script src="/owl-school/public/assets/js/api/advertencia/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/advertencia/create.js"></script>
+  <script src="/owl-school/public/assets/js/api/advertencia/update.js"></script>
+  <script src="/owl-school/public/assets/js/api/advertencia/delete.js"></script>
 
   <!-- Helper: popula o <select id="aluno_id"> -->
-  <script src="/afonso/owl-school/public/assets/js/api/utils/aluno_select.js"></script>
+  <script src="/owl-school/public/assets/js/api/utils/aluno_select.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

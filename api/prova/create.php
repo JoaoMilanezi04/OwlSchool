@@ -32,10 +32,19 @@ $stmt->bind_param("ss", $titulo, $data);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Prova criada com sucesso.',
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Prova criada com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma prova criada.'
+    ]);
+  }
 
 } else {
   echo json_encode([
@@ -43,6 +52,7 @@ if ($stmt->execute()) {
     'message' => 'Erro ao criar prova: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

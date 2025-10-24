@@ -21,17 +21,27 @@ $stmt->bind_param("i", $id);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Horário excluído com sucesso.'
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Horário excluído com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhum horário encontrado para excluir.'
+    ]);
+  }
 
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir horário.'
+    'message' => 'Erro ao excluir horário: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

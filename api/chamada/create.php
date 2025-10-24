@@ -31,10 +31,19 @@ $stmt->bind_param("s", $data);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Chamada criada com sucesso.',
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Chamada criada com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma chamada criada.'
+    ]);
+  }
 
 } else {
   echo json_encode([

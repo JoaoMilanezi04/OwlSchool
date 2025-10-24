@@ -13,7 +13,7 @@ async function criarTarefa() {
   formularioDados.append("data_entrega", data_entrega);
 
 
-  const resposta = await fetch("/afonso/owl-school/api/tarefa/create.php", {
+  const resposta = await fetch("/owl-school/api/tarefa/create.php", {
     method: "POST",
     body: formularioDados
 

@@ -33,17 +33,27 @@ $stmt->bind_param("iis", $chamadaId, $alunoId, $status);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Status de presença salvo.'
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Status de presença salvo.'
+    ]);
 
   } else {
     echo json_encode([
       'success' => false,
-      'message' => 'Erro ao salvar: ' . $conn->error
+      'message' => 'Nenhum status de presença criado.'
     ]);
   }
+
+} else {
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erro ao salvar status de presença: ' . $stmt->error
+  ]);
+}
+
 
 
 

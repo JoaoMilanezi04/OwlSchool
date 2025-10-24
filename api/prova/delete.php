@@ -21,17 +21,27 @@ $stmt->bind_param("i", $id);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Prova excluída.'
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Prova excluída com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma prova encontrada para excluir.'
+    ]);
+  }
 
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir prova.'
+    'message' => 'Erro ao excluir prova: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

@@ -33,17 +33,27 @@ $stmt->bind_param("iid", $prova_id, $aluno_id, $nota);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Nota criada ou atualizada com sucesso.'
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Nota criada ou atualizada com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma nota criada ou atualizada.'
+    ]);
+  }
 
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao criar nota: ' . $stmt->error
+    'message' => 'Erro ao criar ou atualizar nota: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

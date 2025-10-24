@@ -21,17 +21,27 @@ $stmt->bind_param("i", $id);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Advertência excluída com sucesso.'
-  ]);
-  
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Advertência excluída com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma advertência encontrada para excluir.'
+    ]);
+  }
+
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir advertência.'
+    'message' => 'Erro ao excluir advertência: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

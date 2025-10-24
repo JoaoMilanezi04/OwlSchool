@@ -33,10 +33,19 @@ $stmt->bind_param("sss", $titulo, $descricao, $data_entrega);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Tarefa criada com sucesso.',
-  ]);
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Tarefa criada com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma tarefa criada.'
+    ]);
+  }
 
 } else {
   echo json_encode([
@@ -44,6 +53,7 @@ if ($stmt->execute()) {
     'message' => 'Erro ao criar tarefa: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

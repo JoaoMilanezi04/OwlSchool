@@ -1,6 +1,6 @@
 async function carregarNomeResponsavel() {
 
-    const response = await fetch("/afonso/owl-school/api/utils/aluno/nome_responsavel.php", { method: "POST" });
+    const response = await fetch("/owl-school/api/utils/aluno/nome_responsavel.php", { method: "POST" });
     const resultado = await response.json();
 
     const container = document.getElementById("nomeResponsavel");

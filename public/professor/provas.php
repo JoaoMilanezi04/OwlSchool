@@ -16,7 +16,7 @@ require_role('professor');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/professor/prova.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/professor/prova.css">
 </head>
 
 <body class="bg-light">
@@ -188,15 +188,15 @@ require_role('professor');
   <!-- ============================== -->
   <!-- Scripts -->
   <!-- ============================== -->
-  <script src="/afonso/owl-school/public/assets/js/api/prova/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/prova/create.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/prova/update.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/prova/delete.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova/create.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova/update.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova/delete.js"></script>
 
-  <script src="/afonso/owl-school/public/assets/js/api/prova_nota/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/prova_nota/create.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/prova_nota/update.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/prova_nota/delete.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova_nota/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova_nota/create.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova_nota/update.js"></script>
+  <script src="/owl-school/public/assets/js/api/prova_nota/delete.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

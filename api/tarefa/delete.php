@@ -21,17 +21,27 @@ $stmt->bind_param("i", $id);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Tarefa excluída com sucesso.'
-  ]);
-  
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Tarefa excluída com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma tarefa encontrada para excluir.'
+    ]);
+  }
+
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir tarefa.'
+    'message' => 'Erro ao excluir tarefa: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

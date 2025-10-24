@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username   = "root";
-$password   = "AfonsoPTZ#6113";
+$password   = "root";
 $dbname     = "owl_school";
 
 

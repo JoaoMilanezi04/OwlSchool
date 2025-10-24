@@ -33,17 +33,27 @@ $stmt->bind_param("ssss", $diaSemana, $horaInicio, $horaFim, $disciplina);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    "success" => true,
-    "message" => "Horário criado com sucesso.",
-  ]);
-  
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      "success" => true,
+      "message" => "Horário criado com sucesso."
+    ]);
+
+  } else {
+    echo json_encode([
+      "success" => false,
+      "message" => "Nenhum horário criado."
+    ]);
+  }
+
 } else {
   echo json_encode([
     "success" => false,
     "message" => "Erro ao criar horário: " . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

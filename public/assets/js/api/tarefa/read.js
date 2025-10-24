@@ -1,6 +1,6 @@
 async function carregarTarefas() {
 
-    const response = await fetch("/afonso/owl-school/api/tarefa/read.php", { method: "POST" });
+    const response = await fetch("/owl-school/api/tarefa/read.php", { method: "POST" });
     const resultado = await response.json();
 
 
@@ -9,14 +9,15 @@ async function carregarTarefas() {
     corpoTabela.innerHTML = "";
 
     
-    if (!resultado.tarefas || resultado.tarefas.length === 0) {
-      corpoTabela.insertAdjacentHTML("beforeend", `
-        <tr>
-          <td colspan="2" class="text-center text-muted">Nenhuma Tarefa.</td>
-        </tr>
-      `);
-      return;
-    }
+if (!resultado.tarefas || resultado.tarefas.length === 0) {
+  corpoTabela.insertAdjacentHTML("beforeend", `
+    <tr>
+      <td colspan="4" class="text-center text-muted">Nenhuma Tarefa.</td>
+    </tr>
+  `);
+  return;
+}
+
     
 
     for (const tarefa of resultado.tarefas) {

@@ -13,7 +13,7 @@ async function criarAdvertencia() {
   formularioDados.append("aluno_id", aluno_id);
 
 
-  const resposta = await fetch("/afonso/owl-school/api/advertencia/create.php", {
+  const resposta = await fetch("/owl-school/api/advertencia/create.php", {
     method: "POST",
     body: formularioDados
 

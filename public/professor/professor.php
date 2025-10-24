@@ -19,7 +19,7 @@ $usuarioNome = $_SESSION['user_name'];
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/professor/professor.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/professor/professor.css">
 </head>
 
 <body class="bg-light">

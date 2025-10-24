@@ -20,7 +20,7 @@ require_role('professor');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- CSS próprio -->
-  <link rel="stylesheet" href="/afonso/owl-school/public/assets/css/professor/tarefa.css">
+  <link rel="stylesheet" href="/owl-school/public/assets/css/professor/tarefa.css">
 </head>
 
 <body class="bg-light">
@@ -108,10 +108,10 @@ require_role('professor');
   <!-- ============================== -->
   <!-- Scripts -->
   <!-- ============================== -->
-  <script src="/afonso/owl-school/public/assets/js/api/tarefa/read.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/tarefa/create.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/tarefa/delete.js"></script>
-  <script src="/afonso/owl-school/public/assets/js/api/tarefa/update.js"></script>
+  <script src="/owl-school/public/assets/js/api/tarefa/read.js"></script>
+  <script src="/owl-school/public/assets/js/api/tarefa/create.js"></script>
+  <script src="/owl-school/public/assets/js/api/tarefa/delete.js"></script>
+  <script src="/owl-school/public/assets/js/api/tarefa/update.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

@@ -22,17 +22,27 @@ $stmt->bind_param("ii", $prova_id, $aluno_id);
 
 
 if ($stmt->execute()) {
-  echo json_encode([
-    'success' => true,
-    'message' => 'Nota excluída.'
-  ]);
-  
+
+  if ($stmt->affected_rows > 0) {
+    echo json_encode([
+      'success' => true,
+      'message' => 'Nota excluída com sucesso.'
+    ]);
+
+  } else {
+    echo json_encode([
+      'success' => false,
+      'message' => 'Nenhuma nota encontrada para excluir.'
+    ]);
+  }
+
 } else {
   echo json_encode([
     'success' => false,
-    'message' => 'Erro ao excluir nota.'
+    'message' => 'Erro ao excluir nota: ' . $stmt->error
   ]);
 }
+
 
 
 $stmt->close();

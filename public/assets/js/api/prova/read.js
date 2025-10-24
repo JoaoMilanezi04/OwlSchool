@@ -1,6 +1,6 @@
 async function carregarProvas() {
 
-  const response = await fetch("/afonso/owl-school/api/prova/read.php", { method: "POST" });
+  const response = await fetch("/owl-school/api/prova/read.php", { method: "POST" });
   const resultado = await response.json();
 
 

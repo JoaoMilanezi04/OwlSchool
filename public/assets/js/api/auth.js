@@ -12,26 +12,29 @@ document.getElementById("formLogin").onsubmit = async function (e) {
 
   try {
 
-    const resposta = await fetch("/afonso/owl-school/api/auth.php", {
+    const resposta = await fetch("/owl-school/api/auth.php", {
       method: "POST",
       body: formularioDados
-
     });
-
 
     const resultado = await resposta.json();
 
+    // Verificar se o login foi bem-sucedido
+    if (!resultado.success) {
+      alert(resultado.message || "Erro ao fazer login");
+      return;
+    }
 
     const tipo = resultado.usuario.tipo_usuario;
 
-
-    if (tipo === "aluno")       window.location.href = "/afonso/owl-school/public/aluno/aluno.php";
-    else if (tipo === "professor")   window.location.href = "/afonso/owl-school/public/professor/professor.php";
-    else if (tipo === "responsavel") window.location.href = "/afonso/owl-school/public/responsavel/responsavel.php";
-    else if (tipo === "admin")       window.location.href = "/afonso/owl-school/public/admin/admin.php";
-    else alert("Login Inválido")
+    if (tipo === "aluno")       window.location.href = "/owl-school/public/aluno/aluno.php";
+    else if (tipo === "professor")   window.location.href = "/owl-school/public/professor/professor.php";
+    else if (tipo === "responsavel") window.location.href = "/owl-school/public/responsavel/responsavel.php";
+    else if (tipo === "admin")       window.location.href = "/owl-school/public/admin/admin.php";
+    else alert("Tipo de usuário inválido")
 
   } catch (err) {
-    alert("Usuário ou senha inválidos.");
+    console.error("Erro:", err);
+    alert("Erro ao conectar com o servidor. Verifique sua conexão.");
   }
 };

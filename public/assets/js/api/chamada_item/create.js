@@ -27,7 +27,7 @@ async function salvarChamadaItem() {
   formularioDados.append("status", status);
 
 
-  const resposta = await fetch("/afonso/owl-school/api/chamada_item/create.php", {
+  const resposta = await fetch("/owl-school/api/chamada_item/create.php", {
     method: "POST",
     body: formularioDados
 
